@@ -5,15 +5,15 @@
 int main()
 {
 	if (!Core::Init()) return 1;
-	
-	Menu::User* account = Menu::GetChoice(); // get a ptr either to class Customer or Admin
+	Menu::User* account;
+	char* memory = Menu::GetChoice(account); // get a ptr either to class Customer or Admin
 
 	account->MainMenu(); // call Main menu function, either admin panel or customer menu
-
-	if (account)
+	account->~User();
+	if (memory)
 	{
-		Mem::Free(account);
-		account = nullptr;
+		Mem::Free(memory);
+		memory = nullptr;
 	}
 	Core::Release();
 }

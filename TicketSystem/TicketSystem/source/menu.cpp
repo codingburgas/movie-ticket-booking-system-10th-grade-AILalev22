@@ -17,11 +17,10 @@ namespace Menu
 		printf("Admin Panel\n");
 	}
 
-	User* GetChoice()
+	char* GetChoice(User*&acc)
 	{
 		int choice = 0;
 		char* pool = nullptr;
-		User* acc = nullptr;
 		do
 		{
 			printf("Enter your choice:\n0. Exit\n1. Customer Menu\n2. Admin Panel\n:"); // get input
@@ -46,7 +45,7 @@ namespace Menu
 					acc = new (pool) Admin();
 				}
 			}
-			return acc;
+			return pool;
 		} while (choice);
 	}
 }

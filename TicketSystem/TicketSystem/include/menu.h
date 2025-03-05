@@ -32,5 +32,5 @@ namespace Menu
 	};
 
 	// get menu choice
-	User* GetChoice();
+	char* GetChoice(User*&);
 }
