@@ -21,7 +21,7 @@ namespace Menu
 	{
 		int choice = 0;
 		char* pool = nullptr;
-		do
+		for(;;)
 		{
 			printf("Enter your choice:\n0. Exit\n1. Customer Menu\n2. Admin Panel\n:"); // get input
 			scanf("%d", &choice);
@@ -46,7 +46,7 @@ namespace Menu
 				}
 			}
 			return pool;
-		} while (choice);
+		}
 	}
 }
 
