@@ -5,6 +5,7 @@
 #include "window.h"
 #include "menu.h"
 #include "text.h"
+#include "gui.h"
 #include "Resource.h"
 #include <new.h>
 #include "button.h"
@@ -19,6 +20,7 @@ void addMenus(HWND);
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR cmdLine, int nCmdShow)
 {
 	Core::Init();
+    Gui::Init();
 	Wnd::Metrics mWindow;
 	mWindow.width = 960;
 	mWindow.height = 540;
@@ -40,7 +42,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR cmdLine,
 	wnd->~Window();
 	Mem::Free(memoryWnd);
 	Core::Release();
-	Menu::Release();
+    Gui::Release();
 }
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -106,7 +108,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 }
 void addMenus(HWND hwnd)
 {
-    Menu::Init();
     Menu::Menu mShow("Show", 0);
     mShow.Create();
     mShow.AppendOpt("open", 9);
