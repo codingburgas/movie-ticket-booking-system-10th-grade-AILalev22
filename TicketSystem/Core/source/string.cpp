@@ -1,4 +1,4 @@
-#include "../include/string.h"
+#include "string.hpp"
 #include <stdarg.h>
 namespace Str
 {
@@ -9,7 +9,7 @@ namespace Str
 
 		return p - s;
 	}
-	void swap(void* a, void* b, size_t n)
+	void Swap(void* a, void* b, size_t n)
 	{
 		using Mem::Copy;
 		void* t = Mem::Alloc(n);
@@ -58,7 +58,7 @@ namespace Str
 			data = nullptr;
 		}
 	}
-	void StringBase::assign(const char* str)
+	void StringBase::Assign(const char* str)
 	{
 		if (!str) return;
 		if (data)
@@ -71,7 +71,7 @@ namespace Str
 		Mem::Copy(data, str, c_s + 1);
 		sz_data = c_data = c_s;
 	}
-	void StringBase::join(const char* first, ...)
+	void StringBase::Join(const char* first, ...)
 	{
 		const char* str[12];
 		int len[12];
@@ -114,13 +114,13 @@ namespace Str
 		data = res;
 		c_data = sz_data = lenRes;
 	}
-	char StringBase::at(int index)
+	char StringBase::At(int index)
 	{
 		if (index >= 0 && index < c_data)
 			return data[index];
 		return 0;
 	}
-	void StringBase::clear()
+	void StringBase::Clear()
 	{
 		if (data)
 		{
@@ -128,19 +128,19 @@ namespace Str
 			c_data = 0;
 		}
 	}
-	void StringBase::pop_back()
+	void StringBase::PopBack()
 	{
-		if (!empty())
+		if (!Empty())
 			data[--c_data] = 0;
 	}
-	void StringBase::swap(StringBase& str)
+	void StringBase::Swap(StringBase& str)
 	{
-		using Str::swap;
-		swap(&c_data, &str.c_data, sizeof(int));
-		swap(&sz_data, &str.sz_data, sizeof(int));
-		swap(&data, &str.data, c_data > str.c_data ? c_data : str.c_data);
+		using Str::Swap;
+		Swap(&c_data, &str.c_data, sizeof(int));
+		Swap(&sz_data, &str.sz_data, sizeof(int));
+		Swap(&data, &str.data, c_data > str.c_data ? c_data : str.c_data);
 	}
-	char* StringBase::substr(int index, int len)
+	char* StringBase::Substr(int index, int len)
 	{
 		if (index < 0 || len <= 0 || index >= c_data) return nullptr;
 
@@ -155,7 +155,7 @@ namespace Str
 
 		return sub;
 	}
-	void StringBase::replace(int index, const char* str)
+	void StringBase::Replace(int index, const char* str)
 	{
 		int len = Str::Len(str);
 		if (len <= 0 || index >= c_data || index < 0 || !str) return;
@@ -169,12 +169,12 @@ namespace Str
 		if (addSize < sz_data) addSize = sz;
 		return Mem::Realloc(data, addSize + sz);
 	}
-	void StringBase::push_back(char c)
+	void StringBase::PushBack(char c)
 	{
 		char add[2] = { c,0 };
-		append(add);
+		Append(add);
 	}
-	char* StringBase::insert(int index, const char* str)
+	char* StringBase::Insert(int index, const char* str)
 	{
 		int c_str = Str::Len(str);
 		if (index < 0 || !str || c_str <= 0 || index > c_data) return nullptr;
@@ -188,7 +188,7 @@ namespace Str
 		data[c_data] = 0;
 		return data;
 	}
-	void StringBase::remove(int index, int len)
+	void StringBase::Remove(int index, int len)
 	{
 		if (index < 0 || index >= c_data) return;
 		if (len == -1)
@@ -203,17 +203,17 @@ namespace Str
 		c_data -= len;
 		data[c_data] = 0;
 	}
-	String String::substr(int index, int len)
+	String String::Substr(int index, int len)
 	{
 		if (len == -1) len = c_data - index;
-		char* sub = StringBase::substr(index, len);
+		char* sub = StringBase::Substr(index, len);
 		String ret = sub;
 		Mem::Free(sub);
 		return ret;
 	}
-	String& String::insert(int index, const char* str)
+	String& String::Insert(int index, const char* str)
 	{
-		StringBase::insert(index, str);
+		StringBase::Insert(index, str);
 		return *this;
 	}
 }

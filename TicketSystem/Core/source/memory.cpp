@@ -1,6 +1,7 @@
-#include "../include/memory.h"
+#include "memory.h"
+#include "type.h"
+#include <tchar.h>
 #include <windows.h>
-typedef unsigned char byte;
 
 namespace Mem
 {
@@ -77,7 +78,7 @@ namespace Mem
 		}
 		return result;
 	}
-	void* Set(void* ptr, char c, int size)
+	void* Set(void* ptr, char c,int size)
 	{
 		if (!ptr || size <= 0) return ptr;
 		byte* src = (byte*)ptr;
@@ -138,5 +139,5 @@ namespace Mem
 			b1++; b2++;
 		}
 		return 0;
-	}
+	}	
 }
