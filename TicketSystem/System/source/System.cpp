@@ -79,8 +79,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
         switch (wParam)
         {
         case BUTTON_ID:
-            // Trigger a repaint by invalidating the window to make sure WM_PAINT is called
-            InvalidateRect(hwnd, NULL, TRUE);  // This will cause WM_PAINT to be sent
+            InvalidateRect(hwnd, NULL, TRUE);
             p = 1;
 
             return 0;
@@ -89,10 +88,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
     case WM_PAINT:
     {
-        // Handle the paint message and draw on the window
         hdc = BeginPaint(hwnd, &ps);
 
-        // Example of printing text when the button is clicked
         if(p)
         Text::Print(hdc, "WELCOME", 50, 50);
 
@@ -116,7 +113,6 @@ void addMenus(HWND hwnd)
     mShow.AppendSep();
     mShow.AppendOpt("close", 99);
     Menu::SetHandle(hwnd, 0);
-    //Menu::Release();
 }
 void addControls(HWND hwnd)
 {
