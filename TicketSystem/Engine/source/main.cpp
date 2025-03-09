@@ -1,7 +1,6 @@
 #include "menu.h"
 #include "core.h"
-#include "string.h"
-
+#include "pch.h"
 int main()
 {
 	if (!Core::Init()) return 1;
