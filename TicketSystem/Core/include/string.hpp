@@ -18,7 +18,7 @@ namespace Str
 		int sz_data;
 		// count without '\0
 		int c_data;
-		
+
 		// ensure enough space is made, if not realloc data
 		bool MakeEnough(int sz);
 		// insert a str at a index position
@@ -113,10 +113,4 @@ namespace Str
 		// insert at a certain index another str, uses current object
 		String& Insert(int index, const char* str);
 	};
-}
-namespace WStr
-{ 
-	int Len(const wchar_t* ws);
-	wchar_t* Alloc(int len);
-	void Free(wchar_t* ws);	
 }
