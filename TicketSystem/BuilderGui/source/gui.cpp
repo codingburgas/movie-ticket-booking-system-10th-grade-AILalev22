@@ -1,3 +1,4 @@
+#include "gui.h"
 #include "pch.h"
 #include "menu.h"
 
