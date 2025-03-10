@@ -1,5 +1,7 @@
 ﻿#pragma once
 #include "string.h"
+#define ALLOCOBJ(T) (T*)Mem::Alloc(sizeof(T))
+
 namespace Mem
 {
 	void* Alloc(int sz);

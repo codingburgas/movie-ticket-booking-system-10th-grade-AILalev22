@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\core.h" />
+    <ClInclude Include="include\database.h" />
     <ClInclude Include="include\memory.h" />
     <ClInclude Include="include\string.hpp" />
     <ClInclude Include="include\type.h" />
@@ -27,6 +28,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\core.cpp" />
+    <ClCompile Include="source\database.cpp" />
     <ClCompile Include="source\memory.cpp" />
     <ClCompile Include="source\string.cpp" />
     <ClCompile Include="source\vector.cpp" />
@@ -117,12 +119,18 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Core\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Core\include;..\Core\mysql-connector-c++-9.1.0-winx64\include\jdbc;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>mysqlcppconn-static.lib;</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>..\Core\mysql-connector-c++-9.1.0-winx64\lib64\vs14;</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
