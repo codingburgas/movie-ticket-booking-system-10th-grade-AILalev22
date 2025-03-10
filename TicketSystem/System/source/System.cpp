@@ -19,29 +19,29 @@ void addControls(HWND);
 void addMenus(HWND);
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR cmdLine, int nCmdShow)
 {
-	Core::Init();
+    Core::Init();
     Gui::Init();
-	Wnd::Metrics mWindow;
-	mWindow.width = 960;
-	mWindow.height = 540;
-	mWindow.x = (GetSystemMetrics(SM_CXSCREEN) - mWindow.width) / 2;
-	mWindow.y = (GetSystemMetrics(SM_CYSCREEN) - mWindow.height) / 2;
+    Wnd::Metrics mWindow;
+    mWindow.width = 960;
+    mWindow.height = 540;
+    mWindow.x = (GetSystemMetrics(SM_CXSCREEN) - mWindow.width) / 2;
+    mWindow.y = (GetSystemMetrics(SM_CYSCREEN) - mWindow.height) / 2;
 
-	void* memoryWnd = (char*)Mem::Alloc(sizeof(Wnd::Window));
-	Wnd::Window* wnd = new (memoryWnd) Wnd::Window(hInstance, mWindow, WndProc, "ClassWindow", "TicketSystem", 0, MAKEINTRESOURCE(IDI_TICKET));
-	
-	ShowWindow(wnd->GetHWND(), nCmdShow);
-	UpdateWindow(wnd->GetHWND());
+    void* memoryWnd = (char*)Mem::Alloc(sizeof(Wnd::Window));
+    Wnd::Window* wnd = new (memoryWnd) Wnd::Window(hInstance, mWindow, WndProc, "ClassWindow", "TicketSystem", 0, MAKEINTRESOURCE(IDI_TICKET));
 
-	MSG msg = {};
-	while (GetMessage(&msg, wnd->GetHWND(), 0, 0) > 0)
-	{
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-	}
-	wnd->~Window();
-	Mem::Free(memoryWnd);
-	Core::Release();
+    ShowWindow(wnd->GetHWND(), nCmdShow);
+    UpdateWindow(wnd->GetHWND());
+
+    MSG msg = {};
+    while (GetMessage(&msg, wnd->GetHWND(), 0, 0) > 0)
+    {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+    wnd->~Window();
+    Mem::Free(memoryWnd);
+    Core::Release();
     Gui::Release();
 }
 
@@ -92,8 +92,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
         hdc = BeginPaint(hwnd, &ps);
 
-        if(p)
-        Text::Print(hdc, "WELCOME", 50, 50);
+        if (p)
+            Text::Print(hdc, "WELCOME", 50, 50);
 
         EndPaint(hwnd, &ps);
         return 0;

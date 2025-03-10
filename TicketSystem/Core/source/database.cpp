@@ -25,7 +25,7 @@ namespace MySQL
 	{
 		stmt = conn->createStatement();
 		char query[50] = "CREATE DATABASE IF NOT EXISTS ";
-		int len = Str::Len(name) + 1;
+		int len = Str::Len(name);
 
 		char* name2 = (char*)Mem::Duplication(name, len + 1);
 		Mem::Copy(query + 30, name2, len);
