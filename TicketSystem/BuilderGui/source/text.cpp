@@ -24,6 +24,6 @@ namespace Text
 	void Input::Create()
 	{
 		if(!h_input)
-		h_input = CreateWindow("Edit", NULL, WS_VISIBLE | WS_CHILD | WS_BORDER | ES_AUTOHSCROLL | ES_MULTILINE, 350, 350, 100, 100, h_wnd,0, 0, 0);
+		h_input = CreateWindow("Edit", NULL, WS_VISIBLE | WS_CHILD | WS_BORDER | ES_AUTOHSCROLL | ES_MULTILINE,met.x,met.y,met.width,met.height, h_wnd,0, 0, 0);
 	}
 }
