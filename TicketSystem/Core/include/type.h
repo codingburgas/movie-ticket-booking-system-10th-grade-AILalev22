@@ -12,3 +12,4 @@ typedef sql::Statement STMT;
 typedef sql::Connection CONN;
 typedef sql::mysql::MySQL_Driver DRIVER;
 typedef unsigned char byte;
+typedef unsigned int uint;
