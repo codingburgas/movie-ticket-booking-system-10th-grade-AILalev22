@@ -26,7 +26,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR cmdLine,
     mWindow.height = 540;
     mWindow.x = (GetSystemMetrics(SM_CXSCREEN) - mWindow.width) / 2;
     mWindow.y = (GetSystemMetrics(SM_CYSCREEN) - mWindow.height) / 2;
-
+    
     void* memoryWnd = (char*)Mem::Alloc(sizeof(Wnd::Window));
     Wnd::Window* wnd = new (memoryWnd) Wnd::Window(hInstance, mWindow, WndProc, "ClassWindow", "TicketSystem", 0, MAKEINTRESOURCE(IDI_TICKET));
 
