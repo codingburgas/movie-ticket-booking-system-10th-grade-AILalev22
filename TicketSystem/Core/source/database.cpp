@@ -78,9 +78,9 @@ namespace MySQL
 		pstmt->executeUpdate();
 		Mem::Free(fmt2);
 	}
-	/*void* Connector::Read(const char* fmt, const char* query,Str::String& buffer)
+	void* Connector::Read(const char* fmt, const char* query,Mem::Data& dat)
 	{
-		if (!fmt) return;
+		if (!fmt) return 0;
 		char* format2 = (char*)Mem::Duplication(fmt, Str::Len(fmt) + 1);
 		TrimFormat(format2);
 		int count = Str::Len(format2);
@@ -88,12 +88,12 @@ namespace MySQL
 		if (count <= 0 || !query)
 		{
 			Mem::Free(format2);
-			return;
+			return 0;
 		}
 		stmt = conn->createStatement();
 		stmt->executeQuery(query);
 		char* ftmp = format2;
-		for (int i = 1; i <= count; i++)
+		/*for (int i = 1; i <= count; i++)
 		{
 			switch (*ftmp)
 			{
@@ -103,8 +103,8 @@ namespace MySQL
 			}
 			ftmp++;
 		}
-		return (void*)buffer.Cstr();
-	}*/
+		return (void*)buffer.Cstr();*/
+	}
 	void TrimFormat(char* fmt)
 	{
 		if (!fmt) return;

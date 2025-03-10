@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "string.h"
+#include "type.h"
 #define ALLOCOBJ(T) (T*)Mem::Alloc(sizeof(T))
 
 namespace Mem
@@ -65,8 +65,6 @@ namespace Mem
 
 		bool Insert(int index, const void* ptr, int c_ptr);
 		void Remove(int index, int len);
-
-
 
 	};
 }

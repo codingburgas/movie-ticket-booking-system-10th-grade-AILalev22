@@ -1,4 +1,5 @@
 #pragma once
+#ifdef _CORE
 #include <mysql_driver.h>
 #include <mysql_connection.h>
 #include <cppconn/exception.h>
@@ -11,5 +12,7 @@ typedef sql::ResultSet RSET;
 typedef sql::Statement STMT;
 typedef sql::Connection CONN;
 typedef sql::mysql::MySQL_Driver DRIVER;
+#endif
 typedef unsigned char byte;
 typedef unsigned int uint;
+

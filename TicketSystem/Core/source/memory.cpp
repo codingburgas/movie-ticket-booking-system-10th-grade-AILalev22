@@ -1,5 +1,4 @@
 #include "memory.h"
-#include "type.h"
 #include <tchar.h>
 #include <windows.h>
 

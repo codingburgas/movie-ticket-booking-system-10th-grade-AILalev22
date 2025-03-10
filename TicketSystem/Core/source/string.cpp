@@ -1,5 +1,4 @@
 #include "string.hpp"
-#include "type.h"
 #include <stdarg.h>
 namespace Str
 {
