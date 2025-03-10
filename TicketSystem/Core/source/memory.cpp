@@ -144,5 +144,126 @@ namespace Mem
 			b1++; b2++;
 		}
 		return 0;
-	}	
+	}
+	//////////////////////////////////////////////////////
+	Data::Data(int sz)
+	{
+		if (sz <= 0)
+		{
+			sz_data = 0;
+			data = nullptr;
+		}
+		else
+		{
+			data = Alloc(sz);
+			if (data)
+				sz_data = sz;
+			else
+				sz_data = 0;
+
+		}
+		c_data = 0;
+	}
+	Data::Data(const Data& instance)
+	{
+		data = instance.data;
+		c_data = instance.c_data;
+		sz_data = instance.sz_data;
+	}
+	Data::~Data()
+	{
+		Free(data);
+	}
+	void Data::SetLen(int sz)
+	{
+		if (sz < 0)
+			c_data = 0;
+		else if (sz > sz_data)
+			c_data = sz_data;
+		c_data = sz;
+	}
+	void Data::AddLen(int sz)
+	{
+		c_data += sz;
+		if (c_data < 0)
+			c_data = 0;
+		if (c_data > sz_data)
+			c_data = sz_data;
+	}
+	bool Data::MakeEnough(int sz)
+	{
+		if (sz_data - c_data >= sz) return true;
+		int addSize = sz_data / 2;
+		if (addSize < sz) addSize = sz;
+		return Realloc(addSize + sz_data);
+	}
+	bool Data::Realloc(int sz)
+	{
+		if (sz <= 0) return 0;
+		void* newData = Mem::Realloc(data, sz);
+		if (newData)
+		{
+			data = newData;
+			sz_data = sz;
+			return true;
+		}
+		return false;
+	}
+	bool Data::Append(const void* ptr, int c_ptr)
+	{
+		if (MakeEnough(c_ptr))
+		{
+			Mem::Copy((byte*)data + c_data, ptr, c_ptr);
+			c_data += c_ptr;
+			return true;
+		}
+		return false;
+	}
+	bool Data::AppendStr(const char* s, int c_s)
+	{
+		if (s)
+			return Append(s, c_s + 1);
+		else
+		{
+			char empty[1] = { 0 };
+			return Append(empty, 1);
+		}
+	}
+	void Data::Submem(int index, int len)
+	{
+		if (index >= 0)
+		{
+			if (index < c_data)
+			{
+				if (len > c_data - index) len = c_data - index;
+				Mem::Copy(data, (byte*)data + index, len);
+				c_data = len;
+			}
+			else
+			{
+				c_data = 0;
+			}
+		}
+	}
+
+	bool Data::Insert(int index, const void* ptr, int c_ptr)
+	{
+		if (index < 0 || !ptr || c_ptr <= 0 || index > c_data) return false;
+		if (!MakeEnough(c_ptr)) return false;
+		byte* bp = (byte*)data;
+		for (int from = c_data - 1, to = c_data + c_ptr + 1; from >= index; from--, to--)
+		{
+			bp[to] = bp[from];
+		}
+		Mem::Copy(bp + index, ptr, c_ptr);
+		c_data += c_ptr;
+		return true;
+	}
+	void Data::Remove(int index, int len)
+	{
+		if (index < 0 || len <= 0 || index >= c_data) return;
+		if (index + len > c_data) len = c_data - index;
+		Mem::Copy((byte*)data + index, (byte*)data + index + len, c_data - (index + len));
+		c_data -= len;
+	}
 }
