@@ -135,7 +135,12 @@ namespace Mem
 		while (n--)
 		{
 			if (*b1 != *b2)
-				return *b1 - *b2;
+			{
+				if (*b1 - *b2 > 0)
+					return 1;
+				if (*b1 - *b2 < 0)
+					return -1;
+			}
 			b1++; b2++;
 		}
 		return 0;

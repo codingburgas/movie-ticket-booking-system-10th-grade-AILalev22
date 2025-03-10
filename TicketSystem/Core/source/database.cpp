@@ -22,25 +22,39 @@ namespace MySQL
 	}
 	Connector::~Connector()
 	{
+		if(stmt)
 		Mem::Free(stmt);
+		if(rset)
 		Mem::Free(rset);
+		if(conn)
 		Mem::Free(conn);
+		if(pstmt)
 		Mem::Free(pstmt);
 	}
-	void Connector::Write(int count, const char* format,const char* query, ...)
+	void Connector::Write(const char* format,const char* query, ...)
 	{
-		if (count <= 0 || !format || !query) return;
-		pstmt = conn->prepareStatement(query);
+		if (!format) return;
 		char* format2 = (char*)Mem::Duplication(format, Str::Len(format) + 1);
 		TrimFormat(format2);
+		int count = Str::Len(format2);
+
+		if (count <= 0 || !query)
+		{
+			Mem::Free(format2);
+			return;
+		}
+		pstmt = conn->prepareStatement(query);
+
+		va_list va;
+		va_start(va, query);
+		char* ftmp = format2;
 		for (int i = 1; i <= count; i++)
 		{
-			switch (*format)
+			switch (*ftmp)
 			{
-				// cases for each letter, %d %s %c %f %lu %u %zu, without %
-				// exampel format str "dcff"
+
 			}
-			format++;
+			ftmp++;
 		}
 		pstmt->executeUpdate();
 		Mem::Free(format2);

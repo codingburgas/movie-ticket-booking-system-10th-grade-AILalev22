@@ -20,7 +20,7 @@ namespace MySQL
 		Connector(const char* host, const char* user, const char* pass);
 		~Connector();
 		void SetDB(const char* name);
-		void Write(int count, const char* format, const char* query, ...);
+		void Write( const char* format, const char* query, ...);
 		bool Connect();
 	};
 
