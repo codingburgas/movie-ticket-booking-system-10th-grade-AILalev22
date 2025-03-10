@@ -35,5 +35,39 @@ namespace Mem
 	// p1 < p2 -> -1
 	int Cmp(const void* p1, const void* p2,size_t n);
 
+	class Data
+	{
+		void* data;
+		int c_data;
+		int sz_data;
+
+	public:
+		Data(int sz = 0);
+		Data(const Data&);
+		~Data();
+
+		void* ptr() const { return data; }
+		byte* p_byte() const { return (byte*)data; }
+		char* p_char() const { return (char*)data; }
+		int Size() const { return c_data; }
+		int Capacity() const { return sz_data; }
+
+		void SetLen(int sz);
+		void AddLen(int sz);
+
+		bool MakeEnough(int sz);
+		bool Realloc(int sz);
+
+		bool Append(const void* ptr, int c_ptr);
+		bool AppendStr(const char* s, int c_s);
+
+		void Submem(int index, int len);
+
+		bool Insert(int index, const void* ptr, int c_ptr);
+		void Remove(int index, int len);
+
+
+
+	};
 }
 
