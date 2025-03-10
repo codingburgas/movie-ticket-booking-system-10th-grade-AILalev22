@@ -1,7 +1,7 @@
+#include "string.hpp"
 #include "database.h"
 #include "memory.h"
 #include <stdarg.h>
-#include "string.hpp"
 namespace MySQL
 {
 	Connector::Connector(const char* host, const char* user, const char* pass) : driver(0),stmt(0),pstmt(0),conn(0),rset(0)
@@ -44,7 +44,44 @@ namespace MySQL
 		if(pstmt)
 		Mem::Free(pstmt);
 	}
+
 	void Connector::Write(const char* fmt, const char* query, ...)
+	{
+		if (!fmt) return;
+		char* fmt2 = (char*)Mem::Duplication(fmt, Str::Len(fmt) + 1);
+		TrimFormat(fmt2);
+		int count = Str::Len(fmt2);
+
+		if (count <= 0 || !query)
+		{
+			Mem::Free(fmt2);
+			return;
+		}
+		pstmt = conn->prepareStatement(query);
+
+		va_list va;
+		va_start(va, query);
+		char* ftmp = fmt2;
+		int arg_d;
+		double arg_f;
+		char* arg_s;
+		uint arg_u;
+		for (int i = 1; i <= count; i++)
+		{
+			switch (*ftmp)
+			{
+			case 'd':arg_d = va_arg(va, int); pstmt->setInt(i, arg_d); break;
+			case 'f': arg_f = va_arg(va, double); pstmt->setDouble(i, arg_f); break;
+			case 's': arg_s = va_arg(va, char*); pstmt->setString(i, arg_s); break;
+			case 'u': arg_u = va_arg(va, uint); pstmt->setUInt(i, arg_u); break;
+			}
+			ftmp++;
+		}
+		va_end(va);
+		pstmt->executeUpdate();
+		Mem::Free(fmt2);
+	}
+	/*void* Connector::Read(const char* fmt, const char* query,Str::String& buffer)
 	{
 		if (!fmt) return;
 		char* format2 = (char*)Mem::Duplication(fmt, Str::Len(fmt) + 1);
@@ -56,34 +93,21 @@ namespace MySQL
 			Mem::Free(format2);
 			return;
 		}
-		pstmt = conn->prepareStatement(query);
-		
-		va_list va;
-		va_start(va, query);
+		stmt = conn->createStatement();
+		stmt->executeQuery(query);
 		char* ftmp = format2;
 		for (int i = 1; i <= count; i++)
 		{
 			switch (*ftmp)
 			{
-			case 'd': int arg_d = va_arg(va, int); pstmt->setInt(i, arg_d); break;
-			case 'f': double arg_f = va_arg(va, double); pstmt->setDouble(i, arg_f); break;
-			case 's': char* arg_s = va_arg(va, char*); pstmt->setString(i, arg_s); break;
-			case 'u': uint arg_u = va_arg(va, uint); pstmt->setUInt(i, arg_u); break;
+			case 'u': case 'd': if (rset->next()) { char* s = Str::Itoa(rset->getInt(i)); buffer.Append(s); Mem::Free(s); };
+			case 'f':
+			case 's': if (rset->next()) { buffer.Append(rset->getString(i).c_str()); };
 			}
 			ftmp++;
 		}
-		va_end(va);
-		pstmt->executeUpdate();
-		Mem::Free(format2);
-	}
-	void* Connector::Read(const char* fmt, const char* query, ...)
-	{
-		va_list va;
-		va_start(va, query);
-		
-			
-		va_end(va);
-	}
+		return (void*)buffer.Cstr();
+	}*/
 	void TrimFormat(char* fmt)
 	{
 		if (!fmt) return;

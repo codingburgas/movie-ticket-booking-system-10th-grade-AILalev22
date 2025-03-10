@@ -10,6 +10,7 @@ namespace Str
 	void ReplaceChars(char* s, const char* olds, const char* news);
 	// swap two buffers with equal size
 	void Swap(void* a, void* b, size_t n);
+
 	class StringBase
 	{
 	protected:
