@@ -178,7 +178,7 @@ namespace Str
 	{
 		int c_str = Str::Len(str);
 		if (index < 0 || !str || c_str <= 0 || index > c_data) return nullptr;
-		if (!MakeEnough(c_data + c_str)) return nullptr;
+		if (!MakeEnough(c_str)) return nullptr;
 		for (int from = c_data, to = c_data + c_str; from >= index; from--, to--)
 		{
 			data[to] = data[from];
