@@ -4,8 +4,6 @@
 #include <stdarg.h>
 namespace MySQL
 {
-	// main database connector
-	static Connector* globalConn = nullptr;
 
 	Connector::Connector(const char* host, const char* user, const char* pass) : driver(0),stmt(0),pstmt(0),conn(0),rset(0)
 	{
@@ -87,18 +85,18 @@ namespace MySQL
 	void* Connector::Read(const char* fmt, const char* query)
 	{
 		if (!fmt) return 0;
-		char* format2 = (char*)Mem::Duplication(fmt, Str::Len(fmt) + 1);
-		TrimFormat(format2);
-		int count = Str::Len(format2);
+		char* fmt2 = (char*)Mem::Duplication(fmt, Str::Len(fmt) + 1);
+		TrimFormat(fmt2);
+		int count = Str::Len(fmt2);
 
 		if (count <= 0 || !query)
 		{
-			Mem::Free(format2);
+			Mem::Free(fmt2);
 			return 0;
 		}
 		stmt = conn->createStatement();
 		stmt->executeQuery(query);
-		char* ftmp = format2;
+		char* ftmp = fmt2;
 		for (int i = 1; i <= count; i++)
 		{
 			if (rset->next())
@@ -121,7 +119,10 @@ namespace MySQL
 				ftmp++;
 			}
 		}
-		return (void*)conn_s->Cstr();
+
+		void* ret = Mem::Duplication(conn_s->Cstr(),conn_s->Size() + 1);
+		conn_s->Clear();
+		return ret;
 	}
 	void TrimFormat(char* fmt)
 	{
