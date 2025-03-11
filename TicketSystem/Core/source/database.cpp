@@ -78,7 +78,7 @@ namespace MySQL
 		pstmt->executeUpdate();
 		Mem::Free(fmt2);
 	}
-	void* Connector::Read(const char* fmt, const char* query,Mem::Data& dat)
+	void* Connector::Read(const char* fmt, const char* query,Str::String& str)
 	{
 		if (!fmt) return 0;
 		char* format2 = (char*)Mem::Duplication(fmt, Str::Len(fmt) + 1);
@@ -93,17 +93,29 @@ namespace MySQL
 		stmt = conn->createStatement();
 		stmt->executeQuery(query);
 		char* ftmp = format2;
-		/*for (int i = 1; i <= count; i++)
+		for (int i = 1; i <= count; i++)
 		{
-			switch (*ftmp)
+			if (rset->next())
 			{
-			case 'u': case 'd': if (rset->next()) { char* s = Str::Itoa(rset->getInt(i)); buffer.Append(s); Mem::Free(s); };
-			case 'f':
-			case 's': if (rset->next()) { buffer.Append(rset->getString(i).c_str()); };
+				char buff[10];
+				int t = 0;
+				switch (*ftmp)
+				{
+				case 'd': t = snprintf(buff, sizeof(buff), "%d", rset->getInt(i)); break; 				
+				case 'u': t = snprintf(buff, sizeof(buff), "%u", rset->getUInt(i)); break;
+				case 'f': t = snprintf(buff, sizeof(buff), "%f", rset->getDouble(i)); break;
+				case 's': str.Append(rset->getString(i).c_str()); ftmp++; continue;
+				}
+
+				if (t)
+				{
+					buff[t] = 0;
+					str.Append(buff);
+				}
+				ftmp++;
 			}
-			ftmp++;
 		}
-		return (void*)buffer.Cstr();*/
+
 	}
 	void TrimFormat(char* fmt)
 	{

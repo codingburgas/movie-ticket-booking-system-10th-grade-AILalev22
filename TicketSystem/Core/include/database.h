@@ -22,7 +22,7 @@ namespace MySQL
 		void CreateDB(const char* name);
 		void SetDB(const char* name);
 		bool Connect();
-		void* Read(const char* fmt, const char* query, Mem::Data& dat);
+		void* Read(const char* fmt, const char* query, Str::String&);
 		void Write(const char* fmt, const char* query, ...);
 	};
 	// get format without % and spaces
