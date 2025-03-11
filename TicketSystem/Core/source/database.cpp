@@ -13,6 +13,7 @@ namespace MySQL
 		credentials[1] = user;
 		credentials[2] = pass;
 		CreateDB("DATATICKET");
+		conn_s = ALLOCOBJ(Str::String);
 	}
 	bool Connector::Connect()
 	{
@@ -43,6 +44,8 @@ namespace MySQL
 		Mem::Free(conn);
 		if(pstmt)
 		Mem::Free(pstmt);
+		if (conn_s)
+		Mem::Free(conn_s);
 	}
 
 	void Connector::Write(const char* fmt, const char* query, ...)
@@ -81,7 +84,7 @@ namespace MySQL
 		pstmt->executeUpdate();
 		Mem::Free(fmt2);
 	}
-	void* Connector::Read(const char* fmt, const char* query,Str::String& str)
+	void* Connector::Read(const char* fmt, const char* query)
 	{
 		if (!fmt) return 0;
 		char* format2 = (char*)Mem::Duplication(fmt, Str::Len(fmt) + 1);
@@ -107,18 +110,18 @@ namespace MySQL
 				case 'd': t = snprintf(buff, sizeof(buff), "%d", rset->getInt(i)); break; 				
 				case 'u': t = snprintf(buff, sizeof(buff), "%u", rset->getUInt(i)); break;
 				case 'f': t = snprintf(buff, sizeof(buff), "%f", rset->getDouble(i)); break;
-				case 's': str.Append(rset->getString(i).c_str()); break;
+				case 's': conn_s->Append(rset->getString(i).c_str()); break;
 				}
 
 				if (t)
 				{
 					buff[t] = 0;
-					str.Append(buff);
+					conn_s->Append(buff);
 				}
 				ftmp++;
 			}
 		}
-		return (void*)str.Cstr();
+		return (void*)conn_s->Cstr();
 	}
 	void TrimFormat(char* fmt)
 	{

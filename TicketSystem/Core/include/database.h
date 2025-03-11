@@ -14,6 +14,8 @@ namespace MySQL
 		RSET* rset;
 		// instance used to build prepared statements and execute them
 		PSTMT* pstmt;
+		// read str buffer
+		Str::String* conn_s;
 		// database connect credentials
 		const char* credentials[3];
 	public:
@@ -22,7 +24,7 @@ namespace MySQL
 		void CreateDB(const char* name);
 		void SetDB(const char* name);
 		bool Connect();
-		void* Read(const char* fmt, const char* query, Str::String&);
+		void* Read(const char* fmt, const char* query);
 		void Write(const char* fmt, const char* query, ...);
 	};
 	// get format without % and spaces
