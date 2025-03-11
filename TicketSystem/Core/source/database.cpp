@@ -4,6 +4,9 @@
 #include <stdarg.h>
 namespace MySQL
 {
+	// main database connector
+	static Connector* globalConn = nullptr;
+
 	Connector::Connector(const char* host, const char* user, const char* pass) : driver(0),stmt(0),pstmt(0),conn(0),rset(0)
 	{
 		credentials[0] = host;
@@ -104,7 +107,7 @@ namespace MySQL
 				case 'd': t = snprintf(buff, sizeof(buff), "%d", rset->getInt(i)); break; 				
 				case 'u': t = snprintf(buff, sizeof(buff), "%u", rset->getUInt(i)); break;
 				case 'f': t = snprintf(buff, sizeof(buff), "%f", rset->getDouble(i)); break;
-				case 's': str.Append(rset->getString(i).c_str()); ftmp++; continue;
+				case 's': str.Append(rset->getString(i).c_str()); break;
 				}
 
 				if (t)
@@ -115,7 +118,7 @@ namespace MySQL
 				ftmp++;
 			}
 		}
-
+		return (void*)str.Cstr();
 	}
 	void TrimFormat(char* fmt)
 	{
