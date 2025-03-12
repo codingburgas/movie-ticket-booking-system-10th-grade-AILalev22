@@ -1,21 +1,51 @@
+#ifndef _SQL
+#define _SQL
+#endif
 #include "string.hpp"
+#include "type.h"
 #include "database.h"
-#include "memory.h"
 #include <stdarg.h>
 namespace MySQL
 {
+	//driver instance to mysql server
+	static DRIVER* driver;
+	// instance used to connect to database
+	static CONN* conn;
+	// instance used to execute direct queries
+	static STMT* stmt;
+	// instance used to get sets from select queries
+	static RSET* rset;
+	// instance used to build prepared statements and execute them
+	static PSTMT* pstmt;
 
-	Connector::Connector(const char* host, const char* user, const char* pass) : driver(0),stmt(0),pstmt(0),conn(0),rset(0)
+	bool Init()
+	{
+		driver = sql::mysql::get_mysql_driver_instance();
+		stmt = 0; pstmt = 0; conn = 0; rset = 0;
+		return driver;
+	}
+	bool Release()
+	{
+		if (driver)
+			delete driver;
+		if (stmt)
+			delete stmt;
+		if (pstmt)
+			delete pstmt;
+		if (conn)
+			delete conn;
+		if (rset)
+			delete rset;
+		return true;
+	}
+	Connector::Connector(const char* host, const char* user, const char* pass)
 	{
 		credentials[0] = host;
 		credentials[1] = user;
 		credentials[2] = pass;
-		CreateDB("DATATICKET");
-		conn_s = ALLOCOBJ(Str::String);
 	}
 	bool Connector::Connect()
 	{
-		driver = sql::mysql::get_mysql_driver_instance();
 		conn = driver->connect(credentials[0], credentials[1], credentials[2]);
 		return conn;
 	}
@@ -34,16 +64,7 @@ namespace MySQL
 	}
 	Connector::~Connector()
 	{
-		if(stmt)
-		Mem::Free(stmt);
-		if(rset)
-		Mem::Free(rset);
-		if(conn)
-		Mem::Free(conn);
-		if(pstmt)
-		Mem::Free(pstmt);
-		if (conn_s)
-		Mem::Free(conn_s);
+
 	}
 
 	void Connector::Write(const char* fmt, const char* query, ...)
@@ -65,7 +86,7 @@ namespace MySQL
 		char* ftmp = fmt2;
 		int arg_d;
 		double arg_f;
-		char* arg_s;
+		const char* arg_s;
 		uint arg_u;
 		for (int i = 1; i <= count; i++)
 		{
@@ -73,7 +94,7 @@ namespace MySQL
 			{
 			case 'd':arg_d = va_arg(va, int); pstmt->setInt(i, arg_d); break;
 			case 'f': arg_f = va_arg(va, double); pstmt->setDouble(i, arg_f); break;
-			case 's': arg_s = va_arg(va, char*); pstmt->setString(i, arg_s); break;
+			case 's': arg_s = va_arg(va, const char*); pstmt->setString(i, arg_s); break;
 			case 'u': arg_u = va_arg(va, uint); pstmt->setUInt(i, arg_u); break;
 			}
 			ftmp++;
@@ -97,6 +118,7 @@ namespace MySQL
 		stmt = conn->createStatement();
 		stmt->executeQuery(query);
 		char* ftmp = fmt2;
+		Str::String conn_s;
 		for (int i = 1; i <= count; i++)
 		{
 			if (rset->next())
@@ -105,23 +127,22 @@ namespace MySQL
 				int t = 0;
 				switch (*ftmp)
 				{
-				case 'd': t = snprintf(buff, sizeof(buff), "%d", rset->getInt(i)); break; 				
+				case 'd': t = snprintf(buff, sizeof(buff), "%d", rset->getInt(i)); break;
 				case 'u': t = snprintf(buff, sizeof(buff), "%u", rset->getUInt(i)); break;
 				case 'f': t = snprintf(buff, sizeof(buff), "%f", rset->getDouble(i)); break;
-				case 's': conn_s->Append(rset->getString(i).c_str()); break;
+				case 's': conn_s.Append(rset->getString(i).c_str()); break;
 				}
 
 				if (t)
 				{
 					buff[t] = 0;
-					conn_s->Append(buff);
+					conn_s.Append(buff);
 				}
 				ftmp++;
 			}
 		}
 
-		void* ret = Mem::Duplication(conn_s->Cstr(),conn_s->Size() + 1);
-		conn_s->Clear();
+		void* ret = Mem::Duplication(conn_s.Cstr(), conn_s.Size() + 1);
 		return ret;
 	}
 	void TrimFormat(char* fmt)

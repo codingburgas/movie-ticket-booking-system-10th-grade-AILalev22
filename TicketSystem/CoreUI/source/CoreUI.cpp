@@ -1,5 +1,8 @@
+// CoreUI.cpp : Defines the entry point for the application.
+//
+
 #include "framework.h"
-#include "BuilderGui.h"
+#include "CoreUI.h"
 
 #define MAX_LOADSTRING 100
 
@@ -26,7 +29,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     // Initialize global strings
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-    LoadStringW(hInstance, IDC_BUILDERGUI, szWindowClass, MAX_LOADSTRING);
+    LoadStringW(hInstance, IDC_COREUI, szWindowClass, MAX_LOADSTRING);
     MyRegisterClass(hInstance);
 
     // Perform application initialization:
@@ -35,7 +38,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 
-    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_BUILDERGUI));
+    HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_COREUI));
 
     MSG msg;
 
@@ -70,10 +73,10 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.cbClsExtra     = 0;
     wcex.cbWndExtra     = 0;
     wcex.hInstance      = hInstance;
-    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_BUILDERGUI));
+    wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_COREUI));
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_BUILDERGUI);
+    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_COREUI);
     wcex.lpszClassName  = szWindowClass;
     wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 

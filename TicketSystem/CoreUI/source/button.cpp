@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "button.h"
 
+
 namespace Button
 {
 	Button::Button(PCSTR text, HWND h_wnd, Wnd::Metrics met,int id) : text(text),h_wnd(h_wnd),met(met),id(id)

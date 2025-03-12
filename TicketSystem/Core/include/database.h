@@ -1,21 +1,8 @@
 #pragma once
-#include "type.h"
 namespace MySQL
 {
 	class Connector
 	{
-		//driver instance to our mysql server
-		DRIVER* driver;
-		// instance used to connect to database
-		CONN* conn;
-		// instance used to execute direct queries
-		STMT* stmt;
-		// instance used to get sets from select queries
-		RSET* rset;
-		// instance used to build prepared statements and execute them
-		PSTMT* pstmt;
-		// read str buffer
-		Str::String* conn_s;
 		// database connect credentials
 		const char* credentials[3];
 	public:
@@ -30,4 +17,9 @@ namespace MySQL
 	// get format without % and spaces
 	// "%d %c %f" -> "dcf"
 	void TrimFormat(char* fmt);
+
+	// set mysql connector instances
+	bool Init();
+	//release mysql connector instances
+	bool Release();
 }

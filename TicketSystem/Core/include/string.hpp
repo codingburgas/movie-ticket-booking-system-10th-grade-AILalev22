@@ -109,6 +109,7 @@ namespace Str
 		{
 			Assign(str);
 		}
+		~String() = default;
 		// return substr at starting index, if no len given it returns until the end, uses deep copy
 		String Substr(int index, int len = -1);
 		// insert at a certain index another str, uses current object

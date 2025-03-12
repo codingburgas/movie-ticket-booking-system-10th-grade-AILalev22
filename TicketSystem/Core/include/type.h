@@ -1,5 +1,5 @@
 #pragma once
-#ifdef _CORE
+#ifdef _SQL
 #include <mysql_driver.h>
 #include <mysql_connection.h>
 #include <cppconn/exception.h>
