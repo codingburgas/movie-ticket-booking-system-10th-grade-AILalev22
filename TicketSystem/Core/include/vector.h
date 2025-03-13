@@ -29,7 +29,7 @@ public:
 	Vector(int sz);
 	Vector();
 	Vector(const Vector<T>&);
-	const T& operator[](int index) const
+	T& operator[](int index) const
 	{
 		return get(index);
 	}
