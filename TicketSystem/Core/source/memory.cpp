@@ -250,7 +250,7 @@ namespace Mem
 		if (index < 0 || !ptr || c_ptr <= 0 || index > c_data) return false;
 		if (!MakeEnough(c_ptr)) return false;
 		byte* bp = (byte*)data;
-		for (int from = c_data - 1, to = c_data + c_ptr + 1; from >= index; from--, to--)
+		for (int from = c_data, to = c_data + c_ptr; from >= index; from--, to--)
 		{
 			bp[to] = bp[from];
 		}
