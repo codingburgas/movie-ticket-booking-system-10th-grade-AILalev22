@@ -11,12 +11,9 @@ namespace MySQL
 		void CreateDB(const char* name);
 		void SetDB(const char* name);
 		bool Connect();
-		void* Read(const char* fmt, const char* query);
+		char* Read(const char* fmt, const char* query);
 		void Write(const char* fmt, const char* query, ...);
 	};
-	// get format without % and spaces
-	// "%d %c %f" -> "dcf"
-	void TrimFormat(char* fmt);
 
 	// set mysql connector instances
 	bool Init();

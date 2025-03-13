@@ -69,100 +69,66 @@ namespace MySQL
 
 	void Connector::Write(const char* fmt, const char* query, ...)
 	{
-		if (!fmt) return;
-		char* fmt2 = (char*)Mem::Duplication(fmt, Str::Len(fmt) + 1);
-		TrimFormat(fmt2);
-		int count = Str::Len(fmt2);
-
-		if (count <= 0 || !query)
-		{
-			Mem::Free(fmt2);
-			return;
-		}
+		int count = Str::Len(fmt);
+		if (!fmt || !query || !count) return;
+	
 		pstmt = conn->prepareStatement(query);
 
 		va_list va;
 		va_start(va, query);
-		char* ftmp = fmt2;
+
 		int arg_d;
 		double arg_f;
 		const char* arg_s;
 		uint arg_u;
-		for (int i = 1; i <= count; i++)
+		int i = 1;
+		for (int j = 0; j < count; j++)
 		{
-			switch (*ftmp)
+			switch (*fmt)
 			{
-			case 'd':arg_d = va_arg(va, int); pstmt->setInt(i, arg_d); break;
-			case 'f': arg_f = va_arg(va, double); pstmt->setDouble(i, arg_f); break;
-			case 's': arg_s = va_arg(va, const char*); pstmt->setString(i, arg_s); break;
-			case 'u': arg_u = va_arg(va, uint); pstmt->setUInt(i, arg_u); break;
+			case 'd':arg_d = va_arg(va, int); pstmt->setInt(i++, arg_d); break;
+			case 'f': arg_f = va_arg(va, double); pstmt->setDouble(i++, arg_f); break;
+			case 's': arg_s = va_arg(va, const char*); pstmt->setString(i++, arg_s); break;
+			case 'u': arg_u = va_arg(va, uint); pstmt->setUInt(i++, arg_u); break;
 			}
-			ftmp++;
+			fmt++;
 		}
 		va_end(va);
 		pstmt->executeUpdate();
-		Mem::Free(fmt2);
 	}
-	void* Connector::Read(const char* fmt, const char* query)
+	char* Connector::Read(const char* fmt, const char* query)
 	{
-		if (!fmt) return 0;
-		char* fmt2 = (char*)Mem::Duplication(fmt, Str::Len(fmt) + 1);
-		TrimFormat(fmt2);
-		int count = Str::Len(fmt2);
-
-		if (count <= 0 || !query)
-		{
-			Mem::Free(fmt2);
-			return 0;
-		}
+		int count = Str::Len(fmt);
+		if (!fmt || !query || !count) return 0;
+		
 		stmt = conn->createStatement();
 		stmt->executeQuery(query);
-		char* ftmp = fmt2;
 		Str::String conn_s;
-		for (int i = 1; i <= count; i++)
+		int i = 1;
+		for (int j = 0; j < count; j++)
 		{
 			if (rset->next())
 			{
-				char buff[10];
-				int t = 0;
-				switch (*ftmp)
+				char buff[50];
+				int read = 0;
+				switch (*fmt)
 				{
-				case 'd': t = snprintf(buff, sizeof(buff), "%d", rset->getInt(i)); break;
-				case 'u': t = snprintf(buff, sizeof(buff), "%u", rset->getUInt(i)); break;
-				case 'f': t = snprintf(buff, sizeof(buff), "%f", rset->getDouble(i)); break;
-				case 's': conn_s.Append(rset->getString(i).c_str()); break;
+				case 'd': read = snprintf(buff, sizeof(buff), "%d", rset->getInt(i++)); break;
+				case 'u': read = snprintf(buff, sizeof(buff), "%u", rset->getUInt(i++)); break;
+				case 'f': read = snprintf(buff, sizeof(buff), "%f", rset->getDouble(i++)); break;
+				case 's': conn_s.Append(rset->getString(i++).c_str()); break;
 				}
 
-				if (t)
+				if (read)
 				{
-					buff[t] = 0;
+					buff[read] = 0;
 					conn_s.Append(buff);
 				}
-				ftmp++;
+				fmt++;
 			}
 		}
 
-		void* ret = Mem::Duplication(conn_s.Cstr(), conn_s.Size() + 1);
+		char* ret = (char*)Mem::Duplication(conn_s.Cstr(), conn_s.Size() + 1);
 		return ret;
-	}
-	void TrimFormat(char* fmt)
-	{
-		if (!fmt) return;
-		char buff[50];
-		int i = 0;
-		char* s = fmt;
-		while (*s)
-		{
-			switch (*s)
-			{
-			case 'd': buff[i++] = 'd'; break;
-			case 'f': buff[i++] = 'f'; break;
-			case 's': buff[i++] = 's'; break;
-			case 'u': buff[i++] = 'u'; break;
-			}
-			s++;
-		}
-		buff[i] = 0;
-		Mem::Copy(fmt, buff, i + 1);
 	}
 }
