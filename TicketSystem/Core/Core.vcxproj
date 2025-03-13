@@ -142,7 +142,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;STATIC_CONCPP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Core\Include;mysql-connector-c++-9.1.0-winx64\include\jdbc;..\Core\crypto-algorithms;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Core\Include;mysql-connector-c++-9.1.0-winx64\include\jdbc;crypto-algorithms\;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -156,7 +156,7 @@
       <AdditionalDependencies>mysqlcppconn-static.lib;sha-256.lib;</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>mysql-connector-c++-9.1.0-winx64\lib64\vs14;..\x64\Release;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>mysql-connector-c++-9.1.0-winx64\lib64\vs14;hashlib\;</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
