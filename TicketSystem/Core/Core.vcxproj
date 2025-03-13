@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\core.h" />
+    <ClInclude Include="include\crypt.h" />
     <ClInclude Include="include\database.h" />
     <ClInclude Include="include\memory.h" />
     <ClInclude Include="include\string.hpp" />
@@ -28,6 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\core.cpp" />
+    <ClCompile Include="source\crypt.cpp" />
     <ClCompile Include="source\database.cpp" />
     <ClCompile Include="source\memory.cpp" />
     <ClCompile Include="source\string.cpp" />
@@ -140,7 +142,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;STATIC_CONCPP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Core\Include;mysql-connector-c++-9.1.0-winx64\include\jdbc;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Core\Include;mysql-connector-c++-9.1.0-winx64\include\jdbc;..\Core\crypto-algorithms;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -151,10 +153,10 @@
       <AdditionalDependencies>mysqlcppconn-static.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
-      <AdditionalDependencies>mysqlcppconn-static.lib;</AdditionalDependencies>
+      <AdditionalDependencies>mysqlcppconn-static.lib;sha-256.lib;</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>mysql-connector-c++-9.1.0-winx64\lib64\vs14;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>mysql-connector-c++-9.1.0-winx64\lib64\vs14;..\x64\Release;</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

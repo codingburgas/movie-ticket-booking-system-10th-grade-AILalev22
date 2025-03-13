@@ -31,6 +31,9 @@
     <ClInclude Include="include\database.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\crypt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\core.cpp">
@@ -46,6 +49,9 @@
       <Filter>Source FIles</Filter>
     </ClCompile>
     <ClCompile Include="source\database.cpp">
+      <Filter>Source FIles</Filter>
+    </ClCompile>
+    <ClCompile Include="source\crypt.cpp">
       <Filter>Source FIles</Filter>
     </ClCompile>
   </ItemGroup>
