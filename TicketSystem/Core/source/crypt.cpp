@@ -1,6 +1,47 @@
 #include "crypt.h"
-
+extern "C"
+{
+#include "sha256.h"
+}
+#include "memory.h"
+#include "string.hpp"
 namespace Crypt
 {
+	char* CalcHash(void* src)
+	{
+		if (!src) return 0;
+		SHA256_CTX ctx;
+		byte hash[SHA256_BLOCK_SIZE];
+		if (!hash) return 0;
 
+		sha256_init(&ctx);
+		sha256_update(&ctx, (byte*)src, Str::Len((char*)src));
+		sha256_final(&ctx, hash);
+
+        return HashToStr(hash);
+	}
+    char ToHex(int n)
+    {
+        if (n >= 0 && n <= 9) return n + '0';
+        return 'a' + n - 10;
+    }
+    void ByteToHex(char by, char* hex)
+    {
+        hex[0] = ToHex((by >> 4) & 0xf);
+        hex[1] = ToHex(by & 0xf);
+    }
+    char* HashToStr(byte* hash)
+    {
+        char* ret = (char*)Mem::Alloc(65); // 2 * 32b + 1
+        int j = 0;
+        for (int i = 0; i < SHA256_BLOCK_SIZE; i++)
+        {
+            char hex[2];
+            ByteToHex(hash[i], hex);
+            ret[j++] = hex[0];
+            ret[j++] = hex[1];
+        }
+        ret[j] = 0;
+        return ret;
+    }
 }
