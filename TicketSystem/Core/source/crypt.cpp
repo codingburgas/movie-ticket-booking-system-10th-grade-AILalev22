@@ -12,7 +12,6 @@ namespace Crypt
 		if (!src) return 0;
 		SHA256_CTX ctx;
 		byte hash[SHA256_BLOCK_SIZE];
-		if (!hash) return 0;
 
 		sha256_init(&ctx);
 		sha256_update(&ctx, (byte*)src, Str::Len((char*)src));
