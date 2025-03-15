@@ -6,16 +6,16 @@ namespace Core
 	{
 		if (!Mem::Init())
 			return false;
-		//if (!MySQL::Init())
-		//	return false;
+		if (!MySQL::Init())
+			return false;
 		return true;
 	}
 	bool Release()
 	{
 		if (!Mem::Release())
 			return false;
-		//if (!MySQL::Release())
-		//	return false;
+		if (!MySQL::Release())
+			return false;
 		return true;
 	}
 }

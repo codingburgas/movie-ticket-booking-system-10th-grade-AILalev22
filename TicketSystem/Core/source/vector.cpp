@@ -20,17 +20,17 @@ VectorBase::~VectorBase()
 	{
 		for (int i = 0; i < count; i++)
 		{
-			releaseVal((byte*)data + i * szValue);
+			ReleaseVal((byte*)data + i * szValue);
 		}
 		Mem::Free(data);
 	}
 }
 
-bool VectorBase::grow()
+bool VectorBase::Grow()
 {
-	return realloc(len + len / 2);
+	return Realloc(len + len / 2);
 }
-void VectorBase::releaseVal(void* val)
+void VectorBase::ReleaseVal(void* val)
 {
 
 }
@@ -50,7 +50,7 @@ VectorBase::VectorBase(const VectorBase& v)
  		}
 	}
 }
-bool VectorBase::realloc(int sz)
+bool VectorBase::Realloc(int sz)
 {
 	if (sz <= count) return false;
 	int szAlloc = sz * szValue;
@@ -64,26 +64,26 @@ bool VectorBase::realloc(int sz)
 	}
 	return false;
 }
-void VectorBase::del(int index)
+void VectorBase::Del(int index)
 {
 	if (index < 0 || index >= count) return;
 	byte* to = (byte*)data + index * szValue;
-	releaseVal(to);
+	ReleaseVal(to);
 	int moved = (count - index - 1) * szValue;
 	byte* from = to + szValue;
 	Mem::Copy(to, from, moved);
 	Mem::Set(to + moved, 0, szValue);
 	count--;
 }
-void* VectorBase::get(int index) const
+void* VectorBase::Get(int index) const
 {
 	return (byte*)data + index * szValue;
 }
-void VectorBase::delAll()
+void VectorBase::DelAll()
 {
 	for (int i = 0; i < count; i++)
 	{
-		releaseVal((byte*)data + i * szValue);
+		ReleaseVal((byte*)data + i * szValue);
 	}
 	Mem::Set(data, 0, len * szValue);
 	count = 0;

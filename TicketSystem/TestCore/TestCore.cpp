@@ -13,13 +13,19 @@ int main()
 {
 	Core::Init();
 	{
-		//void* mem_conn = Mem::Alloc(sizeof(MySQL::Connector));
-	//	MySQL::Connector* ctor = new (mem_conn) MySQL::Connector("tcp://127.0.0.1:3306", "root", "root1234!!??");
-		const char* text = "hello";
-		char* htext = Crypt::CalcHash((void*)text);
-		printf("%s", htext);
-		if (htext)
-		Mem::Free(htext);
+		/*void* mem_conn = Mem::Alloc(sizeof(MySQL::Connector));
+		MySQL::Connector* ctor = new (mem_conn) MySQL::Connector("tcp://127.0.0.1:3306", "root", "root1234!!??");
+		ctor->Connect();
+		ctor->SetDB("dataticket");*/
+		
+		//char* r = ctor->Read("%d", "SELECT ID FROM TB1");
+		//printf("%s", r);
+		//Mem::Free(r);
+		/////////////////Read does not work////////////
+		//ctor->~Connector();
+		//Mem::Free(mem_conn);
+
+	
 	}
 	Core::Release();
 }

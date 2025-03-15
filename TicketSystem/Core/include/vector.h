@@ -6,32 +6,32 @@ protected:
 	int len;
 	int count;
 	int szValue;
-	void* get(int index) const;
-	bool grow();
-	bool realloc(int sz);
-	virtual void releaseVal(void* val);
+	void* Get(int index) const;
+	bool Grow();
+	bool Realloc(int sz);
+	virtual void ReleaseVal(void* val);
 	VectorBase(const VectorBase&);
 	~VectorBase();
 public:
 
-	void del(int index);
-	void delAll();
+	void Del(int index);
+	void DelAll();
 	VectorBase(int sz, int szValue); 
-	const int size() { return count; }
+	const int Size() { return count; }
 };
 template<class T>
 class Vector : public VectorBase
 {
-	void releaseVal(void* val);
+	void ReleaseVal(void* val);
 public:
-	T& get(int index) const;	
-	T* add(const T& val);
+	T& Get(int index) const;	
+	T* Add(const T& val);
 	Vector(int sz);
 	Vector();
 	Vector(const Vector<T>&);
 	T& operator[](int index) const
 	{
-		return get(index);
+		return Get(index);
 	}
 };
 
@@ -51,22 +51,22 @@ Vector<T>::Vector(const Vector<T>& v) : VectorBase(v)
 
 };
 template<class T>
-void Vector<T>::releaseVal(void* val)
+void Vector<T>::ReleaseVal(void* val)
 {
 	((T*)val)->~T();
 }
 template<class T>
-T& Vector<T>::get(int index) const
+T& Vector<T>::Get(int index) const
 {
-	return *((T*)VectorBase::get(index));
+	return *((T*)VectorBase::Get(index));
 }
 template<class T>
-T* Vector<T>::add(const T& val)
+T* Vector<T>::Add(const T& val)
 {
 	if (count >= len)
-		if (!grow())
+		if (!Grow())
 			return 0;
-	T& ret = get(count);
+	T& ret = Get(count);
 	ret = val;
 	count++;
 	return& ret;

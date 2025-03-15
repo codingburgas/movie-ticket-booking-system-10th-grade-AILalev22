@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "type.h"
+// allocate an object with just type
 #define ALLOCOBJ(T) (T*)Mem::Alloc(sizeof(T))
 
 namespace Mem
@@ -37,8 +38,11 @@ namespace Mem
 
 	class Data
 	{
+		// mem buffer
 		void* data;
+		// size
 		int c_data;
+		//capacity
 		int sz_data;
 
 	public:
@@ -49,21 +53,32 @@ namespace Mem
 		void* ptr() const { return data; }
 		byte* p_byte() const { return (byte*)data; }
 		char* p_char() const { return (char*)data; }
+		// return number of elements
 		int Size() const { return c_data; }
+		// return total allocated size
 		int Capacity() const { return sz_data; }
 
+		// set count if within borders
 		void SetLen(int sz);
+		// add count if within buff borders
 		void AddLen(int sz);
 
+		// grow buffer if sz size is not available
+		// tries with 50% of sz_data first
 		bool MakeEnough(int sz);
 		bool Realloc(int sz);
 
+		// append another buff
 		bool Append(const void* ptr, int c_ptr);
+		// append a str
 		bool AppendStr(const char* s, int c_s);
 
+		// make the buffer to be a submem of itself
 		void Submem(int index, int len);
 
+		// insert another buffer at passed index
 		bool Insert(int index, const void* ptr, int c_ptr);
+		// remove from buffer
 		void Remove(int index, int len);
 
 	};
