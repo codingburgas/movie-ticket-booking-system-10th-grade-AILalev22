@@ -22,5 +22,5 @@ namespace MySQL
 	bool Init();
 	//release mysql connector instances
 	bool Release();
-
+	char GetFormat(const char* fmt);
 }

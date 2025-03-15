@@ -103,24 +103,21 @@ namespace MySQL
 	}
 	char* Connector::Read(const char* fmt, const char* query)
 	{
-		if (!fmt || !query) return 0;
-		int count = Str::Len(fmt);
-		if (!count) return 0;
-
+		char fmt2 = GetFormat(fmt);
+		if (!fmt2) return 0;
 		stmt = conn->createStatement();
 		rset = stmt->executeQuery(query);
 		Str::String conn_s;
-		int i = 1;
-		while(count--)
+		while(rset->next())
 		{
 			char buff[50] = { 0 };
 			int read = 0;
-			switch (*fmt)
+			switch (fmt2)
 			{
-			case 'd': if (rset->next())read = snprintf(buff, sizeof(buff), "%d", rset->getInt(i++)); break; // read and append to String if matching any format
-			case 'u': if (rset->next())read = snprintf(buff, sizeof(buff), "%u", rset->getUInt(i++)); break;
-			case 'f': if (rset->next())read = snprintf(buff, sizeof(buff), "%f", rset->getDouble(i++)); break;
-			case 's': if(rset->next())conn_s.Append(rset->getString(i++).c_str()); break;
+			case 'd': read = snprintf(buff, sizeof(buff), "%d", rset->getInt(1)); break; // read and append to String if matching any format
+			case 'u': read = snprintf(buff, sizeof(buff), "%u", rset->getUInt(1)); break;
+			case 'f': read = snprintf(buff, sizeof(buff), "%f", rset->getDouble(1)); break;
+			case 's': conn_s.Append(rset->getString(1).c_str()); break;
 			}
 
 			if (read)
@@ -128,10 +125,19 @@ namespace MySQL
 				buff[read] = 0;
 				conn_s.Append(buff);
 			}
-			fmt++;			
+						
 		}
 
 		char* ret = (char*)Mem::Duplication(conn_s.Cstr(), conn_s.Size() + 1); // result str
 		return ret;
+	}
+	char GetFormat(const char* fmt)
+	{
+		char possible[] = { 'd','u','s','f' };
+		for (int i = 0; i < 4; i++)
+		{
+			if (Str::IndexOf(fmt, possible[i]) >= 0) return possible[i];
+		}
+		return 0;
 	}
 }

@@ -19,9 +19,9 @@ int main()
 		
 		
 
-			char* r = ctor->Read("%s", "SELECT Username FROM TB1");
-			printf("%s", r);
-			Mem::Free(r);
+		char* r = ctor->Read("%s", "SELECT Username FROM TB1");
+		printf("%s", r);
+		Mem::Free(r);
 		///////////////////Read does not work////////////
 		ctor->~Connector();
 		Mem::Free(mem_conn);
