@@ -101,7 +101,7 @@ namespace MySQL
 		va_end(va);
 		pstmt->executeUpdate();
 	}
-	char* Connector::Read(const char* fmt, const char* query)
+	char* Connector::ReadColumn(const char* fmt, const char* query)
 	{
 		char fmt2 = GetFormat(fmt);
 		if (!fmt2) return 0;
@@ -117,12 +117,18 @@ namespace MySQL
 			case 'd':case 'i': read = snprintf(buff, sizeof(buff), "%d", rset->getInt(1)); break; // read and append to String if matching any format
 			case 'u': read = snprintf(buff, sizeof(buff), "%u", rset->getUInt(1)); break;
 			case 'f': read = snprintf(buff, sizeof(buff), "%f", rset->getDouble(1)); break;
-			case 's': conn_s.Append(rset->getString(1).c_str()); break;
+			case 's': if(!rset->isFirst())conn_s.PushBack('|'); conn_s.Append(rset->getString(1).c_str()); break;
 			}
 
 			if (read)
 			{
-				buff[read] = 0;
+				if (rset->isFirst())
+					buff[read] = 0;		
+				else
+				{
+					buff[read] = '|';
+					buff[read + 1] = 0;
+				}
 				conn_s.Append(buff);
 			}
 						

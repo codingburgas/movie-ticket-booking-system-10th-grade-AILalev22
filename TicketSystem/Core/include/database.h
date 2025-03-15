@@ -13,7 +13,7 @@ namespace MySQL
 		//connect to the mysql server
 		bool Connect();
 		// get data from a single column with a select query and C format
-		char* Read(const char* fmt, const char* query);
+		char* ReadColumn(const char* fmt, const char* query);
 		// insert values with a insert into query with C format
 		void Write(const char* fmt, const char* query, ...);
 	};

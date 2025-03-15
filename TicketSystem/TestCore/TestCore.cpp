@@ -8,6 +8,7 @@
 #include "database.h"
 #include "new.h"
 #include "crypt.h" 
+
 int main()
 {
 	Core::Init();
@@ -17,7 +18,9 @@ int main()
 		ctor->Connect();
 		ctor->SetDB("dataticket");
 		
-		printf("%d", MySQL::Find("%s", "SELECT Username FROM TB1", "Ivan2"));
+		char* r = ctor->ReadColumn("%s", "SELECT username from tb1");
+		printf("%s", r);
+		Mem::Free(r);
 		///////////////////Read does not work////////////
 		ctor->~Connector();
 		Mem::Free(mem_conn);
