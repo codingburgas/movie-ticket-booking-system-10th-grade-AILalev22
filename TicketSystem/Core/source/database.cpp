@@ -114,7 +114,7 @@ namespace MySQL
 			int read = 0;
 			switch (fmt2)
 			{
-			case 'd': read = snprintf(buff, sizeof(buff), "%d", rset->getInt(1)); break; // read and append to String if matching any format
+			case 'd':case 'i': read = snprintf(buff, sizeof(buff), "%d", rset->getInt(1)); break; // read and append to String if matching any format
 			case 'u': read = snprintf(buff, sizeof(buff), "%u", rset->getUInt(1)); break;
 			case 'f': read = snprintf(buff, sizeof(buff), "%f", rset->getDouble(1)); break;
 			case 's': conn_s.Append(rset->getString(1).c_str()); break;
@@ -130,6 +130,35 @@ namespace MySQL
 
 		char* ret = (char*)Mem::Duplication(conn_s.Cstr(), conn_s.Size() + 1); // result str
 		return ret;
+	}
+	bool Find(const char* fmt, const char* query, char* val)
+	{
+		char fmt2 = GetFormat(fmt);
+		if (!fmt2) return 0;
+		stmt = conn->createStatement();
+		rset = stmt->executeQuery(query);
+		int len = Str::Len(val);
+
+		while (rset->next())
+		{
+			char buff[50] = { 0 };
+			int read = 0;
+			switch (fmt2)
+			{
+			case 'd':case 'i': read = snprintf(buff, sizeof(buff), "%d", rset->getInt(1)); break; // read and later compare buffer with passed value
+			case 'u': read = snprintf(buff, sizeof(buff), "%u", rset->getUInt(1)); break;
+			case 'f': read = snprintf(buff, sizeof(buff), "%f", rset->getDouble(1)); break;
+			case 's': read = snprintf(buff, sizeof(buff), "%s", rset->getString(1).c_str()); break;
+			}
+
+			if (read)
+			{
+				if (!Mem::Cmp(buff, val, len))
+					return true;
+			}
+		}
+
+		return false;
 	}
 	char GetFormat(const char* fmt)
 	{

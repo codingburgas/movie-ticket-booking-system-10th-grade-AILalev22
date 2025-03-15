@@ -17,11 +17,7 @@ int main()
 		ctor->Connect();
 		ctor->SetDB("dataticket");
 		
-		
-
-		char* r = ctor->Read("%s", "SELECT Username FROM TB1");
-		printf("%s", r);
-		Mem::Free(r);
+		printf("%d", MySQL::Find("%s", "SELECT Username FROM TB1", "Ivan2"));
 		///////////////////Read does not work////////////
 		ctor->~Connector();
 		Mem::Free(mem_conn);
