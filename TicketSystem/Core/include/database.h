@@ -22,4 +22,5 @@ namespace MySQL
 	bool Init();
 	//release mysql connector instances
 	bool Release();
+
 }

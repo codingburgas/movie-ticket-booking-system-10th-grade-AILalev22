@@ -4,6 +4,7 @@ namespace Str
 {
 	int Len(const char* s)
 	{
+		if (!s) return 0;
 		const char* p = s;
 		while (*p) p++;
 
