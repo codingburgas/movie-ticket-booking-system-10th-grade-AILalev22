@@ -18,7 +18,7 @@ int main()
 		ctor->Connect();
 		ctor->SetDB("dataticket");
 		
-		char* f = ctor->Read("%s", "SELECT Password FROM TB1 WHERE Username = admin");
+		char* f = ctor->Read("%d %s %s", "SELECT * FROM TB1 WHERE ID = 1");
 		printf("%s", f);
 		Mem::Free(f);
 		

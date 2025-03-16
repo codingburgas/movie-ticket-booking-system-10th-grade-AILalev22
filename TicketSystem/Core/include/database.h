@@ -9,13 +9,13 @@ namespace MySQL
 		Connector(const char* host, const char* user, const char* pass);
 		~Connector();
 		// set the database to use
-		void SetDB(const char* name);
+		bool SetDB(const char* name);
 		//connect to the mysql server
 		bool Connect();
 		// get data from a single column with a select query and C format
 		char* Read(const char* fmt, const char* query);
 		// insert values with a insert into query with C format
-		void Write(const char* fmt, const char* query, ...);
+		bool Write(const char* fmt, const char* query, ...);
 	};
 
 	// set mysql connector instances

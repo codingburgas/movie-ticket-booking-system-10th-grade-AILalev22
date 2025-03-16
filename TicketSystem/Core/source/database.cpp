@@ -56,7 +56,7 @@ namespace MySQL
 		}
 		return true;
 	}
-	void Connector::SetDB(const char* name)
+	bool Connector::SetDB(const char* name)
 	{
 		try
 		{
@@ -64,18 +64,19 @@ namespace MySQL
 		}
 		catch (...)
 		{
-
+			return false;
 		}
+		return true;
 	}
 	Connector::~Connector()
 	{
 		
 	}
 
-	void Connector::Write(const char* fmt, const char* query, ...)
+	bool Connector::Write(const char* fmt, const char* query, ...)
 	{
 		int count = Str::Len(fmt);
-		if (!fmt || !query || !count) return;
+		if (!fmt || !query || !count) return false;
 	
 		pstmt = conn->prepareStatement(query);
 
@@ -99,7 +100,15 @@ namespace MySQL
 			fmt++;
 		}
 		va_end(va);
-		pstmt->executeUpdate();
+		try
+		{
+			pstmt->executeUpdate();
+		}
+		catch (...)
+		{
+			return false;
+		}
+		return true;
 	}
 
 	
