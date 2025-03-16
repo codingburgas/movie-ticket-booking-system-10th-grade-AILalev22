@@ -170,7 +170,6 @@ namespace MySQL
 		char buff[30];
 		int i = 0;
 		char possible[] = { 'd','i','f','s','u' };
-		int len = Str::Len(fmt);
 
 		while (*fmt)
 		{
