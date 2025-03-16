@@ -19,6 +19,10 @@ namespace Crypt
 
        return HashToStr(hash);
 	}
+    char* CalcHash(const void* src)
+    {
+        return CalcHash((void*)src);
+    }
     char ToHex(int n)
     {
         if (n >= 0 && n <= 9) return n + '0';

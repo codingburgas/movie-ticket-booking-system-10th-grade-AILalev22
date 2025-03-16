@@ -125,7 +125,7 @@ namespace MySQL
 				case 'd':case 'i': read = snprintf(buff, sizeof(buff), "%d", rset->getInt(i)); break; // read and append to String if matching any format
 				case 'u': read = snprintf(buff, sizeof(buff), "%u", rset->getUInt(i)); break;
 				case 'f': read = snprintf(buff, sizeof(buff), "%f", rset->getDouble(i)); break;
-				case 's': res.PushBack('|'); res.Append(rset->getString(i).c_str()); break;
+				case 's': res.Append(rset->getString(i).c_str()); res.PushBack('|'); break;
 				}
 
 			}

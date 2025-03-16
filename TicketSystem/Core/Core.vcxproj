@@ -142,7 +142,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;STATIC_CONCPP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Core\Include;mysql-connector-c++-9.1.0-winx64\include\jdbc;hashlib\include\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Core\hashlib\include;..\Core\Include;mysql-connector-c++-9.1.0-winx64\include\jdbc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

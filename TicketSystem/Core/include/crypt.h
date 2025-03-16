@@ -10,4 +10,5 @@ namespace Crypt
     char* HashToStr(byte* hash);
     // calculate a hash based on a str
 	char* CalcHash(void* src);
+    char* CalcHash(const void* src);
 }
