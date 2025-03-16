@@ -164,44 +164,6 @@ namespace MySQL
 		char* ret = (char*)Mem::Duplication(res.Cstr(), res.Size() + 1); // result str copy
 		return ret;
 	}
-	bool Find(const char* fmt, const char* query, char* val)
-	{
-		char fmt2 = GetFormat(fmt);
-		if (!fmt2) return 0;
-		stmt = conn->createStatement();
-		rset = stmt->executeQuery(query);
-		int len = Str::Len(val);
-
-		while (rset->next())
-		{
-			char buff[50] = { 0 };
-			int read = 0;
-			switch (fmt2)
-			{
-			case 'd':case 'i': read = snprintf(buff, sizeof(buff), "%d", rset->getInt(1)); break; // read and later compare buffer with passed value
-			case 'u': read = snprintf(buff, sizeof(buff), "%u", rset->getUInt(1)); break;
-			case 'f': read = snprintf(buff, sizeof(buff), "%f", rset->getDouble(1)); break;
-			case 's': read = snprintf(buff, sizeof(buff), "%s", rset->getString(1).c_str()); break;
-			}
-
-			if (read)
-			{
-				if (!Mem::Cmp(buff, val, len))
-					return true;
-			}
-		}
-
-		return false;
-	}
-	char GetFormat(const char* fmt)
-	{
-		char possible[] = { 'd','u','s','f','i'};
-		for (int i = 0; i < 5; i++)
-		{
-			if (Str::IndexOf(fmt, possible[i]) >= 0) return possible[i];
-		}
-		return 0;
-	}
 	char* TrimFormat(const char* fmt)
 	{
 		if (!fmt) return 0;

@@ -22,10 +22,6 @@ namespace MySQL
 	bool Init();
 	//release mysql connector instances
 	bool Release();
-	// check if a value exists in a column
-	bool Find(const char* fmt, const char* query, char* val);
-	// get format only as a single char
-	char GetFormat(const char* fmt);
 	// trim c-style format
 	// "%d %f" -> "df"
 	char* TrimFormat(const char* fmt);
