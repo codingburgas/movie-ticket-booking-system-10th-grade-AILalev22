@@ -18,7 +18,9 @@ int main()
 		ctor->Connect();
 		ctor->SetDB("dataticket");
 		
-		printf("%s", Crypt::CalcHash("hello"));
+		char* f = ctor->Read("%d %s %s", "SELECT * FROM TB1");
+		printf("%s", f);
+		Mem::Free(f);
 		
 		ctor->~Connector();
 		Mem::Free(mem_conn);

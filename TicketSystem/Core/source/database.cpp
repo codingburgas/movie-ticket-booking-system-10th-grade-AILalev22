@@ -113,6 +113,7 @@ namespace MySQL
 		Str::String res; //result with all retrived columns in each row
 		int cols = Str::Len(fmt2);
 
+		
 		while (rset->next()) // itereate through each row of res set
 		{
 			char* tmpf = fmt2;
@@ -125,16 +126,21 @@ namespace MySQL
 				case 'd':case 'i': read = snprintf(buff, sizeof(buff), "%d", rset->getInt(i)); break; // read and append to String if matching any format
 				case 'u': read = snprintf(buff, sizeof(buff), "%u", rset->getUInt(i)); break;
 				case 'f': read = snprintf(buff, sizeof(buff), "%f", rset->getDouble(i)); break;
-				case 's': res.Append(rset->getString(i).c_str()); res.PushBack('|'); break;
+				case 's': read = snprintf(buff, sizeof(buff), "%s", rset->getString(i).c_str()); break;
 				}
-
-			}
-			if (read)
-			{
-				buff[read] = '|';
-				buff[read + 1] = 0;
+				if (read && i != cols)
+				{
+					buff[read] = ',';
+					buff[read + 1] = 0;					
+				}
+				else
+				{
+					buff[read] = 0;
+				}
 				res.Append(buff);
 			}
+			if(!rset->isLast())
+			res.PushBack('|');
 		}
 
 		Mem::Free(fmt2);
