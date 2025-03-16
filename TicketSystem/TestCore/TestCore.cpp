@@ -21,7 +21,7 @@ int main()
 		char* r = ctor->ReadColumn("%s", "SELECT username from tb1");
 		printf("%s", r);
 		Mem::Free(r);
-		///////////////////Read does not work////////////
+		
 		ctor->~Connector();
 		Mem::Free(mem_conn);
 	

@@ -101,6 +101,17 @@ namespace MySQL
 		va_end(va);
 		pstmt->executeUpdate();
 	}
+
+	// get format only as a single char
+	char GetFormat(const char* fmt)
+	{
+		char possible[] = { 'd','u','s','f' };
+		for (int i = 0; i < 4; i++)
+		{
+			if (Str::IndexOf(fmt, possible[i]) >= 0) return possible[i];
+		}
+		return 0;
+	}
 	char* Connector::ReadColumn(const char* fmt, const char* query)
 	{
 		char fmt2 = GetFormat(fmt);
@@ -165,14 +176,5 @@ namespace MySQL
 		}
 
 		return false;
-	}
-	char GetFormat(const char* fmt)
-	{
-		char possible[] = { 'd','u','s','f' };
-		for (int i = 0; i < 4; i++)
-		{
-			if (Str::IndexOf(fmt, possible[i]) >= 0) return possible[i];
-		}
-		return 0;
 	}
 }
