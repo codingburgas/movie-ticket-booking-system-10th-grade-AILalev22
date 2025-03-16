@@ -205,7 +205,7 @@ namespace MySQL
 	char* TrimFormat(const char* fmt)
 	{
 		if (!fmt) return 0;
-		char buff[10];
+		char buff[30];
 		int i = 0;
 		char possible[] = { 'd','i','f','s','u' };
 		int len = Str::Len(fmt);
