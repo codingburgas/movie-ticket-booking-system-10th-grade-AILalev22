@@ -18,8 +18,9 @@ int main()
 		ctor->Connect();
 		ctor->SetDB("dataticket");
 		
-		ctor->Write("%s %s", "INSERT INTO TB1(Username,Password) VALUES(?,?)","1111","2222");
-		
+		char* f = ctor->Read("%s", "SELECT Password FROM TB1 WHERE Username = admin");
+		printf("%s", f);
+		Mem::Free(f);
 		
 		ctor->~Connector();
 		Mem::Free(mem_conn);

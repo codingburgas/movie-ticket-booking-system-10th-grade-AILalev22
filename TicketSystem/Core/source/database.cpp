@@ -109,7 +109,16 @@ namespace MySQL
 		if (!fmt2) return 0;
 
 		stmt = conn->createStatement();
-		rset = stmt->executeQuery(query);
+		try
+		{
+			rset = stmt->executeQuery(query);
+		}
+		catch (...)
+		{
+			Mem::Free(fmt2);
+			return 0;
+		}
+
 		Str::String res; //result with all retrived columns in each row
 		int cols = Str::Len(fmt2);
 
