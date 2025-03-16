@@ -18,9 +18,9 @@ int main()
 		ctor->Connect();
 		ctor->SetDB("dataticket");
 		
-		char* r = ctor->ReadColumn("%s", "SELECT username from tb1");
-		printf("%s", r);
-		Mem::Free(r);
+		char* f = ctor->Read("%s %s %s", "SELECT * FROM TB1");
+		printf("%s", f);
+		Mem::Free(f);
 		
 		ctor->~Connector();
 		Mem::Free(mem_conn);

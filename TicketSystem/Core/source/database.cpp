@@ -102,50 +102,43 @@ namespace MySQL
 		pstmt->executeUpdate();
 	}
 
-	// get format only as a single char
-	char GetFormat(const char* fmt)
+	
+	char* Connector::Read(const char* fmt, const char* query)
 	{
-		char possible[] = { 'd','u','s','f' };
-		for (int i = 0; i < 4; i++)
-		{
-			if (Str::IndexOf(fmt, possible[i]) >= 0) return possible[i];
-		}
-		return 0;
-	}
-	char* Connector::ReadColumn(const char* fmt, const char* query)
-	{
-		char fmt2 = GetFormat(fmt);
+		char* fmt2 = TrimFormat(fmt);
 		if (!fmt2) return 0;
+
 		stmt = conn->createStatement();
 		rset = stmt->executeQuery(query);
-		Str::String conn_s;
-		while(rset->next())
-		{
-			char buff[50] = { 0 };
-			int read = 0;
-			switch (fmt2)
-			{
-			case 'd':case 'i': read = snprintf(buff, sizeof(buff), "%d", rset->getInt(1)); break; // read and append to String if matching any format
-			case 'u': read = snprintf(buff, sizeof(buff), "%u", rset->getUInt(1)); break;
-			case 'f': read = snprintf(buff, sizeof(buff), "%f", rset->getDouble(1)); break;
-			case 's': if(!rset->isFirst())conn_s.PushBack('|'); conn_s.Append(rset->getString(1).c_str()); break;
-			}
+		Str::String res; //result with all retrived columns in each row
+		int cols = Str::Len(fmt2);
 
+		while (rset->next()) // itereate through each row of res set
+		{
+			char* tmpf = fmt2;
+			int read = 0;
+			char buff[50];
+			for (int i = 1; i <= cols; i++)
+			{
+				switch (*tmpf++)
+				{
+				case 'd':case 'i': read = snprintf(buff, sizeof(buff), "%d", rset->getInt(i)); break; // read and append to String if matching any format
+				case 'u': read = snprintf(buff, sizeof(buff), "%u", rset->getUInt(i)); break;
+				case 'f': read = snprintf(buff, sizeof(buff), "%f", rset->getDouble(i)); break;
+				case 's': res.PushBack('|'); res.Append(rset->getString(i).c_str()); break;
+				}
+
+			}
 			if (read)
 			{
-				if (rset->isFirst())
-					buff[read] = 0;		
-				else
-				{
-					buff[read] = '|';
-					buff[read + 1] = 0;
-				}
-				conn_s.Append(buff);
+				buff[read] = '|';
+				buff[read + 1] = 0;
+				res.Append(buff);
 			}
-						
 		}
 
-		char* ret = (char*)Mem::Duplication(conn_s.Cstr(), conn_s.Size() + 1); // result str
+		Mem::Free(fmt2);
+		char* ret = (char*)Mem::Duplication(res.Cstr(), res.Size() + 1); // result str copy
 		return ret;
 	}
 	bool Find(const char* fmt, const char* query, char* val)
@@ -176,5 +169,34 @@ namespace MySQL
 		}
 
 		return false;
+	}
+	char GetFormat(const char* fmt)
+	{
+		char possible[] = { 'd','u','s','f','i'};
+		for (int i = 0; i < 5; i++)
+		{
+			if (Str::IndexOf(fmt, possible[i]) >= 0) return possible[i];
+		}
+		return 0;
+	}
+	char* TrimFormat(const char* fmt)
+	{
+		if (!fmt) return 0;
+		char buff[10];
+		int i = 0;
+		char possible[] = { 'd','i','f','s','u' };
+		int len = Str::Len(fmt);
+
+		while (*fmt)
+		{
+			if(Mem::IndexOf(possible, *fmt, sizeof(possible)) >= 0)
+				buff[i++] = *fmt;
+			fmt++;
+		}
+		buff[i++] = 0;
+		char* ret = (char*)Mem::Alloc(i);
+
+		Mem::Copy(ret, buff, i);
+		return ret;
 	}
 }

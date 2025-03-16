@@ -13,7 +13,7 @@ namespace MySQL
 		//connect to the mysql server
 		bool Connect();
 		// get data from a single column with a select query and C format
-		char* ReadColumn(const char* fmt, const char* query);
+		char* Read(const char* fmt, const char* query);
 		// insert values with a insert into query with C format
 		void Write(const char* fmt, const char* query, ...);
 	};
@@ -24,4 +24,9 @@ namespace MySQL
 	bool Release();
 	// check if a value exists in a column
 	bool Find(const char* fmt, const char* query, char* val);
+	// get format only as a single char
+	char GetFormat(const char* fmt);
+	// trim c-style format
+	// "%d %f" -> "df"
+	char* TrimFormat(const char* fmt);
 }
