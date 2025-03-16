@@ -87,7 +87,7 @@ namespace MySQL
 		const char* arg_s;
 		uint arg_u;
 		int i = 1;
-		for (int j = 0; j < count; j++)
+		while(count--)
 		{
 			switch (*fmt)
 			{
@@ -113,7 +113,6 @@ namespace MySQL
 		Str::String res; //result with all retrived columns in each row
 		int cols = Str::Len(fmt2);
 
-		
 		while (rset->next()) // itereate through each row of res set
 		{
 			char* tmpf = fmt2;
