@@ -23,16 +23,6 @@ namespace Crypt
     {
         return CalcHash((void*)src);
     }
-    char ToHex(int n)
-    {
-        if (n >= 0 && n <= 9) return n + '0';
-        return 'a' + n - 10;
-    }
-    void ByteToHex(char by, char* hex)
-    {
-        hex[0] = ToHex((by >> 4) & 0xf);
-        hex[1] = ToHex(by & 0xf);
-    }
     char* HashToStr(byte* hash)
     {
         char* ret = (char*)Mem::Alloc(65); // 2 * 32b + 1
@@ -46,5 +36,15 @@ namespace Crypt
         }
         ret[j] = 0;
         return ret;
+    }
+    void ByteToHex(char by, char* hex)
+    {
+        hex[0] = ToHex((by >> 4) & 0xf);
+        hex[1] = ToHex(by & 0xf);
+    }
+    char ToHex(int n)
+    {
+        if (n >= 0 && n <= 9) return n + '0';
+        return 'a' + n - 10;
     }
 }
