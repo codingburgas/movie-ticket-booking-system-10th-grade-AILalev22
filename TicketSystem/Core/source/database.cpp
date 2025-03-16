@@ -120,7 +120,7 @@ namespace MySQL
 		stmt = conn->createStatement();
 		try
 		{
-			rset = stmt->executeQuery(query);
+			rset = stmt->executeQuery(query); // try executing query and if error, free fmt copy and stop
 		}
 		catch (...)
 		{
