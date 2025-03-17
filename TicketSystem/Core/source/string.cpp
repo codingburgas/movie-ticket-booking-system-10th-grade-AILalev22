@@ -43,6 +43,27 @@ namespace Str
 			str++;
 		}
 	}
+	char* Copy(char* dst, const char* src, int len)
+	{
+		if (dst)
+		{
+			if (len <= 0) len = Len(dst);
+			Mem::Copy(dst, src, len);
+			dst[len] = 0;
+		}
+		return dst;
+	}
+	char* Alloc(int len)
+	{
+		if (len <= 0) return 0;
+		char* ret = (char*)Mem::Alloc(len + 1);
+		if (ret)
+		{
+			ret[0] = 0;
+			return ret;
+		}
+		return 0;
+	}
 	//////////////////////////////////////////
 	StringBase::StringBase(int sz_data)
 	{

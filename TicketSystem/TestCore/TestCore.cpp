@@ -13,7 +13,7 @@ int main()
 {
 	Core::Init();
 	{
-		void* mem_conn = Mem::Alloc(sizeof(MySQL::Connector));
+		/*void* mem_conn = Mem::Alloc(sizeof(MySQL::Connector));
 		MySQL::Connector* ctor = new (mem_conn) MySQL::Connector("tcp://127.0.0.1:3306", "root", "root1234!!??");
 		ctor->Connect();
 		ctor->SetDB("dataticket");
@@ -23,8 +23,8 @@ int main()
 		Mem::Free(f);
 		
 		ctor->~Connector();
-		Mem::Free(mem_conn);
-	
+		Mem::Free(mem_conn);*/
+		printf("%s", MySQL::TrimFormat("%s %d %s"));
 	
 	}
 	Core::Release();
