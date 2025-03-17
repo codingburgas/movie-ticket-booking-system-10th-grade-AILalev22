@@ -25,7 +25,7 @@ namespace Crypt
     }
     char* HashToStr(byte* hash)
     {
-        char* ret = (char*)Str::Alloc(2 * SHA256_BLOCK_SIZE);
+        char* ret = (char*)Mem::Alloc(2 * SHA256_BLOCK_SIZE + 1);
         int j = 0;
         for (int i = 0; i < SHA256_BLOCK_SIZE; i++)
         {

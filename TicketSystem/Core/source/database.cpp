@@ -179,9 +179,10 @@ namespace MySQL
 				buff[i++] = *fmt;
 			fmt++;
 		}
-		char* ret = (char*)Str::Alloc(i);
+		buff[i++] = 0;
+		char* ret = (char*)Mem::Alloc(i);
 
-		Str::Copy(ret, buff, i);
+		Mem::Copy(ret, buff, i);
 		return ret;
 	}
 }

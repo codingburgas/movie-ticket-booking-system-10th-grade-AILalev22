@@ -11,10 +11,6 @@ namespace Str
 	// swap two buffers with equal size
 	void Swap(void* a, void* b, size_t n);
 
-	// copy and place terminator at end
-	char* Copy(char* dst, const char* src, int len);
-	// allocate len + 1 bytes and return
-	char* Alloc(int len);
 	class StringBase
 	{
 	protected:

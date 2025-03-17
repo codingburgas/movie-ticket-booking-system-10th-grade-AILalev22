@@ -25,7 +25,6 @@ int main()
 		
 		ctor->~Connector();
 		Mem::Free(mem_conn);*/
-		
 	
 	}
 	Core::Release();
