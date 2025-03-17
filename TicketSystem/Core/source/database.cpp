@@ -90,14 +90,13 @@ namespace MySQL
 		int i = 1;
 		while(len--)
 		{
-			switch (*fmt)
+			switch (*fmt++)
 			{
 			case 'd':arg_d = va_arg(va, int); pstmt->setInt(i++, arg_d); break; // follow c-style format
 			case 'f': arg_f = va_arg(va, double); pstmt->setDouble(i++, arg_f); break;
 			case 's': arg_s = va_arg(va, const char*); pstmt->setString(i++, arg_s); break;
 			case 'u': arg_u = va_arg(va, uint); pstmt->setUInt(i++, arg_u); break;
 			}
-			fmt++;
 		}
 		va_end(va);
 		try
@@ -145,16 +144,19 @@ namespace MySQL
 				case 'f': read = snprintf(buff, sizeof(buff), "%f", rset->getDouble(i)); break;
 				case 's': read = snprintf(buff, sizeof(buff), "%s", rset->getString(i).c_str()); break;
 				}
-				if (read && i != cols)
+				if (read)
 				{
-					buff[read] = ',';
-					buff[read + 1] = 0;					
+					if (i != cols)
+					{
+						buff[read] = ',';
+						buff[read + 1] = 0;
+					}
+					else
+					{
+						buff[read] = 0;
+					}
+					res.Append(buff);
 				}
-				else
-				{
-					buff[read] = 0;
-				}
-				res.Append(buff);
 			}
 			if(!rset->isLast())
 			res.PushBack('|');
