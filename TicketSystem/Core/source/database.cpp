@@ -173,7 +173,7 @@ namespace MySQL
 
 		while (*fmt)
 		{
-			if(Mem::IndexOf(possible, *fmt, sizeof(possible)) >= 0)
+			if(Mem::Find(possible,*fmt, sizeof(possible)))
 				buff[i++] = *fmt;
 			fmt++;
 		}
