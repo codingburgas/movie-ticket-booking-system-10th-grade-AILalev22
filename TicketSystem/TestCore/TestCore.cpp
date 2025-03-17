@@ -1,4 +1,4 @@
-// TestCore.cpp : This file contains the 'main' function. Program execution begins and ends there.
+﻿// TestCore.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
 #include "core.h"
@@ -8,6 +8,7 @@
 #include "database.h"
 #include "new.h"
 #include "crypt.h" 
+
 
 int main()
 {
@@ -24,10 +25,12 @@ int main()
 		
 		ctor->~Connector();
 		Mem::Free(mem_conn);*/
-		printf("%s", MySQL::TrimFormat("%s %d %s"));
+		
 	
 	}
 	Core::Release();
 }
 
 
+
+;
