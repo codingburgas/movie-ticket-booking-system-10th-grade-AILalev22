@@ -66,7 +66,7 @@ namespace Str
 		// append a str at the end
 		void Append(const char* str)
 		{
-			Join(str, nullptr);
+			Insert(c_data, str);
 		}
 		// assign a new value to data
 		void Assign(const char* str);
