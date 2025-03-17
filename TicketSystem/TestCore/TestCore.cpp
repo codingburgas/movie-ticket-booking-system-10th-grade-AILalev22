@@ -25,7 +25,10 @@ int main()
 		
 		ctor->~Connector();
 		Mem::Free(mem_conn);*/
-	
+		Str::String str = "hello";
+		printf("%d\n", str.Capacity());
+		str.Insert(0, "bbbb");
+		printf("%d\n", str.Capacity());
 	}
 	Core::Release();
 }

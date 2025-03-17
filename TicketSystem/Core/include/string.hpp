@@ -52,6 +52,7 @@ namespace Str
 		// return 0 if empty, else 1
 		bool Empty() { return !c_data; }
 		const int Size() { return c_data; }
+		const int Capacity() { return sz_data; }
 		// return compare result with a literal
 		int Compare(const char* str)
 		{
