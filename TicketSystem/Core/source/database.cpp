@@ -75,8 +75,8 @@ namespace MySQL
 
 	bool Connector::Write(const char* fmt, const char* query, ...)
 	{
-		int count = Str::Len(fmt);
-		if (!fmt || !query || !count) return false;
+		int len = Str::Len(fmt);
+		if (!fmt || !query || !len) return false;
 	
 		pstmt = conn->prepareStatement(query);
 
@@ -88,7 +88,7 @@ namespace MySQL
 		const char* arg_s;
 		uint arg_u;
 		int i = 1;
-		while(count--)
+		while(len--)
 		{
 			switch (*fmt)
 			{
