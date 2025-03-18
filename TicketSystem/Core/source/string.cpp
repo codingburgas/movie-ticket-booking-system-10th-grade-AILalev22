@@ -70,7 +70,8 @@ namespace Str
 		if (!data) return;
 
 		Mem::Copy(data, str, c_s + 1);
-		sz_data = c_data = c_s;
+		c_data = c_s;
+		sz_data = c_s + 1;
 	}
 	void StringBase::Join(const char* first, ...)
 	{

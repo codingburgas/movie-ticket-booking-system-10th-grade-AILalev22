@@ -23,6 +23,7 @@
     <ClInclude Include="include\crypt.h" />
     <ClInclude Include="include\database.h" />
     <ClInclude Include="include\memory.h" />
+    <ClInclude Include="include\misc.h" />
     <ClInclude Include="include\string.hpp" />
     <ClInclude Include="include\type.h" />
     <ClInclude Include="include\vector.h" />

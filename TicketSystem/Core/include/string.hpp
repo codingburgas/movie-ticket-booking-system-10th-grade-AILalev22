@@ -39,13 +39,14 @@ namespace Str
 		// literal constructor
 		StringBase(const char* s)
 		{
+			data = nullptr;
 			Assign(s);
 		}
 		// empty parameter constructor
 		StringBase()
 		{
 			data = nullptr;
-			c_data = sz_data = 0;
+			Assign("");
 		}
 		// capacity constructor
 		StringBase(int sz_data);
