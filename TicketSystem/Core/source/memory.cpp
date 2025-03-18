@@ -175,11 +175,11 @@ namespace Mem
 	}
 	void Data::SetLen(int sz)
 	{
+		c_data = sz;
 		if (sz < 0)
 			c_data = 0;
 		else if (sz > sz_data)
 			c_data = sz_data;
-		c_data = sz;
 	}
 	void Data::AddLen(int sz)
 	{
@@ -194,6 +194,8 @@ namespace Mem
 		if (sz_data - c_data >= sz) return true;
 		int addSize = sz_data / 2;
 		if (addSize < sz) addSize = sz;
+
+		sz_data += addSize;
 		return Realloc(addSize + sz_data);
 	}
 	bool Data::Realloc(int sz)
