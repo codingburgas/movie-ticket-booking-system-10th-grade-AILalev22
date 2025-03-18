@@ -68,11 +68,19 @@ namespace MySQL
 		}
 		return true;
 	}
-	Connector::~Connector()
+	bool Connector::Query(const char* query)
 	{
-		
+		try
+		{
+			stmt = conn->createStatement();
+			stmt->execute(query);
+		}
+		catch (...)
+		{
+			return false;
+		}
+		return true;
 	}
-
 	bool Connector::Write(const char* fmt, const char* query, ...)
 	{
 		int len = Str::Len(fmt);
