@@ -168,9 +168,19 @@ namespace Str
 		if (sz_data - c_data >= sz) return true;
 		int addSize = sz / 2;
 		if (addSize < sz_data) addSize = sz;
-
-		sz_data += addSize;
-		return Mem::Realloc(data, addSize + sz_data);
+		return Realloc(addSize + sz_data);
+	}
+	bool StringBase::Realloc(int sz)
+	{
+		if (sz <= 0) return false;
+		char* _data = (char*)Mem::Realloc(data,sz);
+		if (_data)
+		{
+			data = _data;
+			sz_data = sz;
+			return true;
+		}
+		return false;
 	}
 	void StringBase::PushBack(char c)
 	{

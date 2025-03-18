@@ -22,6 +22,8 @@ namespace Str
 
 		// ensure enough space is made, if not realloc data
 		bool MakeEnough(int sz);
+		// Realloc function based on Mem::Realloc
+		bool Realloc(int sz);
 		// insert a str at a index position
 		char* Insert(int index, const char* str);
 		// make a deep copy of a substr, index is start pos, len is size of the substr
