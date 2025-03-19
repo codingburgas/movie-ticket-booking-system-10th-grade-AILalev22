@@ -9,11 +9,13 @@
 #include "new.h"
 #include "crypt.h" 
 
-
+#include "misc.h"
 int main()
 {
+	
 	Core::Init();
 	{
+		
 		/*void* mem_conn = Mem::Alloc(sizeof(MySQL::Connector));
 		MySQL::Connector* ctor = new (mem_conn) MySQL::Connector("tcp://127.0.0.1:3306", "root", "root1234!!??");
 		ctor->Connect();
@@ -25,13 +27,15 @@ int main()
 		
 		ctor->~Connector();
 		Mem::Free(mem_conn);*/
-
-
+	
+		Vector<AutoPtr<Str::String>> vi;
+		vi.Add(Str::String("hello"));
+		const char* a = vi[0]->Cstr();
+		printf("%s",a);
+		// doesn't work vector of autoptr
 		
 	}
+	
 	Core::Release();
 }
 
-
-
-;

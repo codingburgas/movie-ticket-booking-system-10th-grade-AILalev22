@@ -6,11 +6,12 @@ class AutoPtr
 {	
 	T* ptr;
 	void* memory;
+	bool placement;
 public:
 	AutoPtr(const T& val);
 	AutoPtr(T* val) : ptr(val), memory(nullptr)
 	{
-
+		placement = false;
 	}
 	~AutoPtr();
 	operator T* ()
@@ -26,23 +27,31 @@ public:
 		return ptr;
 	}
 };
-
 template<class T>
 AutoPtr<T>::AutoPtr(const T& val)
 {
 	memory = ALLOCOBJ(T);
 	ptr = new(memory) T(val);
+	placement = true;
 }
 template<class T>
 AutoPtr<T>::~AutoPtr()
 {
-	if (ptr) 
+	if (ptr)
 	{
+		if (!placement)
+		{
+			Mem::Free(ptr);
+			ptr = nullptr;
+			return;
+		}
 		ptr->~T();
 	}
 	if (memory)
 	{
 		Mem::Free(memory);
 	}
+	ptr = nullptr;
 }
+
 
