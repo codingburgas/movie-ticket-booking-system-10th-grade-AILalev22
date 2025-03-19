@@ -195,7 +195,6 @@ namespace Mem
 		int addSize = sz_data / 2;
 		if (addSize < sz) addSize = sz;
 
-		sz_data += addSize;
 		return Realloc(addSize + sz_data);
 	}
 	bool Data::Realloc(int sz)
