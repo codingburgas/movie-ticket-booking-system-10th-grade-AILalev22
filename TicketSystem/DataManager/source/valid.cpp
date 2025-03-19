@@ -1,6 +1,6 @@
 #include "valid.h"
 
-namespace Valid
+namespace Validation
 {
 
 }

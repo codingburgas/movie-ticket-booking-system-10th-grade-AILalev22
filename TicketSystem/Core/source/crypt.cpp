@@ -7,21 +7,21 @@ extern "C"
 #include "string.hpp"
 namespace Crypt
 {
-	char* CalcHash(void* src)
-	{
-	   if (!src) return 0;
-	   SHA256_CTX ctx;
-	   byte hash[SHA256_BLOCK_SIZE];
-
-	   sha256_init(&ctx);
-	   sha256_update(&ctx, (byte*)src, Str::Len((char*)src));
-	   sha256_final(&ctx, hash);
-
-       return HashToStr(hash);
-	}
     char* CalcHash(const void* src)
     {
         return CalcHash((void*)src);
+    }
+    char* CalcHash(void* src)
+    {
+        if (!src) return 0;
+        SHA256_CTX ctx;
+        byte hash[SHA256_BLOCK_SIZE];
+
+        sha256_init(&ctx);
+        sha256_update(&ctx, (byte*)src, Str::Len((char*)src));
+        sha256_final(&ctx, hash);
+
+        return HashToStr(hash);
     }
     char* HashToStr(byte* hash)
     {

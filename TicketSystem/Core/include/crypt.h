@@ -9,6 +9,6 @@ namespace Crypt
     // convert a hash of 32 bytes into a 65 byte str
     char* HashToStr(byte* hash);
     // calculate a hash based on a str
-	char* CalcHash(void* src);
     char* CalcHash(const void* src);
+	char* CalcHash(void* src);
 }
