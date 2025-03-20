@@ -25,8 +25,13 @@ int main()
 		
 		ctor->~Connector();
 		Mem::Free(mem_conn);*/
-		
-		
+
+		typedef Vector<MovedPtr<Vector<Str::String>>> StringArr;
+		StringArr vs;
+		vs.Add(Vector<Str::String>());
+		vs[0]->Add("string");
+		vs[0]->Add("hello");
+
 	}
 	
 

@@ -27,6 +27,52 @@ public:
 		return ptr;
 	}
 };
+
+template<class T>
+class MovedPtr
+{
+	// generic T ptr
+	mutable T* ptr;
+	// placement new mem buff
+	mutable void* memory;
+public:
+	MovedPtr(const T& val);
+	MovedPtr(T* val) : memory(nullptr), ptr(val)
+	{
+
+	}
+	// move constructor
+	MovedPtr(const MovedPtr& p);	
+	~MovedPtr();
+	// overload to treat obj like reference
+	operator T& ()
+	{
+		return *ptr;
+	}
+	// overload to treat obj as ptr
+	operator T* ()
+	{
+		return ptr;
+	}
+	// overload to use arrow operator with obj
+	T* operator->()
+	{
+		return ptr;
+	}
+	// move assignment operator and check if same ptr is passed
+	void operator=(const MovedPtr& p);
+	// return if generic ptr is valid
+	bool IsValid()
+	{
+		return ptr;
+	}
+	// return whether mem buff has any allocated memory
+	bool isAlloc()
+	{
+		return memory;
+	}
+};
+
 template<class T>
 AutoPtr<T>::AutoPtr(const T& val)
 {
@@ -45,74 +91,34 @@ AutoPtr<T>::~AutoPtr()
 		Mem::Free(memory);
 }
 template<class T>
-class MovedPtr
+void MovedPtr<T>::operator=(const MovedPtr& p)
 {
-	// generic T ptr
-	mutable T* ptr;
-	// placement new mem buff
-	mutable void* memory;
-public:
-	MovedPtr(const T& val);
-	MovedPtr(T* val) : memory(nullptr), ptr(val)
+	if (this != &p)
 	{
-
-	}
-	// move constructor
-	MovedPtr(const MovedPtr& p)
-	{
+		if (ptr)
+		{
+			ptr->~T();
+			ptr = nullptr;
+		}
+		if (memory)
+		{
+			Mem::Free(memory);
+			memory = nullptr;
+		}
 		ptr = p.ptr;
 		p.ptr = nullptr;
 		memory = p.memory;
 		p.memory = nullptr;
 	}
-	~MovedPtr();
-	// overload to treat obj like reference
-	operator T& ()
-	{
-		return *ptr;
-	}
-	// overload to treat obj as ptr
-	operator T* ()
-	{
-		return ptr;
-	}
-	// overload to use arrow operator with obj
-	T* operator->()
-	{
-		return ptr;
-	}
-	// move assignment operator and check if same ptr is passed
-	void operator=(const MovedPtr& p)
-	{
-		if (this != &p)
-		{
-			if (ptr)
-			{
-				ptr->~T();
-				ptr = nullptr;
-			}
-			if (memory)
-			{
-				Mem::Free(memory);
-				memory = nullptr;
-			}
-			ptr = p.ptr;
-			p.ptr = nullptr;
-			memory = p.memory;
-			p.memory = nullptr;
-		}
-	}
-	// return if generic ptr is valid
-	bool IsValid()
-	{
-		return ptr;
-	}
-	// return whether mem buff has any allocated memory
-	bool isAlloc()
-	{
-		return memory;
-	}
-};
+}
+template<class T>
+MovedPtr<T>::MovedPtr(const MovedPtr& p)
+{
+	ptr = p.ptr;
+	p.ptr = nullptr;
+	memory = p.memory;
+	p.memory = nullptr;
+}
 template<class T>
 MovedPtr<T>::MovedPtr(const T& val)
 {
@@ -131,5 +137,6 @@ MovedPtr<T>::~MovedPtr()
 	if (memory)
 		Mem::Free(memory);
 }
+
 
 
