@@ -6,13 +6,11 @@
 #include <stdio.h>
 #include "vector.h"
 #include "database.h"
-#include "new.h"
 #include "crypt.h" 
 
 #include "misc.h"
 int main()
 {
-	
 	Core::Init();
 	{
 		
@@ -27,15 +25,11 @@ int main()
 		
 		ctor->~Connector();
 		Mem::Free(mem_conn);*/
-	
-		Vector<AutoPtr<Str::String>> vi;
-		vi.Add(Str::String("hello"));
-		const char* a = vi[0]->Cstr();
-		printf("%s",a);
-		// doesn't work vector of autoptr
+		
 		
 	}
 	
+
 	Core::Release();
 }
 

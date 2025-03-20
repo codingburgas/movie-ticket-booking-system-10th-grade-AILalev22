@@ -4,14 +4,14 @@
 template<class T>
 class AutoPtr
 {	
-	T* ptr;
+	// generic T type ptr
+	mutable T* ptr;
 	void* memory;
-	bool placement;
 public:
 	AutoPtr(const T& val);
-	AutoPtr(T* val) : ptr(val), memory(nullptr)
+	AutoPtr(T* val) : ptr(val)
 	{
-		placement = false;
+		
 	}
 	~AutoPtr();
 	operator T* ()
@@ -32,26 +32,104 @@ AutoPtr<T>::AutoPtr(const T& val)
 {
 	memory = ALLOCOBJ(T);
 	ptr = new(memory) T(val);
-	placement = true;
 }
 template<class T>
 AutoPtr<T>::~AutoPtr()
 {
 	if (ptr)
 	{
-		if (!placement)
-		{
-			Mem::Free(ptr);
-			ptr = nullptr;
-			return;
-		}
 		ptr->~T();
+		ptr = nullptr;
 	}
 	if (memory)
-	{
 		Mem::Free(memory);
+}
+template<class T>
+class MovedPtr
+{
+	// generic T ptr
+	mutable T* ptr;
+	// placement new mem buff
+	mutable void* memory;
+public:
+	MovedPtr(const T& val);
+	MovedPtr(T* val) : memory(nullptr), ptr(val)
+	{
+
 	}
-	ptr = nullptr;
+	// move constructor
+	MovedPtr(const MovedPtr& p)
+	{
+		ptr = p.ptr;
+		p.ptr = nullptr;
+		memory = p.memory;
+		p.memory = nullptr;
+	}
+	~MovedPtr();
+	// overload to treat obj like reference
+	operator T& ()
+	{
+		return *ptr;
+	}
+	// overload to treat obj as ptr
+	operator T* ()
+	{
+		return ptr;
+	}
+	// overload to use arrow operator with obj
+	T* operator->()
+	{
+		return ptr;
+	}
+	// move assignment operator and check if same ptr is passed
+	void operator=(const MovedPtr& p)
+	{
+		if (this != &p)
+		{
+			if (ptr)
+			{
+				ptr->~T();
+				ptr = nullptr;
+			}
+			if (memory)
+			{
+				Mem::Free(memory);
+				memory = nullptr;
+			}
+			ptr = p.ptr;
+			p.ptr = nullptr;
+			memory = p.memory;
+			p.memory = nullptr;
+		}
+	}
+	// return if generic ptr is valid
+	bool IsValid()
+	{
+		return ptr;
+	}
+	// return whether mem buff has any allocated memory
+	bool isAlloc()
+	{
+		return memory;
+	}
+};
+template<class T>
+MovedPtr<T>::MovedPtr(const T& val)
+{
+	memory = ALLOCOBJ(T);
+	ptr = new(memory) T(val); // using placement new to construct an obj
+}
+
+template<class T>
+MovedPtr<T>::~MovedPtr()
+{
+	if (ptr)
+	{
+		ptr->~T(); // calling T type constructor, because raw memory is used	
+		ptr = nullptr;
+	}
+	if (memory)
+		Mem::Free(memory);
 }
 
 
