@@ -13,7 +13,7 @@ namespace Crypt
     }
     char* CalcHash(void* src)
     {
-        if (!src) return 0;
+        if (!src) return nullptr;
         SHA256_CTX ctx;
         byte hash[SHA256_BLOCK_SIZE];
 
@@ -25,7 +25,7 @@ namespace Crypt
     }
     char* HashToStr(byte* hash)
     {
-        char* ret = (char*)Mem::Alloc(2 * SHA256_BLOCK_SIZE + 1);
+        char* ret = (char*)Mem::Alloc(2 * SHA256_BLOCK_SIZE + 1); // 2* 32b + 1,
         int j = 0;
         for (int i = 0; i < SHA256_BLOCK_SIZE; i++)
         {

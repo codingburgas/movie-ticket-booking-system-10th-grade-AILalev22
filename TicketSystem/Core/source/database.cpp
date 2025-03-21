@@ -1,5 +1,5 @@
-#ifndef _SQL
-#define _SQL
+#ifndef SQL
+#define SQL
 #endif
 #include "string.hpp"
 #include "type.h"
@@ -21,7 +21,7 @@ namespace MySQL
 	bool Init()
 	{
 		driver = sql::mysql::get_mysql_driver_instance();;
-		stmt = 0; pstmt = 0; conn = 0; rset = 0;
+		stmt = nullptr; pstmt = nullptr; conn = nullptr; rset = nullptr;
 		return true;
 	}
 	bool Release()
@@ -122,7 +122,7 @@ namespace MySQL
 	char* Connector::Read(const char* fmt, const char* query)
 	{
 		char* fmt2 = TrimFormat(fmt);
-		if (!fmt2) return 0;
+		if (!fmt2) return nullptr;
 
 		stmt = conn->createStatement();
 		try
@@ -132,7 +132,7 @@ namespace MySQL
 		catch (...)
 		{
 			Mem::Free(fmt2);
-			return 0;
+			return nullptr;
 		}
 
 		Str::String res; //result with all retrived columns in each row
@@ -176,7 +176,7 @@ namespace MySQL
 	}
 	char* TrimFormat(const char* fmt)
 	{
-		if (!fmt) return 0;
+		if (!fmt) return nullptr;
 		char buff[30];
 		int i = 0;
 		char possible[] = { 'd','i','f','s','u' };

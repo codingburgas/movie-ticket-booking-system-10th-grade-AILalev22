@@ -55,7 +55,7 @@ namespace Mem
 				return p;
 			p++;
 		}
-		return 0;
+		return nullptr;
 	}
 	void* Copy(void* dst, const void* src, int size)
 	{
@@ -199,7 +199,7 @@ namespace Mem
 	}
 	bool Data::Realloc(int sz)
 	{
-		if (sz <= 0) return 0;
+		if (sz <= 0) return false;
 		void* newData = Mem::Realloc(data, sz);
 		if (newData)
 		{
