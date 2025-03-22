@@ -7,11 +7,11 @@ namespace Manager
 	{
 		return ctor;
 	}
-	bool Init(const std::string& host, const std::string& user, const std::string& pass)
+	bool Init(const std::string& host, const Account& dbaccount)
 	{
 		if (!ctor.get())
 		{
-			ctor = std::make_shared<CTOR>(host, user, pass);
+			ctor = std::make_shared<CTOR>(host, dbaccount.username, dbaccount.password);
 			return ctor->Connect();
 		}
 		return false;

@@ -3,6 +3,10 @@
 #include <regex>
 namespace Validation
 {
+	bool IsValidAccount(const Manager::Account& acc)
+	{
+		return IsValidEmail(acc.email) && IsValidPass(acc.password);
+	}
 	bool IsValidEmail(const std::string& email)
 	{
 		std::regex pattern("(^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$)");

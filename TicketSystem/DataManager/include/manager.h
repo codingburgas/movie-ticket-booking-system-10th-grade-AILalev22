@@ -3,8 +3,14 @@
 typedef MySQL::Connector CTOR;
 namespace Manager
 {	
-	bool Init(const std::string& host,const std::string& user, const std::string& pass);
+	struct Account
+	{
+		std::string username;
+		std::string email;
+		std::string password;
+	};
+	bool Init(const std::string& host,const Account& dbaccount);
 	bool Release();
 
-	std::shared_ptr<CTOR> GetSQL();
+	std::shared_ptr<CTOR>& GetSQL();
 }

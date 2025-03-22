@@ -4,9 +4,9 @@
 #include "valid.h"
 namespace Insert
 {
-	bool InsertAccount(const std::string& email, const std::string& pass)
+	bool InsertAccount(const Manager::Account& acc)
 	{
-		if (!Validation::IsValidEmail(email) || !Validation::IsValidPass(pass)) return false;
+		if (!Validation::IsValidAccount(acc)) return false;
 
 		auto shsql = Manager::GetSQL();
 		if (!shsql->SetDB("dataticket"))
@@ -15,8 +15,8 @@ namespace Insert
 		}
 
 		std::string hemail, hpass;
-		Crypt::CalcHash(email, hemail);
-		Crypt::CalcHash(pass, hpass);
+		Crypt::CalcHash(acc.email, hemail);
+		Crypt::CalcHash(acc.password, hpass);
 		if (shsql->Write("%s %s", "INSERT INTO ACCOUNTS(EMAIL,PASSWORD) VALUES(?,?)", hemail, hpass))
 		{
 			return true;
