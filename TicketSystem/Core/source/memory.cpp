@@ -28,11 +28,11 @@ namespace Mem
 		void* newData = nullptr;
 		if (mem)
 		{
-			int oldLen = strlen((char*)mem);
-			void* newData = Alloc(sz);
+			int oldLen = Len(mem);
+		    newData = Alloc(sz);
 			Mem::Copy(newData, mem, oldLen);
+			delete mem;
 		}
-		delete mem;
 		return newData;
 	}
 	void* Find(const void* src, char c, int size)
