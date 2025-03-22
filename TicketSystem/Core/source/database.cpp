@@ -2,7 +2,7 @@
 #ifndef SQL
 #define SQL
 #endif
-#include "database.hpp"
+#include "database.h"
 #include <mysql_driver.h>
 #include <mysql_connection.h>
 #include <cppconn/exception.h>
@@ -10,8 +10,8 @@
 #include <cppconn/statement.h>
 #include <cppconn/resultset.h>
 #include <cppconn/prepared_statement.h>
-#include "memory.hpp"
-#include "type.hpp"
+#include "memory.h"
+#include "type.h"
 namespace MySQL
 {
 	//driver instance to mysql server

@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "crypt.hpp"
-#include "type.hpp"
+#include "crypt.h"
+#include "type.h"
 extern "C"
 {
 #include "sha256.h"

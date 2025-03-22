@@ -19,12 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\core.hpp" />
-    <ClInclude Include="include\crypt.hpp" />
-    <ClInclude Include="include\database.hpp" />
-    <ClInclude Include="include\memory.hpp" />
+    <ClInclude Include="include\core.h" />
+    <ClInclude Include="include\crypt.h" />
+    <ClInclude Include="include\database.h" />
+    <ClInclude Include="include\memory.h" />
+    <ClInclude Include="include\type.h" />
     <ClInclude Include="include\type.hpp" />
-    <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\core.cpp" />

@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "core.hpp"
-#include "database.hpp"
+#include "core.h"
+#include "database.h"
 namespace Core
 {
 	bool Init()
