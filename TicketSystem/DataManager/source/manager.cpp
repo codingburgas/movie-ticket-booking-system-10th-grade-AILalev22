@@ -9,7 +9,7 @@ namespace Manager
 	}
 	bool Init(const std::string& host, const std::string& user, const std::string& pass)
 	{
-		if (!ctor)
+		if (!ctor.get())
 		{
 			ctor = std::make_shared<CTOR>(host, user, pass);
 			return ctor->Connect();
