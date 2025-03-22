@@ -148,25 +148,24 @@ namespace MySQL
 			std::string fmt2 = fmt;		
 			for (size_t i = 1; i <= cols; i++)
 			{
-				std::string buff;
+				std::string data;
 				switch (fmt2.front())
 				{
-				case 'd': case 'i': buff = std::to_string(rset->getInt(i)); break;
-				case 'f': buff = std::to_string(rset->getDouble(i)); break;
-				case 'u': buff = std::to_string(rset->getUInt(i)); break;
-				case 's': buff = rset->getString(i); break;
+				case 'd': case 'i': data = std::to_string(rset->getInt(i)); break;
+				case 'f': data = std::to_string(rset->getDouble(i)); break;
+				case 'u': data = std::to_string(rset->getUInt(i)); break;
+				case 's': data = rset->getString(i); break;
 				}
-				if (!buff.empty() && i != cols)
+				if (!data.empty() && i != cols)
 				{
-					buff.push_back(',');
+					data.push_back(',');
 				}
 				fmt2.erase(0, 1);
-				dst.append(buff);
+				dst.append(data);
 			}
 			if(!rset->isLast() || rset->isFirst() && rset->isLast())
 			dst.push_back('|');
 		}
-
 	}
 	void TrimFormat(std::string& fmt)
 	{
