@@ -27,9 +27,11 @@ namespace Validation
 			}
 			for (char p : permited)
 			{
+				if (special > 0) break;
 				if (c == p)
 				{
 					special++;
+					break;
 				}
 			}
 			if (c >= 'A' && c <= 'Z')
