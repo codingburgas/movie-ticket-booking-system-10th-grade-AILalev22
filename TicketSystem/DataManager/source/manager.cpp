@@ -3,7 +3,7 @@ static std::shared_ptr<CTOR> ctor;
 
 namespace Manager
 {
-	std::shared_ptr<CTOR> GetSQL()
+	std::shared_ptr<CTOR>& GetSQL()
 	{
 		return ctor;
 	}
