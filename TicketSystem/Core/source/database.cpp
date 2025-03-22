@@ -128,8 +128,8 @@ namespace MySQL
 	
 	void Connector::Read(std::string fmt, const std::string& query,std::string& dst)
 	{
-		TrimFormat(fmt);
 		if (fmt.empty()) return;
+		TrimFormat(fmt);
 
 		stmt = conn->createStatement();
 		try
@@ -169,7 +169,6 @@ namespace MySQL
 	}
 	void TrimFormat(std::string& fmt)
 	{
-		if (fmt.empty()) return;
 		std::string new_fmt;
 		char possible[] = { 'd','i','f','s','u' };
 		size_t len = sizeof(possible);
