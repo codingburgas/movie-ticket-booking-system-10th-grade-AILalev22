@@ -171,15 +171,14 @@ namespace MySQL
 	{
 		std::string new_fmt;
 		char possible[] = { 'd','i','f','s','u' };
-		size_t len = sizeof(possible);
 
 		for (char c : fmt)
 		{
-			for (size_t i = 0; i < len; i++)
+			for (char p : possible)
 			{
-				if (c == possible[i])
+				if (c == p)
 				{
-					new_fmt.push_back(possible[i]);
+					new_fmt.push_back(p);
 					break;
 				}
 			}
