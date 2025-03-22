@@ -23,8 +23,8 @@
     <ClInclude Include="include\crypt.hpp" />
     <ClInclude Include="include\database.hpp" />
     <ClInclude Include="include\memory.hpp" />
-    <ClInclude Include="include\pch.h" />
     <ClInclude Include="include\type.hpp" />
+    <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\core.cpp" />
@@ -142,7 +142,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;STATIC_CONCPP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Core\hashlib\include;..\Core\Include;mysql-connector-c++-9.1.0-winx64\include\jdbc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Core\;..\Core\hashlib\include;..\Core\Include;mysql-connector-c++-9.1.0-winx64\include\jdbc</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>

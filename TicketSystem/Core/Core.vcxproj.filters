@@ -28,7 +28,7 @@
     <ClInclude Include="include\memory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\pch.h">
+    <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

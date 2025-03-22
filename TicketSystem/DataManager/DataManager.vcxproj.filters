@@ -27,10 +27,10 @@
     <ClInclude Include="include\find.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\pch.h">
+    <ClInclude Include="include\manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\manager.h">
+    <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

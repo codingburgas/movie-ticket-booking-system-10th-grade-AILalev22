@@ -1,22 +1,28 @@
 #include "pch.h"
-
-static std::unique_ptr<MySQL::Connector> ctor;
+static std::shared_ptr<CTOR> ctor;
 
 namespace Manager
 {
-	
-	MySQL::Connector* GetSQL()
+	std::shared_ptr<CTOR> GetSQL()
 	{
-		return ctor.get();
+		return ctor;
 	}
 	bool Init(const std::string& host, const std::string& user, const std::string& pass)
 	{
-		ctor = std::make_unique<MySQL::Connector>(host, user, pass);
-		return ctor->Connect();
+		if (!ctor)
+		{
+			ctor = std::make_shared<CTOR>(host, user, pass);
+			return ctor->Connect();
+		}
+		return false;
 	}
 	bool Release()
 	{
-		ctor.reset();
-		return true;
+		if (ctor)
+		{
+			ctor.reset();
+			return true;
+		}
+		return false;
 	}
 }
