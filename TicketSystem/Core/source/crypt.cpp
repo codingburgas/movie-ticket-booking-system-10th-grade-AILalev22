@@ -1,50 +1,26 @@
-#include "crypt.h"
+#include "pch.h"
+#include "crypt.hpp"
+#include "type.hpp"
 extern "C"
 {
 #include "sha256.h"
 }
-#include "memory.h"
-#include "string.hpp"
 namespace Crypt
 {
-    char* CalcHash(const void* src)
+    void CalcHash(const std::string& src,std::string& dst)
     {
-        return CalcHash((void*)src);
-    }
-    char* CalcHash(void* src)
-    {
-        if (!src) return nullptr;
+        if (src.empty()) return;
         SHA256_CTX ctx;
         byte hash[SHA256_BLOCK_SIZE];
 
         sha256_init(&ctx);
-        sha256_update(&ctx, (byte*)src, Str::Len((char*)src));
+        sha256_update(&ctx, (byte*)src.c_str(), src.size());
         sha256_final(&ctx, hash);
-
-        return HashToStr(hash);
-    }
-    char* HashToStr(byte* hash)
-    {
-        char* ret = (char*)Mem::Alloc(2 * SHA256_BLOCK_SIZE + 1); // 2* 32b + 1,
-        int j = 0;
+        std::stringstream hstream;
         for (int i = 0; i < SHA256_BLOCK_SIZE; i++)
         {
-            char hex[2];
-            ByteToHex(hash[i], hex);
-            ret[j++] = hex[0];
-            ret[j++] = hex[1];
+            hstream << std::hex << std::setfill('0') << (int)hash[i];
         }
-        ret[j] = 0;
-        return ret;
-    }
-    void ByteToHex(char by, char* hex)
-    {
-        hex[0] = ToHex((by >> 4) & 0xf);
-        hex[1] = ToHex(by & 0xf);
-    }
-    char ToHex(int n)
-    {
-        if (n >= 0 && n <= 9) return n + '0';
-        return 'a' + n - 10;
+        dst = hstream.str();
     }
 }

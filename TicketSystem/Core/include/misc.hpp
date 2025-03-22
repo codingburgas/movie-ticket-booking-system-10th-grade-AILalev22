@@ -1,12 +1,9 @@
 #pragma once
-#include "memory.h"
-#include <new.h>
 template<class T>
 class AutoPtr
 {	
 	// generic T type ptr
 	mutable T* ptr;
-	void* memory;
 public:
 	AutoPtr(const T& val);
 	AutoPtr(T* val) : ptr(val)
@@ -33,11 +30,9 @@ class MovedPtr
 {
 	// generic T ptr
 	mutable T* ptr;
-	// placement new mem buff
-	mutable void* memory;
 public:
 	MovedPtr(const T& val);
-	MovedPtr(T* val) : memory(nullptr), ptr(val)
+	MovedPtr(T* val) : ptr(val)
 	{
 
 	}
@@ -66,29 +61,17 @@ public:
 	{
 		return ptr;
 	}
-	// return whether mem buff has any allocated memory
-	bool isAlloc()
-	{
-		return memory;
-	}
 };
 
 template<class T>
 AutoPtr<T>::AutoPtr(const T& val)
 {
-	memory = ALLOCOBJ(T);
-	ptr = new(memory) T(val);
+	ptr = new T();
 }
 template<class T>
 AutoPtr<T>::~AutoPtr()
 {
-	if (ptr)
-	{
-		ptr->~T();
-		ptr = nullptr;
-	}
-	if (memory)
-		Mem::Free(memory);
+	delete ptr;
 }
 template<class T>
 void MovedPtr<T>::operator=(const MovedPtr& p)
@@ -97,18 +80,10 @@ void MovedPtr<T>::operator=(const MovedPtr& p)
 	{
 		if (ptr)
 		{
-			ptr->~T();
-			ptr = nullptr;
-		}
-		if (memory)
-		{
-			Mem::Free(memory);
-			memory = nullptr;
+			delete ptr;
 		}
 		ptr = p.ptr;
 		p.ptr = nullptr;
-		memory = p.memory;
-		p.memory = nullptr;
 	}
 }
 template<class T>
@@ -116,14 +91,11 @@ MovedPtr<T>::MovedPtr(const MovedPtr& p)
 {
 	ptr = p.ptr;
 	p.ptr = nullptr;
-	memory = p.memory;
-	p.memory = nullptr;
 }
 template<class T>
 MovedPtr<T>::MovedPtr(const T& val)
 {
-	memory = ALLOCOBJ(T);
-	ptr = new(memory) T(val); // using placement new to construct an obj
+	ptr = new T();
 }
 
 template<class T>
@@ -131,11 +103,8 @@ MovedPtr<T>::~MovedPtr()
 {
 	if (ptr)
 	{
-		ptr->~T(); // calling T type constructor, because raw memory is used	
-		ptr = nullptr;
-	}
-	if (memory)
-		Mem::Free(memory);
+		delete ptr;
+	}	
 }
 
 

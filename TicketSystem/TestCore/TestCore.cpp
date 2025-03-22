@@ -1,18 +1,18 @@
 ﻿// TestCore.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include "core.h"
-#include "string.hpp"
+#include "core.hpp"
 #include <stdio.h>
-#include "vector.h"
-#include "database.h"
-#include "crypt.h" 
-#include "misc.h"
+#include "database.hpp"
+#include "crypt.hpp" 
+#include "misc.hpp"
+#include <string>
+#include <vector>
+#include <iostream>
 int main()
 {
 	Core::Init();
 	{
-		
 		/*void* mem_conn = Mem::Alloc(sizeof(MySQL::Connector));
 		MySQL::Connector* ctor = new (mem_conn) MySQL::Connector("tcp://127.0.0.1:3306", "root", "root1234!!??");
 		ctor->Connect();
@@ -24,11 +24,11 @@ int main()
 		
 		ctor->~Connector();
 		Mem::Free(mem_conn);*/
-		typedef Vector<MovedPtr<Vector<Str::String>>> StringArr;
-		StringArr vs;
-		vs.Add(Vector<Str::String>());
-		vs[0]->Add("string");
-		vs[0]->Add("hello");
+		MySQL::Connector* ctor = new MySQL::Connector("tcp://127.0.0.1:3306", "root", "root1234!!??");
+		ctor->Connect();
+		ctor->SetDB("dataticket");
+		char s[] = "hellosssssssssssssss";
+		
 	}
 	
 

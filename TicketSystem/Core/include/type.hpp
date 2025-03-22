@@ -1,12 +1,5 @@
 #pragma once
 #ifdef SQL
-#include <mysql_driver.h>
-#include <mysql_connection.h>
-#include <cppconn/exception.h>
-#include <cppconn/driver.h>
-#include <cppconn/statement.h>
-#include <cppconn/resultset.h>
-#include <cppconn/prepared_statement.h>
 typedef sql::PreparedStatement PSTMT;
 typedef sql::ResultSet RSET;
 typedef sql::Statement STMT;

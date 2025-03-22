@@ -1,27 +1,28 @@
 #pragma once
+#include <string>
 namespace MySQL
 {
 
 	class Connector
 	{
 		// database connect credentials
-		const char* credentials[3];
+		 std::string credentials[3];
 
 	public:
-		Connector(const char* host, const char* user, const char* pass);
+		Connector(const std::string& host, const std::string& user, const std::string& pass);
 		~Connector() = default;
 
 		// set the database to use
-		bool SetDB(const char* name);
+		bool SetDB(const std::string& name);
 		//connect to the mysql server
 		bool Connect();
 
 		// get data from a single column with a select query and C format
-		char* Read(const char* fmt, const char* query);
+		void Read(std::string fmt, const std::string& query, std::string& dst);
 		// insert values with a insert into query with C format
-		bool Write(const char* fmt, const char* query, ...);
+		bool Write(std::string fmt, const std::string& query, ...);
 		// executes all types of queries
-		bool Query(const char* query);
+		bool Query(const std::string& query);
 	};
 
 	// set mysql connector instances
@@ -30,5 +31,5 @@ namespace MySQL
 	bool Release();
 	// trim c-style format
 	// "%d %f" -> "df"
-	char* TrimFormat(const char* fmt);
+	void TrimFormat(std::string& fmt);
 }

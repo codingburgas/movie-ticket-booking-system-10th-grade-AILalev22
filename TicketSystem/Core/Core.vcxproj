@@ -19,22 +19,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\core.h" />
-    <ClInclude Include="include\crypt.h" />
-    <ClInclude Include="include\database.h" />
-    <ClInclude Include="include\memory.h" />
-    <ClInclude Include="include\misc.h" />
-    <ClInclude Include="include\string.hpp" />
-    <ClInclude Include="include\type.h" />
-    <ClInclude Include="include\vector.h" />
+    <ClInclude Include="include\core.hpp" />
+    <ClInclude Include="include\crypt.hpp" />
+    <ClInclude Include="include\database.hpp" />
+    <ClInclude Include="include\memory.hpp" />
+    <ClInclude Include="include\misc.hpp" />
+    <ClInclude Include="include\pch.h" />
+    <ClInclude Include="include\type.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\core.cpp" />
     <ClCompile Include="source\crypt.cpp" />
     <ClCompile Include="source\database.cpp" />
     <ClCompile Include="source\memory.cpp" />
-    <ClCompile Include="source\string.cpp" />
-    <ClCompile Include="source\vector.cpp" />
+    <ClCompile Include="source\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -144,6 +144,8 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;STATIC_CONCPP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Core\hashlib\include;..\Core\Include;mysql-connector-c++-9.1.0-winx64\include\jdbc</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

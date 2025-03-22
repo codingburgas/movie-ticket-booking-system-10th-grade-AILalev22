@@ -1,50 +1,40 @@
-#include "memory.h"
-#include <tchar.h>
-#include <windows.h>
-
+#include "pch.h"
+#include "memory.hpp"
+#include "type.hpp"
 namespace Mem
 {
-	static HANDLE globalHeap = 0;
-	void* AllocHeap(HANDLE heap, int sz)
+	int Len(const void* src)
 	{
-		if (sz > 0)
-			return HeapAlloc(heap, 0, sz);
-		return 0;
+		return Len((void*)src);
+	}
+	int Len(void* src)
+	{
+		byte* bsrc = (byte*)src;
+		int res = 0;
+		while (*bsrc++) res++;
+		return res;
 	}
 	void* Alloc(int sz)
 	{
-		return AllocHeap(globalHeap, sz);
-	}
-
-	void* ReallocHeap(HANDLE heap, void* ptr, int sz)
-	{
-		if (sz > 0)
-			return HeapReAlloc(heap, 0, ptr, sz);
-		return 0;
-	}
-	void* Realloc(void* ptr, int sz)
-	{
-		return ReallocHeap(globalHeap, ptr, sz);
-	}
-
-	void FreeHeap(HANDLE heap, void* ptr)
-	{
-		HeapFree(heap, 0, ptr);
+		return ::operator new(sz);
 	}
 	void Free(void* ptr)
 	{
-		FreeHeap(globalHeap, ptr);
+		::operator delete(ptr);
 	}
 
-	bool Init()
+	void* Realloc(void* mem,int sz)
 	{
-		return globalHeap = HeapCreate(0, 0, 0);
+		void* newData = nullptr;
+		if (mem)
+		{
+			int oldLen = strlen((char*)mem);
+			void* newData = Alloc(sz);
+			Mem::Copy(newData, mem, oldLen);
+		}
+		delete mem;
+		return newData;
 	}
-	bool Release()
-	{
-		return HeapDestroy(globalHeap);
-	}
-
 	void* Find(const void* src, char c, int size)
 	{
 		if (!src || size <= 0) return nullptr;

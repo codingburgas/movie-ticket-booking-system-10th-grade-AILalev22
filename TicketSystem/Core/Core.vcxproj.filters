@@ -13,28 +13,25 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\core.h">
+    <ClInclude Include="include\core.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\memory.h">
+    <ClInclude Include="include\type.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\string.hpp">
+    <ClInclude Include="include\database.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\type.h">
+    <ClInclude Include="include\crypt.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\vector.h">
+    <ClInclude Include="include\misc.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\database.h">
+    <ClInclude Include="include\memory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\crypt.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\misc.h">
+    <ClInclude Include="include\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -42,19 +39,16 @@
     <ClCompile Include="source\core.cpp">
       <Filter>Source FIles</Filter>
     </ClCompile>
-    <ClCompile Include="source\memory.cpp">
-      <Filter>Source FIles</Filter>
-    </ClCompile>
-    <ClCompile Include="source\string.cpp">
-      <Filter>Source FIles</Filter>
-    </ClCompile>
-    <ClCompile Include="source\vector.cpp">
-      <Filter>Source FIles</Filter>
-    </ClCompile>
     <ClCompile Include="source\database.cpp">
       <Filter>Source FIles</Filter>
     </ClCompile>
     <ClCompile Include="source\crypt.cpp">
+      <Filter>Source FIles</Filter>
+    </ClCompile>
+    <ClCompile Include="source\memory.cpp">
+      <Filter>Source FIles</Filter>
+    </ClCompile>
+    <ClCompile Include="source\pch.cpp">
       <Filter>Source FIles</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,22 +1,10 @@
 ﻿#pragma once
-#include "type.h"
-// allocate an object with just type
-#define ALLOCOBJ(T) (T*)Mem::Alloc(sizeof(T))
+#include "type.hpp"
 
 namespace Mem
 {
-	// alloc from global heap
-	void* Alloc(int sz);
-	// realloc memory on global heap
-	void* Realloc(void* ptr,int sz);
-	// free memory on global heap
-	void Free(void* ptr);
-
-	// set global heap
-	bool Init();
-	// destroy global heap
-	bool Release();
-
+	int Len(const void* src);
+	int Len(void* src);
 	// return a ptr to first found occurance of c
 	void* Find(const void* ptr, char c, int c_ptr);
 	// copt src to dst based on size

@@ -1,10 +1,17 @@
+#include "pch.h"
 #ifndef SQL
 #define SQL
 #endif
-#include "string.hpp"
-#include "type.h"
-#include "database.h"
-#include <stdarg.h>
+#include "database.hpp"
+#include <mysql_driver.h>
+#include <mysql_connection.h>
+#include <cppconn/exception.h>
+#include <cppconn/driver.h>
+#include <cppconn/statement.h>
+#include <cppconn/resultset.h>
+#include <cppconn/prepared_statement.h>
+#include "memory.hpp"
+#include "type.hpp"
 namespace MySQL
 {
 	//driver instance to mysql server
@@ -36,7 +43,7 @@ namespace MySQL
 			delete rset;
 		return true;
 	}
-	Connector::Connector(const char* host, const char* user, const char* pass)
+	Connector::Connector(const std::string& host, const std::string& user, const std::string& pass)
 	{
 		credentials[0] = host;
 		credentials[1] = user;
@@ -56,7 +63,7 @@ namespace MySQL
 		}
 		return true;
 	}
-	bool Connector::SetDB(const char* name)
+	bool Connector::SetDB(const std::string& name)
 	{
 		try
 		{
@@ -68,7 +75,7 @@ namespace MySQL
 		}
 		return true;
 	}
-	bool Connector::Query(const char* query)
+	bool Connector::Query(const std::string& query)
 	{
 		try
 		{
@@ -81,30 +88,37 @@ namespace MySQL
 		}
 		return true;
 	}
-	bool Connector::Write(const char* fmt, const char* query, ...)
+	bool Connector::Write(std::string fmt, const std::string& query, ...)
 	{
-		int len = Str::Len(fmt);
-		if (!fmt || !query || !len) return false;
+		size_t len = fmt.size();
+		if (fmt.empty() || query.empty() || len == 0) return false;
 	
-		pstmt = conn->prepareStatement(query);
-
+		try
+		{
+			pstmt = conn->prepareStatement(query);
+		}
+		catch (...)
+		{
+			return false;
+		}
 		va_list va;
-		va_start(va, query);
+		va_start(va, query.c_str());
 
+		int i = 1;
 		int arg_d;
 		double arg_f;
-		const char* arg_s;
+		std::string* arg_s;
 		uint arg_u;
-		int i = 1;
 		while(len--)
 		{
-			switch (*fmt++)
+			switch (fmt.front())
 			{
 			case 'd':arg_d = va_arg(va, int); pstmt->setInt(i++, arg_d); break; // follow c-style format
 			case 'f': arg_f = va_arg(va, double); pstmt->setDouble(i++, arg_f); break;
-			case 's': arg_s = va_arg(va, const char*); pstmt->setString(i++, arg_s); break;
+			case 's': arg_s = va_arg(va, std::string*); pstmt->setString(i++,*arg_s); break;
 			case 'u': arg_u = va_arg(va, uint); pstmt->setUInt(i++, arg_u); break;
 			}
+			fmt.erase(0, 1);
 		}
 		va_end(va);
 		try
@@ -119,10 +133,10 @@ namespace MySQL
 	}
 
 	
-	char* Connector::Read(const char* fmt, const char* query)
+	void Connector::Read(std::string fmt, const std::string& query,std::string& dst)
 	{
-		char* fmt2 = TrimFormat(fmt);
-		if (!fmt2) return nullptr;
+		TrimFormat(fmt);
+		if (fmt.empty()) return;
 
 		stmt = conn->createStatement();
 		try
@@ -131,66 +145,54 @@ namespace MySQL
 		}
 		catch (...)
 		{
-			Mem::Free(fmt2);
-			return nullptr;
+			return;
 		}
 
-		Str::String res; //result with all retrived columns in each row
-		int cols = Str::Len(fmt2);
-
+		size_t cols = fmt.size();
+		
 		while (rset->next()) // itereate through each row of res set
 		{
-			char* tmpf = fmt2;
-			int read = 0;
-			char buff[50];
-			for (int i = 1; i <= cols; i++)
+			std::string fmt2 = fmt;		
+			for (size_t i = 1; i <= cols; i++)
 			{
-				switch (*tmpf++)
+				std::string buff;
+				switch (fmt2.front())
 				{
-				case 'd':case 'i': read = snprintf(buff, sizeof(buff), "%d", rset->getInt(i)); break; // read and append to String if matching any format
-				case 'u': read = snprintf(buff, sizeof(buff), "%u", rset->getUInt(i)); break;
-				case 'f': read = snprintf(buff, sizeof(buff), "%f", rset->getDouble(i)); break;
-				case 's': read = snprintf(buff, sizeof(buff), "%s", rset->getString(i).c_str()); break;
+				case 'd': case 'i': buff = std::to_string(rset->getInt(i)); break;
+				case 'f': buff = std::to_string(rset->getDouble(i)); break;
+				case 'u': buff = std::to_string(rset->getUInt(i)); break;
+				case 's': buff = rset->getString(i); break;
 				}
-				if (read)
+				if (!buff.empty() && i != cols)
 				{
-					if (i != cols)
-					{
-						buff[read] = ',';
-						buff[read + 1] = 0;
-					}
-					else
-					{
-						buff[read] = 0;
-					}
-					res.Append(buff);
+					buff.push_back(',');
+				}
+				fmt2.erase(0, 1);
+				dst.append(buff);
+			}
+			if(!rset->isLast() || rset->isFirst() && rset->isLast())
+			dst.push_back('|');
+		}
+
+	}
+	void TrimFormat(std::string& fmt)
+	{
+		if (fmt.empty()) return;
+		std::string new_fmt;
+		char possible[] = { 'd','i','f','s','u' };
+		size_t len = sizeof(possible);
+
+		for (char c : fmt)
+		{
+			for (size_t i = 0; i < len; i++)
+			{
+				if (c == possible[i])
+				{
+					new_fmt.push_back(possible[i]);
+					break;
 				}
 			}
-			if(!rset->isLast())
-			res.PushBack('|');
 		}
-
-		Mem::Free(fmt2);
-		char* ret = (char*)Mem::Duplication(res.Cstr(), res.Size() + 1); // result str copy
-		return ret;
-	}
-	char* TrimFormat(const char* fmt)
-	{
-		if (!fmt) return nullptr;
-		char buff[30];
-		int i = 0;
-		char possible[] = { 'd','i','f','s','u' };
-
-		while (*fmt)
-		{
-			if(Mem::Find(possible,*fmt, sizeof(possible)))
-				buff[i++] = *fmt;
-			fmt++;
-		}
-		buff[i++] = 0;
-		char* ret = (char*)Mem::Alloc(i);
-
-		Mem::Copy(ret, buff, i);
-		return ret;
+		fmt = new_fmt;
 	}
 }
