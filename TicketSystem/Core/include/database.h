@@ -17,6 +17,11 @@ namespace MySQL
 		 RSET* rset;
 		 //mysql prepared statement
 		 PSTMT* pstmt;
+
+		 //set mysql instances
+		 void Init();
+		 //release mysql instances
+		 void Release();
 	public:
 		Connector(const std::string& host, const std::string& user, const std::string& pass);
 		~Connector();
@@ -32,10 +37,6 @@ namespace MySQL
 		bool Write(std::string fmt, const std::string& query, ...);
 		// executes all types of queries
 		bool Query(const std::string& query);
-		//set mysql instances
-		void Init();
-		//release mysql instances
-		void Release();
 	};
 
 	// trim c-style format
