@@ -1,10 +1,10 @@
 ﻿// TestCore.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include "core.hpp"
+#include "core.h"
 #include <stdio.h>
-#include "database.hpp"
-#include "crypt.hpp"
+#include "database.h"
+#include "crypt.h"
 #include <string>
 #include <vector>
 #include <iostream>
@@ -26,8 +26,8 @@ int main()
 		ctor->~Connector();
 		Mem::Free(mem_conn);*/
 		
-		Manager::Init("tcp://127.0.0.1:3306", "root", "root1234!!??");
-		Insert::InsertAccount("example", "1234");
+		Manager::Init("tcp://127.0.0.1:3306", { "root", "root1234!!??" });
+		Insert::InsertAccount({ "example", "1234" });
 		Manager::Release();
 	}
 	

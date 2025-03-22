@@ -14,9 +14,21 @@
 #include "memory.h"
 namespace MySQL
 {
+	// mysql server instances
+	static DRIVER* driver;
+
+	static CONN* conn;
+
+	static PSTMT* pstmt;
+
+	static STMT* stmt;
+
+	static RSET* rset;
 
 	void Connector::Init()
 	{
+		if (driver)
+			Release();
 		driver = sql::mysql::get_mysql_driver_instance();;
 		stmt = nullptr; pstmt = nullptr; conn = nullptr; rset = nullptr;
 	}

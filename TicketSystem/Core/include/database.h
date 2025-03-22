@@ -7,16 +7,6 @@ namespace MySQL
 	{
 		// database connect credentials
 		 std::string credentials[3];
-		 //mysql driver
-		 DRIVER* driver;
-		 // mysql connection
-		 CONN* conn;
-		 // mysql statement
-		 STMT* stmt;
-		 // mysql result set
-		 RSET* rset;
-		 //mysql prepared statement
-		 PSTMT* pstmt;
 
 		 //set mysql instances
 		 void Init();
