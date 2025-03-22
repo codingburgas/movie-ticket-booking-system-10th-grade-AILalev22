@@ -14,24 +14,13 @@
 #include "type.h"
 namespace MySQL
 {
-	//driver instance to mysql server
-	static DRIVER* driver;
-	// instance used to connect to database
-	static CONN* conn;
-	// instance used to execute direct queries
-	static STMT* stmt;
-	// instance used to get sets from select queries
-	static RSET* rset;
-	// instance used to build prepared statements and execute them
-	static PSTMT* pstmt;
 
-	bool Init()
+	void Connector::Init()
 	{
 		driver = sql::mysql::get_mysql_driver_instance();;
 		stmt = nullptr; pstmt = nullptr; conn = nullptr; rset = nullptr;
-		return true;
 	}
-	bool Release()
+	void Connector::Release()
 	{
 		if (stmt)
 			delete stmt;
@@ -41,13 +30,17 @@ namespace MySQL
 			delete conn;
 		if (rset)
 			delete rset;
-		return true;
 	}
 	Connector::Connector(const std::string& host, const std::string& user, const std::string& pass)
 	{
 		credentials[0] = host;
 		credentials[1] = user;
 		credentials[2] = pass;
+		Init();
+	}
+	Connector::~Connector()
+	{
+		Release();
 	}
 	bool Connector::Connect()
 	{
