@@ -4,3 +4,4 @@
 #include <string>
 #include <cstdarg>
 #include "database.hpp"
+#include "manager.h"
