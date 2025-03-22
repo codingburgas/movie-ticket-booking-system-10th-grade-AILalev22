@@ -25,9 +25,6 @@
     <ClInclude Include="include\crypt.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\misc.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\memory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>

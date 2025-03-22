@@ -23,7 +23,6 @@
     <ClInclude Include="include\crypt.hpp" />
     <ClInclude Include="include\database.hpp" />
     <ClInclude Include="include\memory.hpp" />
-    <ClInclude Include="include\misc.hpp" />
     <ClInclude Include="include\pch.h" />
     <ClInclude Include="include\type.hpp" />
   </ItemGroup>
