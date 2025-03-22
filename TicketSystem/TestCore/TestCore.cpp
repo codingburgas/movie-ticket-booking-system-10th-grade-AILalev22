@@ -4,11 +4,12 @@
 #include "core.hpp"
 #include <stdio.h>
 #include "database.hpp"
-#include "crypt.hpp" 
-#include "misc.hpp"
+#include "crypt.hpp"
 #include <string>
 #include <vector>
 #include <iostream>
+#include "manager.h"
+#include "insert.h"
 int main()
 {
 	Core::Init();
@@ -24,11 +25,10 @@ int main()
 		
 		ctor->~Connector();
 		Mem::Free(mem_conn);*/
-		MySQL::Connector* ctor = new MySQL::Connector("tcp://127.0.0.1:3306", "root", "root1234!!??");
-		ctor->Connect();
-		ctor->SetDB("dataticket");
-		char s[] = "hellosssssssssssssss";
 		
+		Manager::Init("tcp://127.0.0.1:3306", "root", "root1234!!??");
+		Insert::InsertAccount("example", "1234");
+		Manager::Release();
 	}
 	
 
