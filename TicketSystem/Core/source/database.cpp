@@ -1,7 +1,7 @@
+#include "pch.h"
 #ifndef SQL
 #define SQL
 #endif
-#include "pch.h"
 #include <mysql_driver.h>
 #include <mysql_connection.h>
 #include <cppconn/exception.h>
@@ -9,6 +9,7 @@
 #include <cppconn/statement.h>
 #include <cppconn/resultset.h>
 #include <cppconn/prepared_statement.h>
+#include "type.h"
 #include "database.h"
 #include "memory.h"
 namespace MySQL

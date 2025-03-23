@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "type.h"
 #include "memory.h"
 namespace Mem
 {

@@ -3,4 +3,3 @@
 #include <iomanip>
 #include <string>
 #include <cstdarg>
-#include "type.h"

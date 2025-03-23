@@ -24,7 +24,7 @@
     <ClInclude Include="include\database.h" />
     <ClInclude Include="include\memory.h" />
     <ClInclude Include="include\type.h" />
-    <ClInclude Include="include\type.hpp" />
+    <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\core.cpp" />
@@ -32,6 +32,7 @@
     <ClCompile Include="source\database.cpp" />
     <ClCompile Include="source\memory.cpp" />
     <ClCompile Include="source\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
@@ -121,17 +122,19 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CORE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Core\include;..\Core\mysql-connector-c++-9.1.0-winx64\include\jdbc;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Core\;..\Core\include;..\Core\mysql-connector-c++-9.1.0-winx64\include\jdbc;..\Core\hashlib\include;</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>mysqlcppconn-static.lib;</AdditionalDependencies>
+      <AdditionalDependencies>mysqlcppconn-static.lib;sha-256.lib;</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>..\Core\mysql-connector-c++-9.1.0-winx64\lib64\vs14;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Core\mysql-connector-c++-9.1.0-winx64\lib64\vs14;..\Core\hashlib\lib;</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

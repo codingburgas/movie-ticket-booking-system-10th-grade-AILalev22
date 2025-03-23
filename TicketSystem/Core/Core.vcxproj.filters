@@ -13,9 +13,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\type.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\core.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -29,6 +26,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\type.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
