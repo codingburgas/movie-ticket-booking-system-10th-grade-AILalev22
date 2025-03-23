@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "memory.h"
-#include "type.h"
 namespace Mem
 {
 	int Len(const void* src)

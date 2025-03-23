@@ -15,6 +15,13 @@ namespace Manager
 			ctor = std::make_shared<CTOR>(host, dbaccount.username, dbaccount.password);
 			return ctor->Connect();
 		}
+		else
+		{
+			if (Release())
+			{
+				Init(host, dbaccount);
+			}
+		}
 		return false;
 	}
 	bool Release()
