@@ -96,7 +96,7 @@ namespace MySQL
 	bool Connector::Write(std::string fmt, const std::string& query, ...)
 	{
 		size_t len = fmt.size();
-		if (fmt.empty() || query.empty() || len == 0) return false;
+		if (fmt.empty() || query.empty()) return false;
 	
 		try
 		{
