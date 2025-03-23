@@ -15,7 +15,7 @@ namespace Find
 		std::string hemail;
 		Crypt::CalcHash(acc.email, hemail);
 
-		if (shsql->Read("%s", "SELECT EMAIL FROM ACCOUNTS WHERE EMAIL = '" + hemail + "'", row))
+		if (shsql->Read("%s", "SELECT EMAIL FROM ACCOUNTS WHERE EMAIL = '" + hemail + "'", row)) // possible injection, fix later Read
 		{
 			return !row.empty();
 		}		

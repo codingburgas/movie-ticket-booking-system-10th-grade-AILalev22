@@ -5,16 +5,16 @@
 #include "find.h"
 namespace Insert
 {
-	bool InsertAccount(const Manager::Account& acc)
+	int InsertAccount(const Manager::Account& acc)
 	{
-		if (Find::FindAccount(acc)) return false;
+		if (Find::FindAccount(acc)) return EXISTS;
 
-		if (!Validation::IsValidAccount(acc)) return false;
+		if (!Validation::IsValidAccount(acc)) return INVALID_INPUT;
 
 		auto shsql = Manager::GetSQL();
 		if (!shsql->SetDB("dataticket"))
 		{
-			return false;
+			return ERROR_DATABASE;
 		}
 
 		std::string hemail, hpass;
@@ -23,8 +23,8 @@ namespace Insert
 		
 		if (shsql->Write("%s %s", "INSERT INTO ACCOUNTS(EMAIL,PASSWORD) VALUES(?,?)", hemail, hpass))
 		{
-			return true;
+			return SUCCESSFUL;
 		}
-		return false;		
+		return ERROR_DATABASE;
 	}
 }
