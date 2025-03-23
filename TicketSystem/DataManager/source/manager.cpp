@@ -1,8 +1,9 @@
 #include "pch.h"
-static std::shared_ptr<CTOR> ctor;
 
 namespace Manager
 {
+	static std::shared_ptr<CTOR> ctor;
+
 	std::shared_ptr<CTOR>& GetSQL()
 	{
 		return ctor;
