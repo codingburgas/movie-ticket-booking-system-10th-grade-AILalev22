@@ -16,9 +16,9 @@ namespace Validation
 	{
 		if (pass.size() < 8) return false;
 				
-		std::regex upper("([A-Z])"), forbidden("([-_.~!$ & () *= +:; #])"), permited(R"([\"<>{}\[\]\\^`|/])");
+		std::regex num("([0-9])"), upper("([A-Z])"), forbidden("([-_.~!$ & () *= +:; #])"), permited(R"([\"<>{}\[\]\\^`|/])");
 
-		if (std::regex_match(pass, upper) && std::regex_match(pass, permited) && !std::regex_match(pass, forbidden))
+		if (std::regex_match(pass, num) && std::regex_match(pass, upper) && std::regex_match(pass, permited) && !std::regex_match(pass, forbidden))
 			return false;
 		return true;
 	}

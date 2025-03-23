@@ -42,7 +42,6 @@ namespace MySQL
 			delete conn;
 		if (rset)
 			delete rset;
-		stmt = nullptr; pstmt = nullptr; conn = nullptr; rset = nullptr;
 	}
 	Connector::Connector(const std::string& host, const std::string& user, const std::string& pass)
 	{
