@@ -22,9 +22,9 @@
     <ClInclude Include="include\find.h" />
     <ClInclude Include="include\insert.h" />
     <ClInclude Include="include\manager.h" />
+    <ClInclude Include="include\pch\pch.h" />
     <ClInclude Include="include\update.h" />
     <ClInclude Include="include\valid.h" />
-    <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\find.cpp" />
@@ -136,7 +136,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\DataManager\;..\Core\include;..\DataManager\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\DataManager\include\pch\;..\Core\include;..\DataManager\include</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
