@@ -8,18 +8,18 @@ namespace Manager
 	{
 		return ctor;
 	}
-	bool Init(const std::string& host, const Account& dbaccount)
+	bool Init(const std::string& host, const std::string& user, const std::string& pass)
 	{
 		if (!ctor.get())
 		{
-			ctor = std::make_shared<CTOR>(host, dbaccount.username, dbaccount.password);
+			ctor = std::make_shared<CTOR>(host, user, pass);
 			return ctor->Connect();
 		}
 		else
 		{
 			if (Release())
 			{
-				Init(host, dbaccount);
+				Init(host, user,pass);
 			}
 		}
 		return false;

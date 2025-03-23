@@ -27,8 +27,6 @@ namespace MySQL
 
 	void Connector::Init()
 	{
-		if (conn)
-			Release();
 		driver = sql::mysql::get_mysql_driver_instance();;
 		stmt = nullptr; pstmt = nullptr; conn = nullptr; rset = nullptr;
 	}
@@ -138,24 +136,24 @@ namespace MySQL
 	}
 
 	
-	void Connector::Read(std::string fmt, const std::string& query,std::string& dst)
+	bool Connector::Read(std::string fmt, const std::string& query,std::string& dst)
 	{
-		if (fmt.empty()) return;
+		if (fmt.empty()) return false;
 		TrimFormat(fmt);
 
 		stmt = conn->createStatement();
 		try
 		{
-			rset = stmt->executeQuery(query); // try executing query and if error, free fmt copy and stop
+			rset = stmt->executeQuery(query); // try executing query and if error, stop function
 		}
 		catch (...)
 		{
-			return;
+			return false;
 		}
 
 		size_t cols = fmt.size();
 		
-		while (rset->next()) // itereate through each row of res set
+		while (rset->next()) // iterate through each row of res set
 		{
 			std::string fmt2 = fmt;		
 			for (size_t i = 1; i <= cols; i++)
@@ -178,17 +176,20 @@ namespace MySQL
 			if(!rset->isLast() || rset->isFirst() && rset->isLast())
 			dst.push_back('|');
 		}
+
+		if (dst.empty()) return false;
+		return true;
 	}
 	void TrimFormat(std::string& fmt)
 	{
 		std::string new_fmt;
 		char possible[] = { 'd','i','f','s','u' };
 
-		for (char c : fmt)
+		for (char f : fmt)
 		{
 			for (char p : possible)
 			{
-				if (c == p)
+				if (f == p)
 				{
 					new_fmt.push_back(p);
 					break;

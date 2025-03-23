@@ -2,10 +2,13 @@
 #include "insert.h"
 #include "crypt.h"
 #include "valid.h"
+#include "find.h"
 namespace Insert
 {
 	bool InsertAccount(const Manager::Account& acc)
 	{
+		if (Find::FindAccount(acc)) return false;
+
 		if (!Validation::IsValidAccount(acc)) return false;
 
 		auto shsql = Manager::GetSQL();
@@ -17,6 +20,7 @@ namespace Insert
 		std::string hemail, hpass;
 		Crypt::CalcHash(acc.email, hemail);
 		Crypt::CalcHash(acc.password, hpass);
+		
 		if (shsql->Write("%s %s", "INSERT INTO ACCOUNTS(EMAIL,PASSWORD) VALUES(?,?)", hemail, hpass))
 		{
 			return true;

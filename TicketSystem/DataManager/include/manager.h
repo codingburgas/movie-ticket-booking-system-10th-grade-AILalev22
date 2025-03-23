@@ -5,11 +5,12 @@ namespace Manager
 {	
 	struct Account
 	{
-		std::string username;
 		std::string email;
 		std::string password;
 	};
-	bool Init(const std::string& host,const Account& dbaccount);
+	// init database
+	bool Init(const std::string& host, const std::string& user, const std::string& pass);
+	// release database
 	bool Release();
 
 	std::shared_ptr<CTOR>& GetSQL();
