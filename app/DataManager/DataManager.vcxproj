@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\entity.h" />
     <ClInclude Include="include\find.h" />
     <ClInclude Include="include\insert.h" />
     <ClInclude Include="include\manager.h" />
@@ -27,6 +28,7 @@
     <ClInclude Include="include\valid.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="source\entity.cpp" />
     <ClCompile Include="source\find.cpp" />
     <ClCompile Include="source\insert.cpp" />
     <ClCompile Include="source\manager.cpp" />

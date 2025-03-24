@@ -10,13 +10,11 @@
 #include <iostream>
 #include "manager.h"
 #include "insert.h"
-#include "find.h"
-#include "valid.h"
 int main()
 {
 	Core::Init();
 	Manager::Init("tcp://127.0.0.1:3306", "root","root1234!!??" );
-	std::cout << Insert::InsertAccount({ "abcde@gmail.com","123456789" });
+	std::cout << Insert::InsertAccount({ "abcdef@gmail.com","123456789" });
 
 
 	Manager::Release();

@@ -4,3 +4,4 @@
 #include <vector>
 #include "database.h"
 #include "manager.h"
+#include "crypt.h"

@@ -1,17 +1,17 @@
 #include "pch.h"
+#include "entity.h"
 #include "insert.h"
-#include "crypt.h"
-#include "valid.h"
 #include "find.h"
+#include "valid.h"
 namespace Insert
 {
-	int InsertAccount(const Manager::Account& acc)
+	int InsertAccount(const Entity::Account& acc)
 	{
 		if (Find::FindAccount(acc)) return EXISTS;
 
 		if (!Validation::IsValidAccount(acc)) return INVALID_INPUT;
 
-		auto shsql = Manager::GetSQL();
+		auto& shsql = Manager::GetSQL();
 		if (!shsql->SetDB("dataticket"))
 		{
 			return ERROR_DATABASE;

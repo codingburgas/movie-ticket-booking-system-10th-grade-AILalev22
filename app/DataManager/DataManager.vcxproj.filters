@@ -33,6 +33,9 @@
     <ClInclude Include="include\pch\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\valid.cpp">
@@ -51,6 +54,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

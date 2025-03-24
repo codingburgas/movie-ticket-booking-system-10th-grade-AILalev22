@@ -1,9 +1,9 @@
 #include "pch.h"
+#include "entity.h"
 #include "find.h"
-#include "crypt.h"
 namespace Find
 {
-	bool FindAccount(const Manager::Account& acc)
+	bool FindAccount(const Entity::Account& acc)
 	{
 		auto shsql = Manager::GetSQL();
 		if (!shsql->SetDB("dataticket"))

@@ -1,9 +1,10 @@
 #include "pch.h"
+#include "entity.h"
 #include "valid.h"
 #include <regex>
 namespace Validation
 {
-	bool IsValidAccount(const Manager::Account& acc)
+	bool IsValidAccount(const Entity::Account& acc)
 	{
 		return IsValidEmail(acc.email) && IsValidPass(acc.password);
 	}

@@ -1,5 +1,5 @@
 #pragma once
-
+#include "entity.h"
 namespace Insert
 {
 	enum
@@ -10,5 +10,5 @@ namespace Insert
 		SUCCESSFUL
 	};
 	// insert an account into the database
-	int InsertAccount(const Manager::Account& acc);
+	int InsertAccount(const Entity::Account& acc);
 }
