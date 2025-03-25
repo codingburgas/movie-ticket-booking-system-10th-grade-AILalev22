@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "database.h"
 #include "manager.h"
-namespace Manager
+namespace MySQL
 {
 	static std::shared_ptr<CTOR> ctor;
 
@@ -9,7 +9,7 @@ namespace Manager
 	{
 		return ctor;
 	}
-	bool Init(const std::string& host, const std::string& user, const std::string& pass)
+	bool InitManager(const std::string& host, const std::string& user, const std::string& pass)
 	{
 		if (!ctor.get())
 		{
@@ -18,14 +18,14 @@ namespace Manager
 		}
 		else
 		{
-			if (Release())
+			if (ReleaseManager())
 			{
-				Init(host, user,pass);
+				InitManager(host, user,pass);
 			}
 		}
 		return false;
 	}
-	bool Release()
+	bool ReleaseManager()
 	{
 		if (ctor)
 		{
