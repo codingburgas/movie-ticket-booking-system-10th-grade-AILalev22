@@ -12,12 +12,8 @@
 #include "error.h"
 int main()
 {
-	Core::Init();;
-	int is_init = 0;
-	if (is_init = MySQL::InitManager("tcp://127.0.0.1:3306", "root", "root1234!!??"))
-	{
-
-	}
+	int is_init = Core::Init("tcp://127.0.0.1:3306", "root", "root1234!!??");;
+	
 	if (!is_init)
 	{
 		printf("Manager is not init");
@@ -38,7 +34,6 @@ int main()
 		}
 	}
 	
-	MySQL::ReleaseManager();
 	Core::Release();
 }
 

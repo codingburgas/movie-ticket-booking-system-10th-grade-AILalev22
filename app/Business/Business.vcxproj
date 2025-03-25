@@ -118,7 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\DALib\include;..\Business\include\;..\Entity\include;..\Core\include;..\Business\include\pch\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Access\include;..\Business\include\;..\Entity\include;..\Core\include;..\Business\include\pch\;</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -129,7 +129,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>Entity.lib;Core.lib;DALib.lib;</AdditionalDependencies>
+      <AdditionalDependencies>Entity.lib;Core.lib;Access.lib;</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>..\x64\Release</AdditionalLibraryDirectories>

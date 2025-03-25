@@ -9,7 +9,7 @@ namespace MySQL
 	{
 		return ctor;
 	}
-	bool InitManager(const std::string& host, const std::string& user, const std::string& pass)
+	bool Init(const std::string& host, const std::string& user, const std::string& pass)
 	{
 		if (!ctor.get())
 		{
@@ -18,14 +18,14 @@ namespace MySQL
 		}
 		else
 		{
-			if (ReleaseManager())
+			if (Release())
 			{
-				InitManager(host, user,pass);
+				Init(host, user,pass);
 			}
 		}
 		return false;
 	}
-	bool ReleaseManager()
+	bool Release()
 	{
 		if (ctor)
 		{

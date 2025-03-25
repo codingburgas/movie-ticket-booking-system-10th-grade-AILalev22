@@ -18,6 +18,16 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\insert.h" />
+    <ClInclude Include="include\pch\pch.h" />
+    <ClInclude Include="include\update.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\insert.cpp" />
+    <ClCompile Include="source\pch.cpp" />
+    <ClCompile Include="source\update.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -134,16 +144,6 @@
       <AdditionalLibraryDirectories>..\x64\Release</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="include\insert.h" />
-    <ClInclude Include="include\pch\pch.h" />
-    <ClInclude Include="include\update.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="source\insert.cpp" />
-    <ClCompile Include="source\pch.cpp" />
-    <ClCompile Include="source\update.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
