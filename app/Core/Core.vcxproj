@@ -22,14 +22,17 @@
     <ClInclude Include="include\core.h" />
     <ClInclude Include="include\crypt.h" />
     <ClInclude Include="include\database.h" />
+    <ClInclude Include="include\manager.h" />
     <ClInclude Include="include\memory.h" />
     <ClInclude Include="include\pch\pch.h" />
+    <ClInclude Include="include\error.h" />
     <ClInclude Include="include\type.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\core.cpp" />
     <ClCompile Include="source\crypt.cpp" />
     <ClCompile Include="source\database.cpp" />
+    <ClCompile Include="source\manager.cpp" />
     <ClCompile Include="source\memory.cpp" />
     <ClCompile Include="source\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

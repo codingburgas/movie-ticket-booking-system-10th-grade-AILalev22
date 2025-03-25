@@ -31,6 +31,12 @@
     <ClInclude Include="include\pch\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\error.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\core.cpp">
@@ -46,6 +52,9 @@
       <Filter>Source FIles</Filter>
     </ClCompile>
     <ClCompile Include="source\pch.cpp">
+      <Filter>Source FIles</Filter>
+    </ClCompile>
+    <ClCompile Include="source\manager.cpp">
       <Filter>Source FIles</Filter>
     </ClCompile>
   </ItemGroup>

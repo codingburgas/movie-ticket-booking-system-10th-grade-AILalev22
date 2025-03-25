@@ -51,20 +51,17 @@ namespace Mem
 		// return total allocated size
 		int Capacity() const { return sz_data; }
 
-		// set count if within borders
+		// set c_data, sets to 0 or sz_data if does not align
 		void SetLen(int sz);
-		// add count if within buff borders
+		// add sz bytes to c_data if less than sz_data
 		void AddLen(int sz);
-
-		// grow buffer if sz size is not available
-		// tries with 50% of sz_data first
 
 		// append another buff
 		bool Append(const void* ptr, int c_ptr);
 		// append a str
 		bool AppendStr(const char* s, int c_s);
 
-		// make the buffer to be a submem of itself
+		// make the buffer to be a sub of itself
 		void Submem(int index, int len);
 
 		// insert another buffer at passed index
