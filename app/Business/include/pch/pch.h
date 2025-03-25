@@ -1,0 +1,9 @@
+#pragma once
+#include <string>
+#include <memory>
+#include "error.h"
+#include "user.h"
+#include "crypt.h"
+#include "database.h"
+#include "manager.h"
+#include <regex>
