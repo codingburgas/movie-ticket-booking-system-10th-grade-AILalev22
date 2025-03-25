@@ -32,6 +32,12 @@ namespace Mem
 		//capacity
 		int sz_data;
 
+		// checks if sz bytes are available
+		// if not tries to realloc with 50% of sz_data
+		// if 50% of sz_data is smaller than sz_data, realloc with sz
+		bool MakeEnough(int sz);
+		// grow buffer if sz size is not available
+		bool Realloc(int sz);
 	public:
 		Data(int sz = 0);
 		Data(const Data&);
@@ -52,8 +58,6 @@ namespace Mem
 
 		// grow buffer if sz size is not available
 		// tries with 50% of sz_data first
-		bool MakeEnough(int sz);
-		bool Realloc(int sz);
 
 		// append another buff
 		bool Append(const void* ptr, int c_ptr);
