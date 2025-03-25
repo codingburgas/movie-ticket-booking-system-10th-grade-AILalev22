@@ -14,7 +14,7 @@ int main()
 {
 	Core::Init();;
 	int is_init = 0;
-	if (is_init = Manager::Init("tcp://127.0.0.1:3306", "root", "root1234!!??"))
+	if (is_init = MySQL::InitManager("tcp://127.0.0.1:3306", "root", "root1234!!??"))
 	{
 
 	}
@@ -24,7 +24,7 @@ int main()
 	}
 	else
 	{
-		Manager::GetSQL()->SetDB("dataticket");
+		MySQL::GetSQL()->SetDB("dataticket");
 	}
 	if (is_init)
 	{
@@ -38,7 +38,7 @@ int main()
 		}
 	}
 	
-	Manager::Release();
+	MySQL::ReleaseManager();
 	Core::Release();
 }
 

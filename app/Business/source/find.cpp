@@ -4,7 +4,7 @@ namespace Find
 {
 	bool FindAccount(const Entity::User& acc)
 	{
-		auto shsql = Manager::GetSQL();
+		auto shsql = MySQL::GetSQL();
 		std::string row;
 		std::string hemail;
 
