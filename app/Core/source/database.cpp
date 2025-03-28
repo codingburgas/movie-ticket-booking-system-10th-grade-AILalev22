@@ -94,14 +94,13 @@ namespace MySQL
 	{	
 		if (fmt.empty() || query.empty()) return false;
 
-		size_t len = fmt.size();
 		try
 		{
 			pstmt = conn->prepareStatement(query);
 		}
 		catch (...)
 		{
-			return false; // if statement preparation fails return false
+			return false; // if query is invalid and exception is thrown
 		}
 		va_list va;
 		va_start(va, query.c_str());
@@ -113,9 +112,9 @@ namespace MySQL
 		std::string* arg_s;
 		uint arg_u;
 
-		for(size_t i = 0; i < len;i++)
+		for (char fch : fmt)
 		{
-			switch (fmt[i])
+			switch (fch)
 			{
 			case 'd':arg_d = va_arg(va, int); pstmt->setInt(i++, arg_d); break; // follow c-style format
 			case 'f': arg_f = va_arg(va, double); pstmt->setDouble(i++, arg_f); break;
@@ -174,7 +173,7 @@ namespace MySQL
 				dst.append(data);
 			}
 			if(!rset->isLast() || rset->isFirst() && rset->isLast())
-			dst.push_back('|'); // insert after each row of data from the dbd
+			dst.push_back('|'); // insert after each row of data from the db
 		}
 
 		if (dst.empty()) return false;
@@ -185,13 +184,13 @@ namespace MySQL
 		std::string new_fmt;
 		char possible[] = { 'd','i','f','s','u' }; // trim format only to possible chars
 
-		for (char f : fmt)
+		for (char fch : fmt)
 		{
-			for (char p : possible)
+			for (char pch : possible)
 			{
-				if (f == p)
+				if (fch == pch)
 				{
-					new_fmt.push_back(p);
+					new_fmt.push_back(pch);
 					break;
 				}
 			}
