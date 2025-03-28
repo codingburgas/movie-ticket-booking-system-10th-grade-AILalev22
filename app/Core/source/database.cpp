@@ -11,7 +11,6 @@
 #include <cppconn/prepared_statement.h>
 #include "type.h"
 #include "database.h"
-#include "memory.h"
 namespace MySQL
 {
 	// mysql server instances
@@ -154,12 +153,11 @@ namespace MySQL
 		size_t cols = fmt.size();
 		
 		while (rset->next()) // iterate through each row of res set
-		{
-			std::string fmt2 = fmt;		
+		{	
 			for (size_t i = 1; i <= cols; i++)
 			{
 				std::string data;
-				switch (fmt2.front())
+				switch (fmt[i-1])
 				{
 				case 'd': case 'i': data = std::to_string(rset->getInt(i)); break;
 				case 'f': data = std::to_string(rset->getDouble(i)); break;
@@ -170,7 +168,7 @@ namespace MySQL
 				{
 					data.push_back(',');
 				}
-				fmt2.erase(0, 1);
+
 				dst.append(data);
 			}
 			if(!rset->isLast() || rset->isFirst() && rset->isLast())
