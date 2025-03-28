@@ -91,41 +91,43 @@ namespace MySQL
 		return true;
 	}
 	bool Connector::Write(std::string fmt, const std::string& query, ...)
-	{
-		size_t len = fmt.size();
+	{	
 		if (fmt.empty() || query.empty()) return false;
-	
+
+		size_t len = fmt.size();
 		try
 		{
 			pstmt = conn->prepareStatement(query);
 		}
 		catch (...)
 		{
-			return false;
+			return false; // if statement preparation fails return false
 		}
 		va_list va;
 		va_start(va, query.c_str());
 
+		// initial pos used in setType db functions
 		int i = 1;
 		int arg_d;
 		double arg_f;
 		std::string* arg_s;
 		uint arg_u;
-		while(len--)
+
+		for(size_t i = 0; i < len;i++)
 		{
-			switch (fmt.front())
+			switch (fmt[i])
 			{
 			case 'd':arg_d = va_arg(va, int); pstmt->setInt(i++, arg_d); break; // follow c-style format
 			case 'f': arg_f = va_arg(va, double); pstmt->setDouble(i++, arg_f); break;
 			case 's': arg_s = va_arg(va, std::string*); pstmt->setString(i++,*arg_s); break;
 			case 'u': arg_u = va_arg(va, uint); pstmt->setUInt(i++, arg_u); break;
 			}
-			fmt.erase(0, 1);
 		}
 		va_end(va);
+
 		try
 		{
-			pstmt->executeUpdate();
+			pstmt->executeUpdate();// try executing the query with set values
 		}
 		catch (...)
 		{
@@ -143,7 +145,7 @@ namespace MySQL
 		stmt = conn->createStatement();
 		try
 		{
-			rset = stmt->executeQuery(query); // try executing query and if error, stop function
+			rset = stmt->executeQuery(query); //try executing query and if error, stop function
 		}
 		catch (...)
 		{
@@ -166,13 +168,13 @@ namespace MySQL
 				}
 				if (!data.empty() && i != cols)
 				{
-					data.push_back(',');
+					data.push_back(','); // place after every column received in each row
 				}
 
 				dst.append(data);
 			}
 			if(!rset->isLast() || rset->isFirst() && rset->isLast())
-			dst.push_back('|');
+			dst.push_back('|'); // insert after each row of data from the dbd
 		}
 
 		if (dst.empty()) return false;
@@ -181,7 +183,7 @@ namespace MySQL
 	void TrimFormat(std::string& fmt)
 	{
 		std::string new_fmt;
-		char possible[] = { 'd','i','f','s','u' };
+		char possible[] = { 'd','i','f','s','u' }; // trim format only to possible chars
 
 		for (char f : fmt)
 		{
