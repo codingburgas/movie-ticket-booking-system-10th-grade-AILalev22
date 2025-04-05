@@ -118,7 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Access\include;..\Business\include\;..\Entity\include;..\Core\include;..\Business\include\pch\;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Access\include;..\Business\include\;..\Access\models\;..\Core\include;..\Business\include\pch\;</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>

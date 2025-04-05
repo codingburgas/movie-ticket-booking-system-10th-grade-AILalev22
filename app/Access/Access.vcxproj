@@ -22,6 +22,7 @@
     <ClInclude Include="include\insert.h" />
     <ClInclude Include="include\pch\pch.h" />
     <ClInclude Include="include\update.h" />
+    <ClInclude Include="models\user.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\insert.cpp" />
@@ -129,7 +130,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\Entity\include\;..\DALib\include\pch;..\DALib\include;..\Core\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Access\models\;..\Access\include\pch;..\Access\include;..\Core\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
