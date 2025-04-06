@@ -5,10 +5,10 @@
 
 namespace Present
 {
-	bool Init()
+	bool Init(const std::string& host, const std::string& user, const std::string& pass)
 	{
-		/*if(!Core::Init())
-			return false;*/
+		if(!Core::Init(host,user,pass))
+			return false;
 		return true;
 	}
 	bool Release()

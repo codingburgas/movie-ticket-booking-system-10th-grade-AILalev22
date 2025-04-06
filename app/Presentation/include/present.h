@@ -3,7 +3,7 @@
 namespace Present
 {
 	// execute startup functions
-	bool Init();
+	bool Init(const std::string& host, const std::string& user, const std::string& pass);
 	// execute release functions
 	bool Release();
 }
