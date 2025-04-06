@@ -10,14 +10,19 @@
 #include "manager.h"
 #include "error.h"
 #include "auth.h"
+#include "matrix.h"
 int main()
 {
-     MySQL::Init("tcp://127.0.0.1:3306", "root", "root1234!!??");
+   /*  MySQL::Init("tcp://127.0.0.1:3306", "root", "root1234!!??");
     auto sql = MySQL::GetSQL();
   sql->SetDB("dataticket");
 
     std::cout << Auth::SignUser({ "yahoo1@gmail.com","pass12345" });
-    MySQL::Release();
+    MySQL::Release();*/
+
+    Matrix::Sparse s(6,3,2,-1);
+    s.Print();
+   
 }
 
 

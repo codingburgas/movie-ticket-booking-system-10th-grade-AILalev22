@@ -37,6 +37,9 @@
     <ClInclude Include="include\error.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\matrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\core.cpp">
@@ -55,6 +58,9 @@
       <Filter>Source FIles</Filter>
     </ClCompile>
     <ClCompile Include="source\manager.cpp">
+      <Filter>Source FIles</Filter>
+    </ClCompile>
+    <ClCompile Include="source\matrix.cpp">
       <Filter>Source FIles</Filter>
     </ClCompile>
   </ItemGroup>

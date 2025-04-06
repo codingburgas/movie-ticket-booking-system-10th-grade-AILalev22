@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="include\insert.h" />
     <ClInclude Include="include\pch\pch.h" />
+    <ClInclude Include="include\select.h" />
     <ClInclude Include="include\update.h" />
     <ClInclude Include="models\user.h" />
   </ItemGroup>
@@ -29,6 +30,7 @@
     <ClCompile Include="source\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="source\select.cpp" />
     <ClCompile Include="source\update.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

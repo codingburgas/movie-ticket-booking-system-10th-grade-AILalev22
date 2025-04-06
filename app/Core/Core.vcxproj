@@ -23,6 +23,7 @@
     <ClInclude Include="include\crypt.h" />
     <ClInclude Include="include\database.h" />
     <ClInclude Include="include\manager.h" />
+    <ClInclude Include="include\matrix.h" />
     <ClInclude Include="include\memory.h" />
     <ClInclude Include="include\pch\pch.h" />
     <ClInclude Include="include\error.h" />
@@ -33,6 +34,7 @@
     <ClCompile Include="source\crypt.cpp" />
     <ClCompile Include="source\database.cpp" />
     <ClCompile Include="source\manager.cpp" />
+    <ClCompile Include="source\matrix.cpp" />
     <ClCompile Include="source\memory.cpp" />
     <ClCompile Include="source\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
