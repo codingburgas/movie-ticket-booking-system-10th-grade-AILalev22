@@ -22,9 +22,6 @@ namespace Matrix
 
         // row * column
         int size;
-        // check and grow if arr is too small
-       /* bool Grow();
-        bool Realloc(int len);*/
     public:
         Sparse(int size_column, int size_row, int def_value = 0);
         Sparse() : Sparse(5, 5)
