@@ -12,5 +12,12 @@
 #include "resource.h"
 #include "targetver.h"
 #include <string>
+#include <memory>
+#include "database.h"
 #include "user.h"
+#include "process.h"
+#include "misc.h"
+#include "manager.h"
+#include "error.h"
+#include "auth.h"
 #endif //PCH_H

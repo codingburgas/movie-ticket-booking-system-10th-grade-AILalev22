@@ -136,17 +136,15 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\find.h" />
     <ClInclude Include="include\pch\pch.h" />
-    <ClInclude Include="include\register.h" />
+    <ClInclude Include="include\auth.h" />
     <ClInclude Include="include\valid.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\find.cpp" />
     <ClCompile Include="source\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="source\register.cpp" />
+    <ClCompile Include="source\auth.cpp" />
     <ClCompile Include="source\valid.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

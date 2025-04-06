@@ -5,9 +5,7 @@
 #include "afxdialogex.h"
 #include "CLogSignDlg.h"
 //
-#include "process.h"
-#include "find.h"
-#include "misc.h"
+
 // 
 // CLogSignDlg dialog
 
@@ -52,6 +50,9 @@ BOOL CLogSignDlg::OnInitDialog()
 	GetDlgItem(IDC_EDIT_EMAIL)->SetFont(&m_font); //set font for both email and password edit controls
 	GetDlgItem(IDC_EDIT_PASSWORD)->SetFont(&m_font);
 
+	MySQL::Init("tcp://127.0.0.1:3306", "root", "root1234!!??"); // init database manager
+	MySQL::GetSQL()->SetDB("dataticket");// set db
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -63,25 +64,27 @@ void CLogSignDlg::OnBnClickedButtonLogin()
 	GetDlgItem(IDC_EDIT_EMAIL)->GetWindowText(email);
 	GetDlgItem(IDC_EDIT_PASSWORD)->GetWindowText(pass);
 
-	bool emailEmpty = email.IsEmpty(), passEmpty = pass.IsEmpty();
+	bool email_empty = email.IsEmpty(), pass_empty = pass.IsEmpty();
 	CString msg;
-	if (emailEmpty && passEmpty)
+	if (email_empty && pass_empty)
 	{
 		msg = L"Please enter an email and a password";
 	}
 	else
 	{
-		if (emailEmpty)
+		if (email_empty)
 			msg = L"Please enter an email";
-		else if (passEmpty)
+		else if (pass_empty)
 			msg = L"Please enter a password";
 		else
 		{
-			
-			if (Find::FindAccount({ Misc::ToStr(email),Misc::ToStr(pass) }))
-				msg = L"Logged in successfully";
-			else
-				msg = L"User doesn't exist";
+			switch (Auth::LogUser({ Misc::ToStr(email),Misc::ToStr(pass) }))
+			{
+			case Error::SUCCESSFUL: msg = L"Logged in successfully."; break;
+			case Error::ERROR_EXISTS: msg = L"User doesn't exist."; break;
+			case Error::ERROR_INPUT: msg = L"Wrong password. Try again later."; break;
+			default: msg = L"Unexpected error"; break;
+			}				
 		}
 	}
 	GetDlgItem(IDC_STATIC_MSG_REGISTER)->SetWindowTextW(msg);
@@ -91,6 +94,35 @@ void CLogSignDlg::OnBnClickedButtonSignup()
 {
 	// TODO: Add your control notification handler code here
 	//IDC_STATIC_MSG_REGISTER - empty static to color
+	CString email, pass;
+	GetDlgItem(IDC_EDIT_EMAIL)->GetWindowText(email);
+	GetDlgItem(IDC_EDIT_PASSWORD)->GetWindowText(pass);
+
+	bool email_empty = email.IsEmpty(), pass_empty = pass.IsEmpty();
+	CString msg;
+	if (email_empty && pass_empty)
+	{
+		msg = L"Please enter an email and a password";
+	}
+	else
+	{
+		if (email_empty)
+			msg = L"Please enter an email";
+		else if (pass_empty)
+			msg = L"Please enter a password";
+		else
+		{
+			switch (Auth::SignUser({ Misc::ToStr(email),Misc::ToStr(pass) }))
+			{
+			case Error::SUCCESSFUL: msg = L"Signed up successfully."; break;
+			case Error::ERROR_DATABASE: msg = L"Internal error. Please try again later."; break;
+			case Error::ERROR_EXISTS: msg = L"User already exists. Please try again later."; break;
+			case Error::ERROR_INPUT: msg = L"Please user password and email that are:\natleast 8 characters long\nhave big and small leters\nhave numbers"; break;
+			default: msg = L"Unexpected error.Please try again later"; break;			
+			}
+		}
+	}
+	GetDlgItem(IDC_STATIC_MSG_REGISTER)->SetWindowTextW(msg);
 }
 /*
 HBRUSH CLogSignDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)

@@ -6,4 +6,5 @@
 #include "crypt.h"
 #include "database.h"
 #include "manager.h"
+#include <iostream>
 #include <regex>
