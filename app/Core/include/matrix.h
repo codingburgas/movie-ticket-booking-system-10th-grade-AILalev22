@@ -17,7 +17,7 @@ namespace Matrix
         int row;
         // total columns
         int column;
-        // default value in matrix
+        // default numeric value
         int def_value;
 
         // row * column
