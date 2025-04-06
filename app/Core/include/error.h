@@ -7,6 +7,7 @@ namespace Error
 		ERROR_INPUT,
 		ERROR_DATABASE,
 		ERROR_EXISTS,
+		ERROR_NOT_EXISTS,
 		SUCCESSFUL
 	};
 }
