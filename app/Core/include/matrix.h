@@ -19,16 +19,15 @@ namespace Matrix
         int column;
         // default value in matrix
         int def_value;
-        
-        // total arr size
-        int size;
 
+        // row * column
+        int size;
         // check and grow if arr is too small
        /* bool Grow();
         bool Realloc(int len);*/
     public:
-        Sparse(int size_column, int size_row, int size, int def_value = 0);
-        Sparse() : Sparse(5, 5, 25)
+        Sparse(int size_column, int size_row, int def_value = 0);
+        Sparse() : Sparse(5, 5)
         {
         }
         ~Sparse()

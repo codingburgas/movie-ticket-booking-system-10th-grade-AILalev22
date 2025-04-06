@@ -3,17 +3,18 @@
 
 namespace Matrix
 {
-    Sparse::Sparse(int row, int column, int size, int def_value) : size(size), column(column),row(row), c_data(0)
+    Sparse::Sparse(int row, int column, int def_value) : column(column),row(row)
     {
-        if (size > row * column) size = row * column; // readjust capacity if exceeding
-
+        size = row * column;
         data = new Element[size];
+
+        this->def_value = def_value;
+        
         for (int i = 0; i < size; i++)
         {
             data[i].x = data[i].y = def_value;
             data[i].val = def_value;
-        }
-        this->def_value = def_value;
+        }       
     }
     //bool Sparse::Grow()
     //{
@@ -49,7 +50,7 @@ namespace Matrix
     {
         if (!(x >= 0 && x < row && y >= 0 && y < column)) return def_value; // if x,y are outside the matrix
 
-        for (int i = 0; i < c_data; i++)
+        for (int i = 0; i < size; i++)
             if (data[i].x == x && data[i].y == y)
                 return data[i].val;
         return def_value; // if element isn't found
@@ -57,7 +58,7 @@ namespace Matrix
     bool Sparse::Set(int x, int y, int val)
     {
         if (!(x >= 0 && x < row && y >= 0 && y < column)) return false; // if x,y are outside the matrix
-        for (int i = 0; i < c_data; i++)
+        for (int i = 0; i < size; i++)
         {
             if (data[i].x == x && data[i].y == y)
             {
