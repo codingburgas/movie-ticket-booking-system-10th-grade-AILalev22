@@ -28,7 +28,7 @@ namespace Matrix
         bool Realloc(int len);*/
     public:
         Sparse(int size_column, int size_row, int size, int def_value = 0);
-        Sparse() : Sparse(5, 5, 5)
+        Sparse() : Sparse(5, 5, 25)
         {
         }
         ~Sparse()
