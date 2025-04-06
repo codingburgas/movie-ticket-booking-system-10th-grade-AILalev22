@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "menu.h"
 #include "present.h"
+#include "caption.h"
 
 namespace Menu
 {
@@ -21,7 +22,7 @@ namespace Menu
 	}
 	void AuthMenu()
 	{
-
+		Caption::PrintCaption();
 	}
 	void MainMenu()
 	{
