@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "database.h"
 #include "manager.h"
-namespace MySQL
+namespace Manager
 {
 	static std::shared_ptr<CTOR> ctor;
 
@@ -14,7 +14,9 @@ namespace MySQL
 		if (!ctor.get())
 		{
 			ctor = std::make_shared<CTOR>(host, user, pass);
-			return ctor->Connect();
+			if (!ctor->Connect()) return false; // if connecting fails return false
+
+			return ctor->SetDB("dataticket");
 		}
 		else
 		{

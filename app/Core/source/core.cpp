@@ -6,13 +6,13 @@ namespace Core
 {
 	bool Init(const std::string& host, const std::string& user, const std::string& pass)
 	{
-		if (!MySQL::Init(host, user, pass))
+		if (!Manager::Init(host, user, pass))
 			return false;
 		return true;
 	}
 	bool Release()
 	{
-		if (!MySQL::Release())
+		if (!Manager::Release())
 			return false;
 		return true;
 	}
