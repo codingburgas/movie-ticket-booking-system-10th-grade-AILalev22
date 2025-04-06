@@ -14,6 +14,6 @@ namespace Insert
 		{
 			return Error::SUCCESSFUL;
 		}
-		return Error::ERROR_DATABASE;
+		return Error::ERROR_EXISTS;
 	}
 }
