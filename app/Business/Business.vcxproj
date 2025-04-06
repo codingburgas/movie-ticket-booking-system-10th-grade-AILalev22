@@ -129,7 +129,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>Entity.lib;Core.lib;Access.lib;</AdditionalDependencies>
+      <AdditionalDependencies>Core.lib;Access.lib;</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>..\x64\Release</AdditionalLibraryDirectories>

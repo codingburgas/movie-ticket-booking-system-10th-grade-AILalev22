@@ -41,10 +41,12 @@ BOOL CLogSignDlg::OnInitDialog()
 	// TODO:  Add extra initialization here
 	LOGFONT lf;
 	memset(&lf, 0, sizeof(LOGFONT));
-	lf.lfHeight = 30;
+	lf.lfHeight = 20;
 
 	CFont m_font; // font var to use in setfont
 	_tcscpy_s(lf.lfFaceName, L"Arial");
+	m_font.CreateFontIndirect(&lf);
+
 	GetDlgItem(IDC_EDIT_EMAIL)->SetFont(&m_font); //set font for both email and password edit controls
 	GetDlgItem(IDC_EDIT_PASSWORD)->SetFont(&m_font);
 

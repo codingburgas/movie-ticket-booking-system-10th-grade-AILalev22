@@ -26,7 +26,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\insert.cpp" />
-    <ClCompile Include="source\pch.cpp" />
+    <ClCompile Include="source\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="source\update.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -131,6 +133,8 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\Access\models\;..\Access\include\pch;..\Access\include;..\Core\include;</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,7 +143,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>Core.lib;Entity.lib;</AdditionalDependencies>
+      <AdditionalDependencies>Core.lib;</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>..\x64\Release</AdditionalLibraryDirectories>
