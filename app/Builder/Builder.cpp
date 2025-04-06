@@ -20,8 +20,8 @@ int main()
     std::cout << Auth::SignUser({ "yahoo1@gmail.com","pass12345" });
     MySQL::Release();*/
 
-    Matrix::Sparse s(6,3);
-    s.Print();
+    /*Matrix::Sparse s(6,3);
+    s.Print();*/
    
 }
 

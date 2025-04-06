@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\access.h" />
     <ClInclude Include="include\insert.h" />
     <ClInclude Include="include\pch\pch.h" />
     <ClInclude Include="include\select.h" />
@@ -26,6 +27,7 @@
     <ClInclude Include="models\user.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="source\access.cpp" />
     <ClCompile Include="source\insert.cpp" />
     <ClCompile Include="source\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>

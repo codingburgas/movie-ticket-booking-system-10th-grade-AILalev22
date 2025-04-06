@@ -25,6 +25,7 @@
     <ClInclude Include="include\manager.h" />
     <ClInclude Include="include\matrix.h" />
     <ClInclude Include="include\memory.h" />
+    <ClInclude Include="include\misc.h" />
     <ClInclude Include="include\pch\pch.h" />
     <ClInclude Include="include\error.h" />
     <ClInclude Include="include\type.h" />
@@ -36,6 +37,7 @@
     <ClCompile Include="source\manager.cpp" />
     <ClCompile Include="source\matrix.cpp" />
     <ClCompile Include="source\memory.cpp" />
+    <ClCompile Include="source\misc.cpp" />
     <ClCompile Include="source\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>

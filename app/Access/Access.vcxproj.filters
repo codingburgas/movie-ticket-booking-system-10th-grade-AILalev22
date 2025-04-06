@@ -24,6 +24,9 @@
     <ClInclude Include="include\select.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\access.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\insert.cpp">
@@ -36,6 +39,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\select.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\access.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
