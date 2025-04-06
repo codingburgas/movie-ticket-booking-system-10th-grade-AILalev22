@@ -24,7 +24,7 @@
     <ClInclude Include="include\pch\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\process.h">
+    <ClInclude Include="include\register.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -38,7 +38,7 @@
     <ClCompile Include="source\pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\process.cpp">
+    <ClCompile Include="source\register.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -11,4 +11,6 @@
 #include "framework.h"
 #include "resource.h"
 #include "targetver.h"
+#include <string>
+#include "user.h"
 #endif //PCH_H

@@ -5,7 +5,9 @@
 #include "afxdialogex.h"
 #include "CLogSignDlg.h"
 //
-//#include "process.h"
+#include "process.h"
+#include "find.h"
+#include "misc.h"
 // 
 // CLogSignDlg dialog
 
@@ -57,6 +59,32 @@ BOOL CLogSignDlg::OnInitDialog()
 void CLogSignDlg::OnBnClickedButtonLogin()
 {
 	// TODO: Add your control notification handler code here
+	CString email, pass;
+	GetDlgItem(IDC_EDIT_EMAIL)->GetWindowText(email);
+	GetDlgItem(IDC_EDIT_PASSWORD)->GetWindowText(pass);
+
+	bool emailEmpty = email.IsEmpty(), passEmpty = pass.IsEmpty();
+	CString msg;
+	if (emailEmpty && passEmpty)
+	{
+		msg = L"Please enter an email and a password";
+	}
+	else
+	{
+		if (emailEmpty)
+			msg = L"Please enter an email";
+		else if (passEmpty)
+			msg = L"Please enter a password";
+		else
+		{
+			
+			if (Find::FindAccount({ Misc::ToStr(email),Misc::ToStr(pass) }))
+				msg = L"Logged in successfully";
+			else
+				msg = L"User doesn't exist";
+		}
+	}
+	GetDlgItem(IDC_STATIC_MSG_REGISTER)->SetWindowTextW(msg);
 	
 }
 void CLogSignDlg::OnBnClickedButtonSignup()
