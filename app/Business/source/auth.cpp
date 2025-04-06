@@ -13,12 +13,6 @@ namespace Auth
 	}
 	int LogUser(const Entity::User& acc)
 	{
-		std::string hemail; // hashed email
-		std::string hpass; /// hashed password
-
-		Crypt::CalcHash(acc.email, hemail); // filling hemail with hashed email
-		Crypt::CalcHash(acc.password, hpass);
-
-		return Select::SelectUser({ hemail,hpass });
+		return Select::SelectUser(acc); // return select db operation result
 	}
 }
