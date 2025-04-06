@@ -4,7 +4,7 @@ namespace Insert
 {
 	int InsertAccount(const Entity::User& acc)
 	{
-		auto& shsql = MySQL::GetSQL();
+		auto shsql = MySQL::GetSQL();
 
 		std::string hemail, hpass;
 		Crypt::CalcHash(acc.email, hemail);

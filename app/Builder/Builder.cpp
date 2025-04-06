@@ -16,7 +16,7 @@ int main()
     auto sql = MySQL::GetSQL();
   sql->SetDB("dataticket");
 
-    std::cout << Auth::LogUser({ "yahoo@gmail.com","pass12345" });
+    std::cout << Auth::SignUser({ "yahoo1@gmail.com","pass12345" });
     MySQL::Release();
 }
 
