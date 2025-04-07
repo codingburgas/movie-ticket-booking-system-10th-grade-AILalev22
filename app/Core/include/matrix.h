@@ -9,7 +9,7 @@ namespace Matrix
         {
             int x;
             int y;
-            int val;
+            char val;
         };
         // matrix arr
         Element* data;
@@ -18,13 +18,13 @@ namespace Matrix
         // total columns
         int column;
         // default numeric value
-        int def_value;
+        char def_value;
 
         // row * column
         int size;
     public:
-        Sparse(int size_column, int size_row, int def_value = 0);
-        Sparse() : Sparse(5, 5)
+        Sparse(int size_column, int size_row, char def_value);
+        Sparse() : Sparse(5, 5,'x')
         {
         }
         ~Sparse()
@@ -32,18 +32,11 @@ namespace Matrix
             Release();
         }
         // release matrix arr
-        void Release()
-        {
-            if (data)
-            {
-                delete[] data;
-                data = nullptr;
-            }
-        }
+        void Release();       
         // get a value from the matrix
-        int Get(int x, int y);
+        char Get(int x, int y);
         // set a value in the matrix
-        bool Set(int x, int y, int val);
+        bool Set(int x, int y, char val);
         // get row size
         const int Rows() const { return row; }
         // get column size

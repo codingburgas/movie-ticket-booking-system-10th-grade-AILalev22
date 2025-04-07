@@ -3,7 +3,7 @@
 
 namespace Matrix
 {
-    Sparse::Sparse(int row, int column, int def_value) : column(column),row(row)
+    Sparse::Sparse(int row, int column, char def_value) : column(column),row(row)
     {
         size = row * column;
         data = new Element[size];
@@ -16,7 +16,7 @@ namespace Matrix
             data[i].val = def_value;
         }       
     }
-    int Sparse::Get(int x, int y)
+    char Sparse::Get(int x, int y)
     {
         if (!(x >= 0 && x < row && y >= 0 && y < column)) return def_value; // if x,y are outside the matrix
 
@@ -25,7 +25,7 @@ namespace Matrix
                 return data[i].val;
         return def_value; // if element isn't found
     }
-    bool Sparse::Set(int x, int y, int val)
+    bool Sparse::Set(int x, int y, char val)
     {
         if (!(x >= 0 && x < row && y >= 0 && y < column)) return false; // if x,y are outside the matrix
         for (int i = 0; i < size; i++)
@@ -47,6 +47,14 @@ namespace Matrix
                 std::cout << Get(i,j) << ' '; // print the whole matrix
             }
             std::cout << "\n";
+        }
+    }
+    void Sparse::Release()
+    {
+        if (data)
+        {
+            delete[] data;
+            data = nullptr;
         }
     }
 }
