@@ -5,7 +5,7 @@ namespace Select
 {
 	int SelectUser(const Entity::User& acc)
 	{
-		auto shsql = MySQL::GetSQL();
+		auto shsql = Manager::GetSQL();
 
 		std::string hemail, hpass;
 		Crypt::CalcHash(acc.email, hemail); // hash email and pass values
