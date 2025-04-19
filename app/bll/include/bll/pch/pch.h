@@ -1,0 +1,10 @@
+#pragma once
+#include <string>
+#include <memory>
+#include "core\error.h"
+#include "dal\models\user.h"
+#include "core\crypt.h"
+#include "core\database.h"
+#include "dal\manager.h"
+#include <iostream>
+#include <regex>
