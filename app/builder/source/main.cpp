@@ -15,4 +15,5 @@ int main()
 	}
 	
 	Menu::AuthMenu();
+	Menu::MainMenu();
 }

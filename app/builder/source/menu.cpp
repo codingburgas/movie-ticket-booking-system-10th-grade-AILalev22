@@ -260,7 +260,6 @@ namespace Menu
             Utils::Exit();
         }
         if (!res_opt) goto menu;
-        MainMenu();
     }
     void MainMenu()
     {
