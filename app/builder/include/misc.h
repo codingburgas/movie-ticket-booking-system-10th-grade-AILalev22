@@ -13,4 +13,6 @@ namespace Misc
 	void EnterShowData(Entity::Show& show);
 	// enter user's password securly
 	void EnterUserPassword(Entity::User& user);
+	// print string with delimeter in table format
+	void PrintStrTok(std::string op, char delim,const std::string fields[], int c_fields);
 }

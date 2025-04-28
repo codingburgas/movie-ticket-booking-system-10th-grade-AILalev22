@@ -84,4 +84,13 @@ namespace Options
 
 		Update::UpdateShow(oldDate, newShow) ? Utils::ErrMsg("Successfully updated") : Utils::ErrMsg("Update failed");
 	}
+	void ShowAllMovies()
+	{
+		std::string resSet;
+		Select::SelectMovie(resSet); // get movies result set
+		std::string fields[] = { "Name","Genre","Language","ReleaseYear" };
+
+		Misc::PrintStrTok(resSet, '|', fields, 4);
+		_getch();
+	}
 }

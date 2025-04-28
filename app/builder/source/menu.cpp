@@ -247,5 +247,10 @@ namespace Menu
         Menu customerMenu = CreateMenu({ "Show all movies","Show all shows","Book a show","Return to register" }, "Order Menu");
 
         int choice = customerMenu.run_menu();
+        switch (choice)
+        {
+        case 0: Options::ShowAllMovies(); break;
+        case 3: return; break;
+        }
     }
 }

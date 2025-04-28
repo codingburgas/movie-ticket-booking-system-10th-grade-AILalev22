@@ -2,6 +2,7 @@
 #include "misc.h"
 #include <regex>
 #include <conio.h>
+#include <iomanip>
 
 namespace Misc
 {
@@ -110,6 +111,46 @@ namespace Misc
 				pass.push_back(c);
 				std::cout << '*';
 			}
+		}
+	}
+	void PrintStrTok(std::string op, char delim, const std::string fields[], int c_fields)
+	{
+		const int colWidth = 20;
+		std::cout << std::left;
+
+		for (int i = 0; i < c_fields; i++)
+		{
+			std::cout << std::setw(colWidth) << fields[i];
+		}
+		std::cout << std::endl << std::string(colWidth * 4, '-') << std::endl;
+
+		while (op.find_first_of('|') != std::string::npos) 
+		{
+			std::string movie = op.substr(0, op.find_first_of('|'));
+			op = op.substr(op.find_first_of('|') + 1);
+
+			size_t start = 0, end;
+			int column = 0;
+			while ((end = movie.find(',', start)) != std::string::npos) 
+			{
+				std::cout << std::left << std::setw(colWidth) << movie.substr(start, end - start);
+				start = end + 1;
+				column++;
+			}
+			std::cout << std::left << std::setw(colWidth) << movie.substr(start) << std::endl;
+		}
+
+		if (!op.empty()) 
+		{
+			size_t start = 0, end;
+			int column = 0;
+			while ((end = op.find(',', start)) != std::string::npos) 
+			{
+				std::cout << std::left << std::setw(colWidth) << op.substr(start, end - start);
+				start = end + 1;
+				column++;
+			}
+			std::cout << std::left << std::setw(colWidth) << op.substr(start) << std::endl;
 		}
 	}
 	//void EnterMovieCinema(Entity::Movie& movie)

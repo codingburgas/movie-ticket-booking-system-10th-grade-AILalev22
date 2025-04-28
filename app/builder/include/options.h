@@ -4,14 +4,16 @@ namespace Options
 {
 	// authentication option
 	int LogSign(int mode,const std::string& adminEmail);
-	// insert movie admin option
+	// admin option
 	void InsertMovie();
-	// delete movie admin option
+	// admin option
 	void DeleteMovie();
-	// insert show admin option
+	// admin option
 	void InsertShow();
-	// delete show admin option
+	//admin option
 	void DeleteShow();
-	// update show admin option
+	// admin option
 	void UpdateShow();
+	// customer option
+	void ShowAllMovies();
 }
