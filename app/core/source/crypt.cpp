@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "crypt.h"
 #include "type.h"
+
 extern "C"
 {
 #include "sha256.h"
@@ -16,6 +17,7 @@ namespace Crypt
         sha256_init(&ctx);
         sha256_update(&ctx, (byte*)src.c_str(), src.size());
         sha256_final(&ctx, hash);
+
         std::stringstream hstream;
         for (int i = 0; i < SHA256_BLOCK_SIZE; i++)
         {

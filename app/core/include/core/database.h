@@ -7,10 +7,6 @@ namespace MySQL
 		// database connect credentials
 		 std::string credentials[3];
 
-		 //set mysql instances
-		 void Init();
-		 //release mysql instances
-		 void Release();
 	public:
 		Connector(const std::string& host, const std::string& user, const std::string& pass);
 		~Connector();

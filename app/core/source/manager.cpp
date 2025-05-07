@@ -9,16 +9,11 @@ namespace Manager
 		isOK = true;
 
 		ctor = std::make_shared<CTOR>(host, user, pass);
-		if(!ctor->Connect()) isOK = false;
-
-		if(!ctor->SetDB(dbdata)) isOK = false;		
+		if(!ctor->Connect() || !ctor->SetDB(dbdata)) isOK = false;
+	
 	}
 	ManagerSQL::~ManagerSQL()
 	{
-		if (ctor)
-		{
-			ctor.reset();
-		}
 	}
 	///////////
 	std::shared_ptr<CTOR> GetSQL()

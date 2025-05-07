@@ -17,13 +17,13 @@ namespace Matrix
         int row;
         // total columns
         int column;
-        // default numeric value
-        char def_value;
+        // matrix default value
+        char mvalue;
 
-        // row * column
+        //elements count
         int size;
     public:
-        Sparse(int size_column, int size_row, char def_value);
+        Sparse(int size_column, int size_row, char mval);
         Sparse() : Sparse(5, 5,'x')
         {
         }

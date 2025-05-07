@@ -24,12 +24,16 @@ namespace MySQL
 
 	static RSET* rset;
 
-	void Connector::Init()
+	Connector::Connector(const std::string& host, const std::string& user, const std::string& pass)
 	{
 		driver = sql::mysql::get_mysql_driver_instance();;
 		stmt = nullptr; pstmt = nullptr; conn = nullptr; rset = nullptr;
+
+		credentials[0] = host;
+		credentials[1] = user;
+		credentials[2] = pass;
 	}
-	void Connector::Release()
+	Connector::~Connector()
 	{
 		if (stmt)
 			delete stmt;
@@ -39,17 +43,6 @@ namespace MySQL
 			delete conn;
 		if (rset)
 			delete rset;
-	}
-	Connector::Connector(const std::string& host, const std::string& user, const std::string& pass)
-	{
-		credentials[0] = host;
-		credentials[1] = user;
-		credentials[2] = pass;
-		Init();
-	}
-	Connector::~Connector()
-	{
-		Release();
 	}
 	bool Connector::Connect()
 	{
@@ -107,15 +100,17 @@ namespace MySQL
 
 		// initial pos used in setType db functions
 		int i = 1;
+
+		// temp vars for row data
 		int arg_d;
 		double arg_f;
 		std::string* arg_s;
 		uint arg_u;
 		bool arg_b;
 
-		for (char fch : fmt)
+		for (const auto& c : fmt)
 		{
-			switch (fch)
+			switch (c)
 			{
 			case 'd':arg_d = va_arg(va, int); pstmt->setInt(i++, arg_d); break; // follow c-style format
 			case 'f': arg_f = va_arg(va, double); pstmt->setDouble(i++, arg_f); break;
@@ -187,13 +182,13 @@ namespace MySQL
 		std::string buff;
 		char possible[] = { 'd','i','f','s','u','b'}; // trim format only to possible chars
 
-		for (char fch : fmt)
+		for (const auto& c : fmt)
 		{
-			for (char pch : possible)
+			for (const auto& c2 : possible)
 			{
-				if (fch == pch)
+				if (c == c2)
 				{
-					buff.push_back(pch);
+					buff.push_back(c2);
 					break;
 				}
 			}
