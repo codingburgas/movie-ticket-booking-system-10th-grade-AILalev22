@@ -1,6 +1,7 @@
 #pragma once
 #include <sstream>
 #include <iomanip>
+
 #include <string>
 #include <vector>
 #include <cstdarg>
@@ -9,10 +10,9 @@
 #include <thread>
 #include <chrono>
 #include <algorithm>
+#include "models.h"
 #include "database.h"
 #include "manager.h"
-#include "user.h"
 #include "crypt.h"
-#include "error.h"
-#include "movie.h"
-#include "show.h"
+#include "misc.h"
+#include "crud.h"

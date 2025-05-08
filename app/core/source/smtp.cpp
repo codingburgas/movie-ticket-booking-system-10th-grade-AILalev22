@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "smtp.h"
-
 #include <curl/curl.h>
 #include <string.h>
 #include <stdio.h>
+#include <thread>
 
 namespace SMTP 
 {
@@ -64,14 +64,14 @@ namespace SMTP
     {
         server = serverAddr;
     }
-    void Request::Send(const std::string& receiverEmail,const std::string& subject,const std::string& body)
+    void Request::SendThread(const std::string& receiverEmail, const std::string& subject, const std::string& body)
     {
         CURL* curl;
         CURLcode res = CURLE_OK;
         struct curl_slist* recipients = nullptr;
         upload_status upload_ctx = { 0 };
 
-        std::srand(static_cast<unsigned>(std::time(nullptr)));
+        std::srand(std::time(nullptr));
 
         payload_text_str = EmailMsg(receiverEmail, sender.email, "", subject, body);
         payload_text = payload_text_str.c_str();
@@ -106,12 +106,17 @@ namespace SMTP
             if (res != CURLE_OK)
             {
                 char msg[256];
-                sprintf_s(msg, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+                sprintf_s(msg, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res)); // print error str to msg buf
                 OutputDebugStringA(msg);
             }
 
             curl_slist_free_all(recipients);
             curl_easy_cleanup(curl);
         }
+    }
+    void Request::Send(const std::string& receiverEmail,const std::string& subject,const std::string& body)
+    {
+        std::thread t(&Request::SendThread, this, receiverEmail, subject, body);
+        t.detach();
     }
 }

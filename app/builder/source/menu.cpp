@@ -210,7 +210,7 @@ namespace Menu
         Menu authMenu = CreateMenu({ "LogIn","SignUp" }, "MovieSystem");
 
         // auth menu choice
-        int opt;
+        int opt = -1;
         menu:
 
         int choice = authMenu.run_menu();

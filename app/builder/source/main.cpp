@@ -3,6 +3,7 @@
 #include "core\database.h"
 #include "main.h"
 #include "core\manager.h"
+#include "core\smtp.h"
 int main()
 {	
 	Config conf; // app configuration
@@ -12,7 +13,7 @@ int main()
 		Utils::Exit();
 		return 1;
 	}
-	
+
 	for(;;)
 	switch (Menu::AuthMenu(conf))
 	{

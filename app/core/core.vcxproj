@@ -140,7 +140,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="source\auth.cpp" />
-    <ClCompile Include="source\crud.cpp" />
+    <ClCompile Include="source\crud\delete.cpp" />
+    <ClCompile Include="source\crud\insert.cpp" />
+    <ClCompile Include="source\crud\select.cpp" />
+    <ClCompile Include="source\crud\update.cpp" />
     <ClCompile Include="source\crypt.cpp" />
     <ClCompile Include="source\database.cpp" />
     <ClCompile Include="source\manager.cpp" />
@@ -157,12 +160,10 @@
     <ClInclude Include="include\core\crud.h" />
     <ClInclude Include="include\core\crypt.h" />
     <ClInclude Include="include\core\database.h" />
-    <ClInclude Include="include\core\error.h" />
+    <ClInclude Include="include\core\misc.h" />
     <ClInclude Include="include\core\manager.h" />
     <ClInclude Include="include\core\matrix.h" />
-    <ClInclude Include="include\core\models\movie.h" />
-    <ClInclude Include="include\core\models\show.h" />
-    <ClInclude Include="include\core\models\user.h" />
+    <ClInclude Include="include\core\models.h" />
     <ClInclude Include="include\core\smtp.h" />
     <ClInclude Include="include\core\utils.h" />
     <ClInclude Include="include\core\pch\pch.h" />

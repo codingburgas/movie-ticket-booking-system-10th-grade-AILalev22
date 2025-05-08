@@ -3,8 +3,6 @@
 #include <fstream>
 #include <algorithm>
 #include <iostream>
-#include "core\models\user.h"
-#include "core\models\movie.h"
-#include "core\models\show.h"
+#include "core\models.h"
 #include "core\utils.h"
-#include "core\error.h"
+#include "core\misc.h"

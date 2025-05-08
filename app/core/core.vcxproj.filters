@@ -12,8 +12,8 @@
     <Filter Include="Header Files">
       <UniqueIdentifier>{819f353c-6185-42b6-bc73-4dec83585145}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Models">
-      <UniqueIdentifier>{36999355-eea1-4ac3-8817-92fb357f253d}</UniqueIdentifier>
+    <Filter Include="Source Files\crud">
+      <UniqueIdentifier>{99ec0b07-0f78-4529-baa1-02ff14af3cee}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -41,11 +41,20 @@
     <ClCompile Include="source\auth.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\crud.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\valid.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\crud\delete.cpp">
+      <Filter>Source Files\crud</Filter>
+    </ClCompile>
+    <ClCompile Include="source\crud\insert.cpp">
+      <Filter>Source Files\crud</Filter>
+    </ClCompile>
+    <ClCompile Include="source\crud\select.cpp">
+      <Filter>Source Files\crud</Filter>
+    </ClCompile>
+    <ClCompile Include="source\crud\update.cpp">
+      <Filter>Source Files\crud</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -55,7 +64,7 @@
     <ClInclude Include="include\core\database.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\core\error.h">
+    <ClInclude Include="include\core\misc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\core\matrix.h">
@@ -76,15 +85,6 @@
     <ClInclude Include="include\core\manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\core\models\user.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="include\core\models\movie.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="include\core\models\show.h">
-      <Filter>Header Files\Models</Filter>
-    </ClInclude>
     <ClInclude Include="include\core\auth.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -92,6 +92,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\core\valid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\core\models.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

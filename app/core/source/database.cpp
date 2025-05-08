@@ -35,6 +35,14 @@ namespace MySQL
 	}
 	Connector::~Connector()
 	{
+		try
+		{
+			conn->close(); // try to close connection with mysql server
+		}
+		catch (...)
+		{
+
+		}
 		if (stmt)
 			delete stmt;
 		if (pstmt)
