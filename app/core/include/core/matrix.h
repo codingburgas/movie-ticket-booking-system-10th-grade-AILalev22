@@ -23,16 +23,11 @@ namespace Matrix
         //elements count
         int size;
     public:
-        Sparse(int size_column, int size_row, char mval);
+        Sparse(int sizeCol, int sizeRow, char mvalue);
         Sparse() : Sparse(5, 5,'x')
         {
         }
-        ~Sparse()
-        {
-            Release();
-        }
-        // release matrix arr
-        void Release();       
+        ~Sparse();         
         // get a value from the matrix
         char Get(int x, int y);
         // set a value in the matrix

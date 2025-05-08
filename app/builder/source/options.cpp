@@ -35,7 +35,7 @@ namespace Options
 		Entity::Movie add;
 		Misc::EnterMovieData(add);
 
-		int res;
+		int res = Error::ERROR_FAILED;
 		if (Validation::IsValidMovie(add))
 		{
 			res = Insert::InsertMovie(add);

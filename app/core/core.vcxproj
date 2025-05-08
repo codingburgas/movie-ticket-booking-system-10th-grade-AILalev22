@@ -119,7 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;STATIC_CONCPP;CURL_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\core\include\core;..\core\include\core\models;;..\core\include\core\pch;..\lib\mysql-connector-c++-9.1.0-winx64\include\jdbc;..\lib\hashlib\include;..\lib\curl\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\core\include\core;..\core\include\core\models;;..\core\include\core\pch;..\lib\mysql-connector-c++-9.1.0-winx64\include\jdbc;..\lib\curl\include;</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -131,10 +131,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>mysqlcppconn-static.lib;sha256.lib;libcurl_a.lib;Normaliz.lib;Ws2_32.lib;Wldap32.lib;Crypt32.lib;advapi32.lib;User32.lib;</AdditionalDependencies>
+      <AdditionalDependencies>mysqlcppconn-static.lib;libcurl_a.lib;Normaliz.lib;Ws2_32.lib;Wldap32.lib;Crypt32.lib;advapi32.lib;User32.lib;</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>..\lib\mysql-connector-c++-9.1.0-winx64\lib64\vs14;..\lib\hashlib\lib;..\lib\curl\lib;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\lib\mysql-connector-c++-9.1.0-winx64\lib64\vs14;..\lib\curl\lib;</AdditionalLibraryDirectories>
       <AdditionalOptions>/IGNORE:4006 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
   </ItemDefinitionGroup>

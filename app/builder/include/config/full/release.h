@@ -11,11 +11,11 @@
 // col size in each hall
 #define COL_SIZE 10
 
-// admin username for app
+// admin's email
 #define DB_ADMIN_EMAIL "admin1234@gmail.com"
 
-// app database name
-#define DB_NAME "dataticket"
+// app database schema
+#define DB_SCHEMA "dataticket"
 
 // env variables names for db credentials
 #define DB_USER_ENV "userAZ"
@@ -23,8 +23,8 @@
 #define DB_HOST_ENV "hostAZ"
 
 // env mail.bg credentials used for smtp
-#define SMTP_EMAIL_ENV "emailMBG"
-#define SMTP_PASS_ENV "passMBG"
+#define SMTP_EMAIL_ENV "emailSMTP"
+#define SMTP_PASS_ENV "passSMTP"
 
 // app smtp server
-#define SMTP_SERVER "smtps://smtp.mail.bg:465"
+#define SMTP_SERVER "smtp://smtp.gmail.com:587"

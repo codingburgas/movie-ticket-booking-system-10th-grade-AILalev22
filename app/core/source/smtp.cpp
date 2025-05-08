@@ -1,31 +1,33 @@
 #include "pch.h"
 #include "smtp.h"
 
-#define FROM_ADDR "<vscpi_otj@mail.bg>"
-#define TO_ADDR   "<pazov44@gmail.com>"
-#define CC_ADDR   "<info@example.org>" // optional
-
-#define FROM_MAIL "Sender Person " FROM_ADDR
-#define TO_MAIL   "A Receiver " TO_ADDR
-#define CC_MAIL   "John CC Smith " CC_ADDR
-
 #include <curl/curl.h>
 #include <string.h>
 #include <stdio.h>
 
-namespace SMTP {
-    static const char* payload_text =
-        "Date: Mon, 29 Nov 2010 21:54:29 +1100\r\n"
-        "To: " TO_MAIL "\r\n"
-        "From: " FROM_MAIL "\r\n"
-        "Cc: " CC_MAIL "\r\n"
-        "Message-ID: <example.1234@domain.com>\r\n"
-        "Subject: SMTP example message\r\n"
-        "\r\n"
-        "This is a test message sent via libcurl and SMTP over SSL.\r\n"
-        "Cheers!\r\n";
+namespace SMTP 
+{
+    static std::string payload_text_str;
+    static const char* payload_text = nullptr;
 
-    struct upload_status {
+    std::string EmailMsg(const std::string& to, const std::string& from, const std::string& cc,const std::string& subject,const std::string& body) 
+    {
+        std::string id = "<" + std::to_string(rand() % INT_MAX) + "@gmail.com>";;
+        std::string message =
+            "Date: Mon, 29 Nov 2010 21:54:29 +1100\r\n"
+            "To: " + to + "\r\n"
+            "From: " + from + "\r\n"
+            "Cc: " + cc + "\r\n"
+            "Message-ID: " + id + "\r\n"
+            "Subject: " + subject + "\r\n"
+            "\r\n" +
+            body + "\r\n";
+
+        return message;
+    }
+
+    struct upload_status
+    {
         size_t bytes_read;
     };
 
@@ -47,39 +49,65 @@ namespace SMTP {
 
         return len;
     }
-
-    void Request::Send()
+    Request::Request(const std::string& emailSender, const std::string& passwordSender, const std::string& serverAddr)
+    {
+        sender.email = emailSender;
+        sender.password = passwordSender;
+        server = serverAddr;
+    }
+    void Request::SetSender(const std::string& email, const std::string& password)
+    {
+        sender.email = email;
+        sender.password = password;
+    }
+    void Request::SetServer(const std::string& serverAddr)
+    {
+        server = serverAddr;
+    }
+    void Request::Send(const std::string& receiverEmail,const std::string& subject,const std::string& body)
     {
         CURL* curl;
         CURLcode res = CURLE_OK;
-        struct curl_slist* recipients = NULL;
+        struct curl_slist* recipients = nullptr;
         upload_status upload_ctx = { 0 };
 
-        curl = curl_easy_init();
-        if (curl) {
-            curl_easy_setopt(curl, CURLOPT_USERNAME, "vscpi_otj@mail.bg");
-            curl_easy_setopt(curl, CURLOPT_PASSWORD, "vscpi_otjvscpi_otjvscpi_otj");
+        std::srand(static_cast<unsigned>(std::time(nullptr)));
 
-            curl_easy_setopt(curl, CURLOPT_URL, "smtps://smtp.mail.bg:465");
+        payload_text_str = EmailMsg(receiverEmail, sender.email, "", subject, body);
+        payload_text = payload_text_str.c_str();
+
+        curl = curl_easy_init();
+        if (curl)
+        {
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, nullptr);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, nullptr);
+
+            curl_easy_setopt(curl, CURLOPT_USERNAME, sender.email.c_str());
+            curl_easy_setopt(curl, CURLOPT_PASSWORD, sender.password.c_str());
+
+            curl_easy_setopt(curl, CURLOPT_URL, server.c_str());
             curl_easy_setopt(curl, CURLOPT_USE_SSL, CURLUSESSL_ALL);
 
             curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
             curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
 
-            curl_easy_setopt(curl, CURLOPT_MAIL_FROM, FROM_ADDR);
+            curl_easy_setopt(curl, CURLOPT_MAIL_FROM, sender.email.c_str());
 
-            recipients = curl_slist_append(recipients, TO_ADDR);
+            recipients = curl_slist_append(recipients, receiverEmail.c_str());
             curl_easy_setopt(curl, CURLOPT_MAIL_RCPT, recipients);
 
             curl_easy_setopt(curl, CURLOPT_READFUNCTION, payload_source);
             curl_easy_setopt(curl, CURLOPT_READDATA, &upload_ctx);
             curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
 
-            curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+            curl_easy_setopt(curl, CURLOPT_VERBOSE, 0L);
 
             res = curl_easy_perform(curl);
-            if (res != CURLE_OK) {
-                fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+            if (res != CURLE_OK)
+            {
+                char msg[256];
+                sprintf_s(msg, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+                OutputDebugStringA(msg);
             }
 
             curl_slist_free_all(recipients);

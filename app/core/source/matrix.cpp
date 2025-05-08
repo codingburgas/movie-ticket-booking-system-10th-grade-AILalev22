@@ -3,18 +3,26 @@
 
 namespace Matrix
 {
-    Sparse::Sparse(int row, int column, char mval) : column(column),row(row)
+    Sparse::Sparse(int sizeCol, int sizeRow, char mvalue) : column(sizeCol),row(sizeRow)
     {
         size = row * column;
         data = new Element[size];
 
-        mvalue = mval;
+        this->mvalue = mvalue;
         
         for (int i = 0; i < size; i++)
         {
-            data[i].x = data[i].y = mvalue;
+            data[i].x = data[i].y = -1;
             data[i].val = mvalue;
         }       
+    }
+    Sparse::~Sparse()
+    {
+        if (data)
+        {
+            delete[] data;
+            data = nullptr;
+        }
     }
     char Sparse::Get(int x, int y)
     {
@@ -47,14 +55,6 @@ namespace Matrix
                 std::cout << Get(i,j) << ' '; // print the whole matrix
             }
             std::cout << "\n";
-        }
-    }
-    void Sparse::Release()
-    {
-        if (data)
-        {
-            delete[] data;
-            data = nullptr;
         }
     }
 }

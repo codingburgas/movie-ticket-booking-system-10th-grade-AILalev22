@@ -4,12 +4,12 @@ namespace Manager
 	// global db manager
 	static std::shared_ptr<ManagerSQL> sql;
 
-	ManagerSQL::ManagerSQL(const std::string& host, const std::string& user, const std::string& pass, const std::string& dbdata)
+	ManagerSQL::ManagerSQL(const std::string& host, const std::string& user, const std::string& pass, const std::string& schema)
 	{
 		isOK = true;
 
 		ctor = std::make_shared<CTOR>(host, user, pass);
-		if(!ctor->Connect() || !ctor->SetDB(dbdata)) isOK = false;
+		if(!ctor->Connect() || !ctor->SetDB(schema)) isOK = false;
 	
 	}
 	ManagerSQL::~ManagerSQL()
@@ -20,9 +20,9 @@ namespace Manager
 	{
 		return sql->GetConnector();
 	}
-	bool Init(const std::string& host, const std::string& user, const std::string& pass, const std::string& dbdata)
+	bool Init(const std::string& host, const std::string& user, const std::string& pass, const std::string& schema)
 	{
-		if (sql = std::make_shared<ManagerSQL>(host,user,pass,dbdata))
+		if (sql = std::make_shared<ManagerSQL>(host,user,pass,schema))
 			return true;
 		return false;
 	}

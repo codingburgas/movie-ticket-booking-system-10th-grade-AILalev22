@@ -1,28 +1,41 @@
 #include "pch.h"
 #include "crypt.h"
 #include "type.h"
+#include <windows.h>
 
-extern "C"
-{
-#include "sha256.h"
-}
+#pragma warning(push)
+// allow unsafe posix functions
+#pragma warning(disable : 4996)
 namespace Crypt
 {
-    void CalcHash(const std::string& src,std::string& dst)
+    void CalcHash(const std::string& src, std::string& dst)
     {
         if (src.empty()) return;
-        SHA256_CTX ctx;
-        byte hash[SHA256_BLOCK_SIZE];
+        HCRYPTPROV prov;
+        HCRYPTHASH hash;
+        
+        byte buf[32]; // hash buffer
+        DWORD len = sizeof(buf); // buff size
 
-        sha256_init(&ctx);
-        sha256_update(&ctx, (byte*)src.c_str(), src.size());
-        sha256_final(&ctx, hash);
-
-        std::stringstream hstream;
-        for (int i = 0; i < SHA256_BLOCK_SIZE; i++)
+        if (!CryptAcquireContextA(&prov, 0, 0, PROV_RSA_AES, CRYPT_VERIFYCONTEXT) || !CryptCreateHash(prov, CALG_SHA_256, 0, 0, &hash))
+            return;
+        if (!CryptHashData(hash, (byte*)src.c_str(), src.size(), 0) || !CryptGetHashParam(hash, HP_HASHVAL, buf, &len, 0))
         {
-            hstream << std::hex << std::setfill('0') << (int)hash[i];
+            CryptReleaseContext(prov, 0);
+            CryptDestroyHash(hash);
+            return;
         }
-        dst = hstream.str();
+
+        char strHash[65];
+        for (int i = 0; i < len; i++)
+        {
+            sprintf(strHash + i * 2, "%02x", buf[i]); // print bytes to hex str representation
+        }
+        strHash[sizeof(strHash) - 1] = 0;
+
+        dst = strHash;
+        CryptDestroyHash(hash);
+        CryptReleaseContext(prov, 0);     
     }
 }
+#pragma warning(pop)

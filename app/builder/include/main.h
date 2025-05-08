@@ -21,8 +21,8 @@ struct Config
 	// app admin username
 	std::string ademail;
 
-	// main database name in mysql server
-	std::string dbname;
+	// main database schema in mysql server
+	std::string schema;
 
 	// app smtp sender user
 	Entity::User sender;

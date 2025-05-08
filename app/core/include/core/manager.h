@@ -11,7 +11,7 @@ namespace Manager
 		bool isOK;
 	public:
 		// init db manager
-		ManagerSQL(const std::string& host, const std::string& user, const std::string& pass, const std::string& dbdata);
+		ManagerSQL(const std::string& host, const std::string& user, const std::string& pass, const std::string& schema);
 		// release db manager
 		~ManagerSQL();
 
@@ -28,7 +28,7 @@ namespace Manager
 	std::shared_ptr<CTOR> GetSQL();
 
 	// init global db manager
-	bool Init(const std::string& host, const std::string& user, const std::string& pass, const std::string& dbdata);
+	bool Init(const std::string& host, const std::string& user, const std::string& pass, const std::string& schema);
 	// release global db manager
 	void Release();
 }
