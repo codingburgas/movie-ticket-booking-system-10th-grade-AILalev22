@@ -37,20 +37,31 @@ namespace MySQL
 	{
 		try
 		{
-			conn->close(); // try to close connection with mysql server
+			if (conn)
+			{
+				conn->close(); // try to close connection with mysql server
+				delete conn;
+			}
+			if (stmt)
+			{
+				stmt->close();
+				delete stmt;
+			}
+			if (pstmt)
+			{
+				pstmt->close();
+				delete pstmt;
+			}
+			if (rset)
+			{
+				rset->close();
+				delete rset;;
+			}
 		}
 		catch (...)
 		{
 
 		}
-		if (stmt)
-			delete stmt;
-		if (pstmt)
-			delete pstmt;
-		if (conn)
-			delete conn;
-		if (rset)
-			delete rset;
 	}
 	bool Connector::Connect()
 	{
@@ -143,8 +154,8 @@ namespace MySQL
 	
 	bool Connector::Read(std::string fmt, const std::string& query,std::string& dst)
 	{
-		if (fmt.empty()) return false;
 		TrimFormat(fmt);
+		if (fmt.empty()) return false;
 
 		stmt = conn->createStatement();
 		try

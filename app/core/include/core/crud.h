@@ -14,6 +14,8 @@ namespace Select
 {
 	// select a user from db
 	int SelectUser(const Entity::User& acc); 
+	// select all users' emails from db
+	int SelectAllUsersEmail(std::vector<std::string>& vec);
 	int SelectMovie(std::string& dst, const std::string& name = "");
 }
 namespace Delete

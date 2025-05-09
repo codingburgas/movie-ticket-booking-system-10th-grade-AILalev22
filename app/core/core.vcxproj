@@ -117,7 +117,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;STATIC_CONCPP;CURL_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ON_DEBUG_STRINGS;NDEBUG;_CONSOLE;STATIC_CONCPP;CURL_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\core\include\core;..\core\include\core\models;;..\core\include\core\pch;..\lib\mysql-connector-c++-9.1.0-winx64\include\jdbc;..\lib\curl\include;</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>

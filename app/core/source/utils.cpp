@@ -22,4 +22,18 @@ namespace Utils
 	{
 		system("cls"); 
 	}
+
+	void DbgMsg(const char* fmt, ...)
+	{
+#ifdef ON_DEBUG_STRINGS
+		va_list va;
+		va_start(va, fmt);
+
+		char buf[512];
+		vsprintf_s(buf, fmt, va); // print to variadic arg list
+
+		OutputDebugStringA(buf);
+		va_end(va);
+#endif
+	}
 }

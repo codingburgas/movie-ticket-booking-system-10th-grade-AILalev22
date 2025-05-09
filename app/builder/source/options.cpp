@@ -5,9 +5,10 @@
 #include "core\valid.h"
 #include "core\crud.h"
 #include "misc.h"
+#include "core\smtp.h"
 namespace Options
 {	
-	int LogSign(int mode, const std::string& adminEmail)
+	int LogSign(int mode)
 	{	
 		Entity::User user; // user data struct
 
@@ -28,7 +29,7 @@ namespace Options
 			}
 			return res;
 		}
-		return user.email == adminEmail ? Menu::ENTER_ADMIN : Menu::ENTER_CUSTOMER;
+		return user.email == conf.ademail ? Menu::ENTER_ADMIN : Menu::ENTER_CUSTOMER;
 	}
 	void InsertMovie()
 	{
@@ -44,9 +45,14 @@ namespace Options
 		{
 			Utils::ErrMsg("Incorrect movie data");
 		}
+
 		if (res == Error::ERROR_EXISTS)
 		{
 			Utils::ErrMsg("Movie already exists");
+		}
+		else if(res == Error::SUCCESSFUL)
+		{
+			
 		}
 	}
 	void DeleteMovie()

@@ -16,3 +16,4 @@
 #include "crypt.h"
 #include "misc.h"
 #include "crud.h"
+#include <windows.h>

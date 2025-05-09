@@ -3,7 +3,7 @@
 namespace Options
 {
 	// authentication option
-	int LogSign(int mode,const std::string& adminEmail);
+	int LogSign(int mode);
 	// admin option
 	void InsertMovie();
 	// admin option

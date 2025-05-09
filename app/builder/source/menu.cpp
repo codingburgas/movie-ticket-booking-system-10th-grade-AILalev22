@@ -205,7 +205,7 @@ namespace Menu
         return ret;
     }
     //////////////////////////////////////////////////////////////////////////////////
-    int AuthMenu(const Config& capp)
+    int AuthMenu()
     {
         Menu authMenu = CreateMenu({ "LogIn","SignUp" }, "MovieSystem");
 
@@ -216,8 +216,8 @@ namespace Menu
         int choice = authMenu.run_menu();
         switch (choice)
         {
-        case 0: opt = Options::LogSign(LOG, capp.ademail); break;
-        case 1: opt = Options::LogSign(SIGN, capp.ademail); break;
+        case 0: opt = Options::LogSign(LOG); break;
+        case 1: opt = Options::LogSign(SIGN); break;
         case 2: Utils::Exit(); break;
         }
 
@@ -242,7 +242,7 @@ namespace Menu
             }
         }
     }
-    void MainMenu(const Config& capp)
+    void MainMenu()
     {
         Menu customerMenu = CreateMenu({ "Show all movies","Show all shows","Book a show","Return to register" }, "Order Menu");
 

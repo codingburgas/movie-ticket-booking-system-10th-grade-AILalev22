@@ -136,9 +136,9 @@ public:
 Menu CreateMenu(const std::vector<std::string>& options, const std::string& heading = "");
 
 // log and sign menu
-int AuthMenu(const Config& capp);
+int AuthMenu();
 // main app menu
-void MainMenu(const Config& capp);
+void MainMenu();
 // admin menu
 void AdminMenu();
 }

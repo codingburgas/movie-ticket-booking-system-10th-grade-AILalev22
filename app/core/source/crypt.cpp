@@ -3,15 +3,12 @@
 #include "type.h"
 #include <windows.h>
 
-#pragma warning(push)
-// allow unsafe posix functions
-#pragma warning(disable : 4996)
 namespace Crypt
 {
     void CalcHash(const std::string& src, std::string& dst)
     {
         if (src.empty()) return;
-        HCRYPTPROV prov;
+        HCRYPTPROV prov; // crypt context
         HCRYPTHASH hash;
         
         byte buf[32]; // hash buffer
@@ -29,7 +26,7 @@ namespace Crypt
         char strHash[65];
         for (int i = 0; i < len; i++)
         {
-            sprintf(strHash + i * 2, "%02x", buf[i]); // print bytes to hex str representation
+            sprintf_s(strHash + i * 2, sizeof(strHash) - i * 2, "%02x", buf[i]); // print bytes to hex str representation
         }
         strHash[sizeof(strHash) - 1] = 0;
 
@@ -38,4 +35,3 @@ namespace Crypt
         CryptReleaseContext(prov, 0);     
     }
 }
-#pragma warning(pop)

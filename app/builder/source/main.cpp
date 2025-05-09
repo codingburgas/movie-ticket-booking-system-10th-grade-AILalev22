@@ -4,21 +4,22 @@
 #include "main.h"
 #include "core\manager.h"
 #include "core\smtp.h"
+#include "core\crud.h"
+Config conf;
 int main()
-{	
-	Config conf; // app configuration
+{
 	if (!LoadConfig(conf) || !Manager::Init(conf.dbhost, conf.dbuser, conf.dbpass, conf.schema)) // if startup fails
 	{
 		Utils::ErrMsg("Internal Error. Please try again later");
 		Utils::Exit();
 		return 1;
 	}
-
+	
 	for(;;)
-	switch (Menu::AuthMenu(conf))
+	switch (Menu::AuthMenu())
 	{
 	case Menu::ENTER_ADMIN: Menu::AdminMenu(); break;
-	case Menu::ENTER_CUSTOMER: Menu::MainMenu(conf); break;
+	case Menu::ENTER_CUSTOMER: Menu::MainMenu(); break;
 	}
 }
 

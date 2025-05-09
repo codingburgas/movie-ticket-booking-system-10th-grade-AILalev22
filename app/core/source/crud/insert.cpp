@@ -6,11 +6,11 @@ namespace Insert
 	{
 		auto shsql = Manager::GetSQL();
 
-		std::string hemail, hpass;
-		Crypt::CalcHash(acc.email, hemail);
+		std::string hpass;
+		//Crypt::CalcHash(acc.email, hemail);
 		Crypt::CalcHash(acc.password, hpass);
 
-		if (shsql->Write("%s %s", "INSERT INTO ACCOUNTS(EMAIL,PASSWORD) VALUES(?,?)", hemail, hpass))
+		if (shsql->Write("%s %s", "INSERT INTO ACCOUNTS(EMAIL,PASSWORD) VALUES(?,?)", acc.email, hpass))
 		{
 			return Error::SUCCESSFUL;
 		}

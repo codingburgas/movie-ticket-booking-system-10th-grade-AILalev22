@@ -30,4 +30,6 @@ struct Config
 	std::string smtpServer;
 
 };
+extern Config conf; // global app config
+
 bool LoadConfig(Config& conf);

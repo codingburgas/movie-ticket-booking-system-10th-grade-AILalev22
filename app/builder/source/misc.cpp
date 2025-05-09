@@ -3,6 +3,7 @@
 #include <regex>
 #include <conio.h>
 #include <iomanip>
+#include "main.h"
 
 namespace Misc
 {
