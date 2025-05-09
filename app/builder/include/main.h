@@ -29,6 +29,9 @@ struct Config
 	// app smtp server
 	std::string smtpServer;
 
+	//current user data
+	Entity::User currUser;
+
 };
 extern Config conf; // global app config
 

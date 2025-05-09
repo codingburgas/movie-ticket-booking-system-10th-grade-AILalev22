@@ -41,7 +41,7 @@ namespace SMTP
 
     static size_t PayloadSrc(char* ptr, size_t size, size_t nmemb, void* userp)
     {
-        if (ptr == nullptr || userp == nullptr)
+        if (!ptr || !userp)
             return 0;
 
         size_t room = size * nmemb;
@@ -119,7 +119,7 @@ namespace SMTP
             res = curl_easy_perform(curl);
             if (res != CURLE_OK)
             {              
-                Utils::DbgMsg("curl_easy_perform() failed: %s\n", curl_easy_strerror(res)); // dbg curl err if send fails
+                Utils::DbgMsg("error curl_easy_perform(): %s\n", curl_easy_strerror(res)); // dbg curl err if send fails
             }
 
             curl_slist_free_all(recipients);

@@ -12,8 +12,6 @@ namespace Manager
 	public:
 		// init db manager
 		ManagerSQL(const std::string& host, const std::string& user, const std::string& pass, const std::string& schema);
-		// release db manager
-		~ManagerSQL();
 
 		// returns manager status
 		bool GetStatus()

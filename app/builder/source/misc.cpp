@@ -28,7 +28,7 @@ namespace Misc
 						}
 						catch (...)
 						{
-
+							Utils::DbgMsg("error stof()");
 						}
 					}
 					cdot = 0;

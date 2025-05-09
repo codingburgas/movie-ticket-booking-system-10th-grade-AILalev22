@@ -244,7 +244,7 @@ namespace Menu
     }
     void MainMenu()
     {
-        Menu customerMenu = CreateMenu({ "Show all movies","Show all shows","Book a show","Return to register" }, "Order Menu");
+        Menu customerMenu = CreateMenu({ "Show all movies","Show all shows","Book a show","Return to register" }, "Customer Menu");
 
         int choice = customerMenu.run_menu();
         switch (choice)

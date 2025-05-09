@@ -15,9 +15,14 @@ namespace Crypt
         DWORD len = sizeof(buf); // buff size
 
         if (!CryptAcquireContextA(&prov, 0, 0, PROV_RSA_AES, CRYPT_VERIFYCONTEXT) || !CryptCreateHash(prov, CALG_SHA_256, 0, 0, &hash))
+        {
+            Utils::DbgMsg("error CryptAcuqireContextA()");
             return;
+        }
         if (!CryptHashData(hash, (byte*)src.c_str(), src.size(), 0) || !CryptGetHashParam(hash, HP_HASHVAL, buf, &len, 0))
         {
+            Utils::DbgMsg("error CryptHashData()");
+
             CryptReleaseContext(prov, 0);
             CryptDestroyHash(hash);
             return;
@@ -32,6 +37,8 @@ namespace Crypt
 
         dst = strHash;
         CryptDestroyHash(hash);
-        CryptReleaseContext(prov, 0);     
+        CryptReleaseContext(prov, 0);
+
+        Utils::DbgMsg("CalcHash() is ok");
     }
 }

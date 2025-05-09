@@ -3,8 +3,7 @@
 #include "core\database.h"
 #include "main.h"
 #include "core\manager.h"
-#include "core\smtp.h"
-#include "core\crud.h"
+
 Config conf;
 int main()
 {
@@ -35,7 +34,10 @@ bool LoadConfig(Config& conf)
 	};
 	for (const auto& e : env)
 		if (!e)
-			return false;
+		{
+			Utils::DbgMsg("error LoadConfig env");
+			return false;			
+		}
 
 	conf.ademail = DB_ADMIN_EMAIL;
 	conf.cinemas = CINEMAS;
@@ -50,5 +52,6 @@ bool LoadConfig(Config& conf)
 	conf.sender.email = env[3] ? env[3] : "";;
 	conf.sender.password = env[4] ? env[4] : "";
 
+	Utils::DbgMsg("LoadConfig is ok");
 	return true;
 }

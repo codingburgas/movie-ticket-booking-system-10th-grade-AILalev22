@@ -1,7 +1,7 @@
 #pragma once
 #include <sstream>
 #include <iomanip>
-
+#include <windows.h>
 #include <string>
 #include <vector>
 #include <cstdarg>
@@ -16,4 +16,4 @@
 #include "crypt.h"
 #include "misc.h"
 #include "crud.h"
-#include <windows.h>
+#include "utils.h"

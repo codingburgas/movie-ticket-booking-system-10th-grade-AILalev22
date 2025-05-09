@@ -32,6 +32,7 @@ namespace MySQL
 		credentials[0] = host;
 		credentials[1] = user;
 		credentials[2] = pass;
+		
 	}
 	Connector::~Connector()
 	{
@@ -73,6 +74,8 @@ namespace MySQL
 		{
 			if (conn)
 				delete conn;
+			Utils::DbgMsg("error Connect()");
+
 			return false;
 		}
 		return true;
@@ -85,6 +88,7 @@ namespace MySQL
 		}
 		catch (...)
 		{
+			Utils::DbgMsg("error SetDB()");
 			return false;
 		}
 		return true;
@@ -98,6 +102,7 @@ namespace MySQL
 		}
 		catch (...)
 		{
+			Utils::DbgMsg("error Query()");
 			return false;
 		}
 		return true;
@@ -112,6 +117,7 @@ namespace MySQL
 		}
 		catch (...)
 		{
+			Utils::DbgMsg("error Write() query is not ok");
 			return false; // if query is invalid and exception is thrown
 		}
 		va_list va;
@@ -146,6 +152,7 @@ namespace MySQL
 		}
 		catch (...)
 		{
+			Utils::DbgMsg("error Write() args are not ok");
 			return false;
 		}
 		return true;
@@ -164,6 +171,7 @@ namespace MySQL
 		}
 		catch (...)
 		{
+			Utils::DbgMsg("error Read() query is not ok");
 			return false;
 		}
 

@@ -9,11 +9,7 @@ namespace Manager
 		isOK = true;
 
 		ctor = std::make_shared<CTOR>(host, user, pass);
-		if(!ctor->Connect() || !ctor->SetDB(schema)) isOK = false;
-	
-	}
-	ManagerSQL::~ManagerSQL()
-	{
+		if (!ctor->Connect() || !ctor->SetDB(schema)) isOK = false;		
 	}
 	///////////
 	std::shared_ptr<CTOR> GetSQL()
@@ -22,8 +18,12 @@ namespace Manager
 	}
 	bool Init(const std::string& host, const std::string& user, const std::string& pass, const std::string& schema)
 	{
-		if (sql = std::make_shared<ManagerSQL>(host,user,pass,schema))
+		if (sql = std::make_shared<ManagerSQL>(host, user, pass, schema))
+		{
+			Utils::DbgMsg("manager is ok");
 			return true;
+		}
+		Utils::DbgMsg("manager is not ok");
 		return false;
 	}
 	void Release()

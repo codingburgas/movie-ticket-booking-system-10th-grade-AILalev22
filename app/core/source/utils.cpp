@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "utils.h"
-#include <regex>
 
 namespace Utils
 {
@@ -31,6 +30,9 @@ namespace Utils
 
 		char buf[512];
 		vsprintf_s(buf, fmt, va); // print to variadic arg list
+
+		size_t len = strlen(buf);
+		if (len < sizeof(buf) - 1) buf[len] = '\n';
 
 		OutputDebugStringA(buf);
 		va_end(va);

@@ -29,6 +29,8 @@ namespace Options
 			}
 			return res;
 		}
+		conf.currUser = user; // assign current user data to config
+		Utils::DbgMsg("mail: %s\npassword: %s", user.email.c_str(), user.password.c_str());
 		return user.email == conf.ademail ? Menu::ENTER_ADMIN : Menu::ENTER_CUSTOMER;
 	}
 	void InsertMovie()
@@ -52,7 +54,13 @@ namespace Options
 		}
 		else if(res == Error::SUCCESSFUL)
 		{
-			
+			std::string msg =
+				"New movie available!\n"
+				"Name: " + add.name + "\n"
+				"Genre: " + add.genre + "\n"
+				"Language: " + add.language + "\n"
+				"Release year: " + std::to_string(add.releaseYear) + "\n";
+			SMTP::NotifyUsers(conf.sender, conf.smtpServer, "New movie", msg); // notify all users of newly inserted movie
 		}
 	}
 	void DeleteMovie()
