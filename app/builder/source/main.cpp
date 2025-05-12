@@ -35,7 +35,7 @@ bool LoadConfig(Config& conf)
 	for (const auto& e : env)
 		if (!e)
 		{
-			Utils::DbgMsg("error LoadConfig env");
+			Utils::DbgMsg("error LoadConfig() env");
 			return false;			
 		}
 
@@ -52,6 +52,6 @@ bool LoadConfig(Config& conf)
 	conf.sender.email = env[3] ? env[3] : "";;
 	conf.sender.password = env[4] ? env[4] : "";
 
-	Utils::DbgMsg("LoadConfig is ok");
+	Utils::DbgMsg("LoadConfig() is ok");
 	return true;
 }

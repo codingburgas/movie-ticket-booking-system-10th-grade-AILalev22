@@ -55,7 +55,7 @@ namespace Options
 		else if(res == Error::SUCCESSFUL)
 		{
 			std::string msg =
-				"New movie available!\n"
+				"A new movie has been released!\n\n"
 				"Name: " + add.name + "\n"
 				"Genre: " + add.genre + "\n"
 				"Language: " + add.language + "\n"

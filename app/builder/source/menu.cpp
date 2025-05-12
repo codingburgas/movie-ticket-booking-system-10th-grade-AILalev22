@@ -7,19 +7,19 @@ namespace Menu
     Menu::Menu(int max_len, std::string header, std::string head_color, std::string body_color,
         char up_key, char down_key, char sel_key) {
         if (max_len <= 0) {
-            std::cout << "Error: Max String Length is set to 0.";
+            Utils::DbgMsg("Error: Max String Length is set to 0.");
             return;
         }
 
         max_string_len = max_len;
 
         if (head_color.size() != 2) {
-            std::cout << "Error: Head Color must contain only two characters in ANSI Color Code form.";
+            Utils::DbgMsg("Error: Head Color must contain only two characters in ANSI Color Code form.");
             return;
         }
 
         if (body_color.size() != 2) {
-            std::cout << "Error: Body Color must contain only two characters in ANSI Color Code form.";
+            Utils::DbgMsg("Error: Body Color must contain only two characters in ANSI Color Code form.");
             return;
         }
 
@@ -42,7 +42,7 @@ namespace Menu
 
     void Menu::set_max_len(int max_len) {
         if (max_len <= 0) {
-            std::cout << "Error: Max String Length is set to 0.";
+            Utils::DbgMsg("Error: Max String Length is set to 0.");
             return;
         }
 
@@ -62,7 +62,6 @@ namespace Menu
     }
 
     void Menu::set_colors(color c_head, color c_body) {
-
 
         colors.first = "\033[0;" + std::to_string((int)c_head) + "m";
         colors.second = "\033[0;" + std::to_string((int)c_body) + "m";
@@ -101,7 +100,7 @@ namespace Menu
             }
         }
 
-        std::cout << "Error: Entry doesn\'t exist in the first place.";
+        Utils::DbgMsg("Error: Entry doesn\'t exist in the first place.");
     }
 
     void Menu::edit_field(std::string old_name, std::string new_name) {
@@ -113,7 +112,7 @@ namespace Menu
             }
         }
 
-        std::cout << "Error: Entry doesn\'t exist in the first place.";
+        Utils::DbgMsg("Error: Entry doesn\'t exist in the first place.");
     }
 
     bool Menu::has_field(std::string name) {
@@ -135,7 +134,7 @@ namespace Menu
 
     void Menu::printMenu() {
         if (max_string_len <= 0) {
-            std::cout << "Error: Invalid Max String Length provided.";
+            Utils::DbgMsg("Error: Invalid Max String Length provided.");
             return;
         }
 
@@ -228,7 +227,7 @@ namespace Menu
     {
         Menu adminMenu = CreateMenu({ "Insert Movie" ,"Delete Movie","Insert Show","Delete Show","Update Show","Return to register" }, "Admin Panel");
 
-        while (true)
+        for(;;)
         {
             int choice = adminMenu.run_menu();
             switch (choice)
@@ -246,11 +245,14 @@ namespace Menu
     {
         Menu customerMenu = CreateMenu({ "Show all movies","Show all shows","Book a show","Return to register" }, "Customer Menu");
 
-        int choice = customerMenu.run_menu();
-        switch (choice)
+        for (;;)
         {
-        case 0: Options::ShowAllMovies(); break;
-        case 3: return; break;
+            int choice = customerMenu.run_menu();
+            switch (choice)
+            {
+            case 0: Options::ShowAllMovies(); break;
+            case 3: return; break;
+            }
         }
     }
 }

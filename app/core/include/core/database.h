@@ -23,7 +23,4 @@ namespace MySQL
 		// executes all types of queries
 		bool Query(const std::string& query);
 	};
-	// trim c-style format
-	// "%d %f" -> "df"
-	void TrimFormat(std::string& fmt);
 }

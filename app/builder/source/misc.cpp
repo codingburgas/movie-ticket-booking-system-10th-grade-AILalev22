@@ -10,7 +10,7 @@ namespace Misc
 	void EnterNumber(std::string& num, bool floating)
 	{
 		int cdot = 0; // floating point count
-		while (true)
+		for (;;)
 		{
 			std::cout << ":";
 			std::cin >> num;
@@ -93,7 +93,7 @@ namespace Misc
 
 		std::cout << "\nEnter password\n:";
 
-		while (true)
+		for (;;)
 		{
 			c = _getch();
 

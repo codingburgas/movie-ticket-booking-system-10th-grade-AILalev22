@@ -29,7 +29,7 @@ namespace Utils
 		va_start(va, fmt);
 
 		char buf[512];
-		vsprintf_s(buf, fmt, va); // print to variadic arg list
+		vsprintf_s(buf, fmt, va); // print to buf fmt and args after fmt
 
 		size_t len = strlen(buf);
 		if (len < sizeof(buf) - 1) buf[len] = '\n';

@@ -158,7 +158,8 @@ namespace MySQL
 		return true;
 	}
 
-	
+	void TrimFormat(std::string& fmt);
+
 	bool Connector::Read(std::string fmt, const std::string& query,std::string& dst)
 	{
 		TrimFormat(fmt);
@@ -201,8 +202,7 @@ namespace MySQL
 			dst.push_back('|'); // insert after each row of data from the db
 		}
 
-		if (dst.empty()) return false;
-		return true;
+		return !dst.empty();
 	}
 	void TrimFormat(std::string& fmt)
 	{

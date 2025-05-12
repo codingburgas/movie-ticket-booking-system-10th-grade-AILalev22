@@ -11,7 +11,7 @@ namespace SMTP
 		void SendThread(const std::vector<std::string>& receiversEmail, const std::string& subject, const std::string& body);
 	public:
 		// set smtp sender email and app passsword
-		void SetSender(const std::string& email, const std::string& password);
+		void SetSender(const Entity::User& sender);
 		// set smtp server address
 		void SetServer(const std::string& smtpAddr);
 		// send email using sendthread
@@ -21,6 +21,6 @@ namespace SMTP
 		Request() = default;
 	};
 
-	// send a msg to all customers via email
+	// send a msg to all customers via smtp
 	void NotifyUsers(const Entity::User& sender, const std::string& smtpAddr, const std::string& subject, const std::string& msg);
 }

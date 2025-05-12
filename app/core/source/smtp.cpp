@@ -5,11 +5,10 @@
 #include <stdio.h>
 #include <thread>
 #include "utils.h"
-
 namespace SMTP
 {
 
-    std::string EmailMsg(const std::vector<std::string>& toList, const std::string& from, const std::string& cc,const std::string& subject, const std::string& body)
+    std::string EmailMsg(const std::vector<std::string>& toList, const std::string& from,const std::string& subject, const std::string& body)
     {
         std::string id = "<" + std::to_string(rand() % INT_MAX) + "@gmail.com>"; // unique email id
 
@@ -24,16 +23,20 @@ namespace SMTP
             "Date: Mon, 29 Nov 2010 21:54:29 +1100\r\n"
             "To: " + toCombined + "\r\n"
             "From: " + from + "\r\n"
-            "Cc: " + cc + "\r\n"
+            "Cc: " + "\r\n"
             "Message-ID: " + id + "\r\n"
             "Subject: " + subject + "\r\n"
+            "Mime-Version: 1.0\r\n"
+            "Content-Type: text/plain; charset=UTF-8\r\n"
+            "Content-Transfer-Encoding: 7bit\r\n"
+            "User-Agent: MyMailClient/1.0\r\n"
             "\r\n" +
             body + "\r\n";
 
         return message;
     }
 
-    struct stru 
+    struct Context
     {
         size_t readed;
         std::string payload;
@@ -48,13 +51,13 @@ namespace SMTP
         if (room == 0)
             return 0;
 
-        stru* upload_ctx = (stru*)userp;
+        Context* ctx = (Context*)userp;
 
-        size_t remaining = upload_ctx->payload.size() - upload_ctx->readed;
+        size_t remaining = ctx->payload.size() - ctx->readed;
         size_t len = (remaining < room) ? remaining : room;
 
-        memcpy(ptr, upload_ctx->payload.data() + upload_ctx->readed, len);
-        upload_ctx->readed += len;
+        memcpy(ptr, ctx->payload.data() + ctx->readed, len);
+        ctx->readed += len;
 
         return len;
     }
@@ -62,14 +65,12 @@ namespace SMTP
     ///////////////////
     Request::Request(const Entity::User& sender, const std::string& smtpAddr)
     {
-        this->sender.email = sender.email;
-        this->sender.password = sender.password;
+        this->sender = sender;
         this->smtpAddr = smtpAddr;
     }
-    void Request::SetSender(const std::string& email, const std::string& password)
+    void Request::SetSender(const Entity::User& sender)
     {
-        sender.email = email;
-        sender.password = password;
+        this->sender = sender;
     }
     void Request::SetServer(const std::string& smtpAddr)
     {
@@ -80,12 +81,12 @@ namespace SMTP
         CURL* curl;
         CURLcode res = CURLE_OK;
         struct curl_slist* recipients = nullptr;
-        stru ctx; // upload context
+        Context ctx; // upload context
 
         std::srand(std::time(0));
 
         ctx.readed = 0;
-        ctx.payload = EmailMsg(receiversEmail, sender.email, "", subject, body); // get email msg
+        ctx.payload = EmailMsg(receiversEmail, sender.email, subject, body); // get email msg
 
         curl = curl_easy_init();
         if (curl)
@@ -99,8 +100,8 @@ namespace SMTP
             curl_easy_setopt(curl, CURLOPT_URL, smtpAddr.c_str());
             curl_easy_setopt(curl, CURLOPT_USE_SSL, CURLUSESSL_ALL);
 
-            curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
-            curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
+            curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 1L);
+            curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 2L);
 
             curl_easy_setopt(curl, CURLOPT_MAIL_FROM, sender.email.c_str());
 
@@ -140,6 +141,7 @@ namespace SMTP
         std::vector<std::string> lsEmail; // list with all emails
         if (Select::SelectAllUsersEmail(lsEmail) == Error::SUCCESSFUL) // if list with emails is available
         {
+            lsEmail.erase(lsEmail.begin(), lsEmail.begin() + 1); //delete admin email from vector
             req = std::make_unique<SMTP::Request>(sender, smtpAddr);
             req->Send(lsEmail, subject, msg);
         }

@@ -2,7 +2,9 @@
 
 typedef MySQL::Connector CTOR;
 namespace Manager
-{	
+{		
+	struct StruConnector;
+
 	//mysql db manager
 	class ManagerSQL
 	{
@@ -11,7 +13,7 @@ namespace Manager
 		bool isOK;
 	public:
 		// init db manager
-		ManagerSQL(const std::string& host, const std::string& user, const std::string& pass, const std::string& schema);
+		ManagerSQL(const StruConnector& data);
 
 		// returns manager status
 		bool GetStatus()
@@ -22,6 +24,14 @@ namespace Manager
 		std::shared_ptr<CTOR> GetConnector() { return ctor; }
 	};
 
+	// connector init data
+	struct StruConnector
+	{
+		std::string host;
+		std::string user;
+		std::string pass;
+		std::string schema;
+	};
 	// get global mysql connector
 	std::shared_ptr<CTOR> GetSQL();
 

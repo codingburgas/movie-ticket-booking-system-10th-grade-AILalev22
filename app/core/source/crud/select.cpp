@@ -23,7 +23,7 @@ namespace Select
 		auto shsql = Manager::GetSQL();
 		std::string dst;
 
-		if (shsql->Read("%s", "SELECT EMAIL FROM ACCOUNTS", dst)) // fix later add WHERE ID>=1 for admin
+		if (shsql->Read("%s", "SELECT EMAIL FROM ACCOUNTS ORDER BY ID ASC", dst)) // fix later add WHERE ID>=1 for admin
 		{
 			size_t from = 0,to;
 
