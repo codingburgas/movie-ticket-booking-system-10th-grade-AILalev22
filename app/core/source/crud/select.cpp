@@ -1,17 +1,17 @@
-#include "pch.h"
+	#include "pch.h"
 
 namespace Select
 {
 	int SelectUser(const Entity::User& acc)
 	{
-		auto shsql = Manager::GetSQL();
+		auto shsqlInst = Manager::GetSQL()->GetInstance();
 
 		std::string hpass; // hashed password
 		//Crypt::CalcHash(acc.email, hemail); // hash email and pass values
 		Crypt::CalcHash(acc.password, hpass);
 
 		std::string retrievedPass;
-		if (shsql->Read("%s", "SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = '" + acc.email + "'", retrievedPass)) // possible injection, fix later Read
+		if (shsqlInst->Read("%s", "SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = '" + acc.email + "'", retrievedPass)) // possible injection, fix later Read
 		{
 			retrievedPass.pop_back(); // remove last pipe appended from Read fn
 			return retrievedPass == hpass ? Error::SUCCESSFUL : Error::ERROR_INPUT; // if email is found but password is wrong, return error_input
@@ -20,10 +20,10 @@ namespace Select
 	}
 	int SelectAllUsersEmail(std::vector<std::string>& vec)
 	{
-		auto shsql = Manager::GetSQL();
+		auto shsqlInst = Manager::GetSQL()->GetInstance();
 		std::string dst;
 
-		if (shsql->Read("%s", "SELECT EMAIL FROM ACCOUNTS ORDER BY ID ASC", dst)) // fix later add WHERE ID>=1 for admin
+		if (shsqlInst->Read("%s", "SELECT EMAIL FROM ACCOUNTS WHERE ID > 1 ORDER BY ID ASC", dst)) // fix later add WHERE ID>=1 for admin
 		{
 			size_t from = 0,to;
 
@@ -47,9 +47,9 @@ namespace Select
 	}
 	int SelectMovie(std::string& dst, const std::string& name)
 	{
-		auto shsql = Manager::GetSQL();
+		auto shsqlInst = Manager::GetSQL()->GetInstance();
 
-		if (shsql->Read("%s %s %s %d", name.empty() ? "SELECT NAME,GENRE,LANGUAGE,RELEASEYEAR FROM MOVIES" : "SELECT NAME,GENRE,LANGUAGE,RELEASEYEAR FROM MOVIES WHERE NAME = '" + name + '\'', dst))
+		if (shsqlInst->Read("%s %s %s %d", name.empty() ? "SELECT NAME,GENRE,LANGUAGE,RELEASEYEAR FROM MOVIES" : "SELECT NAME,GENRE,LANGUAGE,RELEASEYEAR FROM MOVIES WHERE NAME = '" + name + '\'', dst))
 		{
 			return Error::SUCCESSFUL;
 		}

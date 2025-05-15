@@ -210,17 +210,19 @@ namespace Menu
 
         // auth menu choice
         int opt = -1;
-        menu:
-
-        int choice = authMenu.run_menu();
-        switch (choice)
+        for (;;)
         {
-        case 0: opt = Options::LogSign(LOG); break;
-        case 1: opt = Options::LogSign(SIGN); break;
-        case 2: Utils::Exit(); break;
-        }
 
-        if (opt != ENTER_ADMIN && opt!= ENTER_CUSTOMER) goto menu; // start menu again if  auth fails
+            int choice = authMenu.run_menu();
+            switch (choice)
+            {
+            case 0: opt = Options::LogSign(LOG); break;
+            case 1: opt = Options::LogSign(SIGN); break;
+            case 2: Utils::Exit(); break;
+            }
+            if (opt == ENTER_ADMIN || opt == ENTER_CUSTOMER) break;
+        }
+        
         return opt;
     }
     void AdminMenu()

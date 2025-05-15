@@ -37,8 +37,15 @@ namespace Misc
 			else
 			{
 				if (std::all_of(num.begin(), num.end(), isdigit))
-					if (std::stod(num) > 0)
-						break; // break if num is a negative integer
+					try
+					{
+						if (std::stod(num) > 0)
+							break;// break if num is a non-negative number
+					}
+					catch (...)
+					{
+						Utils::DbgMsg("error stod()");
+					}
 			}
 		}
 		Utils::Clear();

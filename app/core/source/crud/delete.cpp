@@ -4,11 +4,11 @@ namespace Delete
 {
 	int DeleteMovie(const Entity::Movie& movie)
 	{
-		auto shsql = Manager::GetSQL();
+		auto shsqlInst = Manager::GetSQL()->GetInstance();
 		std::string tmp;
-		if (shsql->Read("%s", "SELECT NAME FROM MOVIES WHERE NAME = '" + movie.name + "'", tmp))
+		if (shsqlInst->Read("%s", "SELECT NAME FROM MOVIES WHERE NAME = '" + movie.name + "'", tmp))
 		{
-			if (shsql->Query("DELETE FROM MOVIES WHERE NAME = '" + movie.name + '\''))
+			if (shsqlInst->Query("DELETE FROM MOVIES WHERE NAME = '" + movie.name + '\''))
 			{
 				return Error::SUCCESSFUL;
 			}
@@ -17,7 +17,7 @@ namespace Delete
 	}
 	int DeleteShow(const Entity::Show& show)
 	{
-		auto shsql = Manager::GetSQL();
-		return shsql->Query("DELETE FROM SHOWS WHERE DATE = '" + show.date + "\'") ? Error::SUCCESSFUL : Error::ERROR_NOT_EXISTS;
+		auto shsqlInst = Manager::GetSQL()->GetInstance();
+		return shsqlInst->Query("DELETE FROM SHOWS WHERE DATE = '" + show.date + "\'") ? Error::SUCCESSFUL : Error::ERROR_NOT_EXISTS;
 	}
 }

@@ -31,8 +31,7 @@ namespace MySQL
 
 		credentials[0] = host;
 		credentials[1] = user;
-		credentials[2] = pass;
-		
+		credentials[2] = pass;		
 	}
 	Connector::~Connector()
 	{
@@ -64,6 +63,12 @@ namespace MySQL
 
 		}
 	}
+	void Connector::SetCredentials(const std::string& host, const std::string& user, const std::string& pass)
+	{
+		credentials[0] = host;
+		credentials[1] = user;
+		credentials[2] = pass;
+	}
 	bool Connector::Connect()
 	{
 		try
@@ -80,11 +85,16 @@ namespace MySQL
 		}
 		return true;
 	}
-	bool Connector::SetDB(const std::string& name)
+	bool Connector::SetDB(const std::string& schema)
 	{
+		if (!conn)
+		{
+			Utils::DbgMsg("error SetDB() not connected");
+			return false;
+		}
 		try
 		{
-			conn->setSchema(name);
+			conn->setSchema(schema);
 		}
 		catch (...)
 		{
@@ -95,6 +105,11 @@ namespace MySQL
 	}
 	bool Connector::Query(const std::string& query)
 	{
+		if (!conn)
+		{
+			Utils::DbgMsg("error Query() not connected");
+			return false;
+		}
 		try
 		{
 			stmt = conn->createStatement();
@@ -110,6 +125,11 @@ namespace MySQL
 	bool Connector::Write(std::string fmt, const std::string& query, ...)
 	{	
 		if (fmt.empty() || query.empty()) return false;
+		if (!conn)
+		{
+			Utils::DbgMsg("error Write() not connected");
+			return false;
+		}
 
 		try
 		{
@@ -162,12 +182,17 @@ namespace MySQL
 
 	bool Connector::Read(std::string fmt, const std::string& query,std::string& dst)
 	{
+		if (!conn)
+		{
+			Utils::DbgMsg("error Read() not connected");
+			return false;
+		}
 		TrimFormat(fmt);
 		if (fmt.empty()) return false;
 
-		stmt = conn->createStatement();
 		try
 		{
+			stmt = conn->createStatement();
 			rset = stmt->executeQuery(query); //try executing query and if error, stop function
 		}
 		catch (...)

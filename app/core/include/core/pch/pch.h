@@ -12,6 +12,7 @@
 #include <algorithm>
 #include "models.h"
 #include "database.h"
+#include "smtp.h"
 #include "manager.h"
 #include "crypt.h"
 #include "misc.h"

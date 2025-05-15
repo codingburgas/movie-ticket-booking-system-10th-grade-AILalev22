@@ -3,6 +3,8 @@
 #include <fstream>
 #include <algorithm>
 #include <iostream>
+#include <vector>
 #include "core\models.h"
 #include "core\utils.h"
 #include "core\misc.h"
+#include "core\smtp.h"

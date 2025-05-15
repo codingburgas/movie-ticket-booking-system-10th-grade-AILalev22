@@ -1,41 +1,32 @@
 #pragma once
 
-namespace Error
+enum Error
 {
-	enum
-	{
-		ERROR_INPUT,
-		ERROR_DATABASE,
-		ERROR_EXISTS,
-		ERROR_NOT_EXISTS,
-		ERROR_FAILED,
-		SUCCESSFUL
-	};
-}
-namespace Seat
+	ERROR_INPUT,
+	ERROR_DATABASE,
+	ERROR_EXISTS,
+	ERROR_NOT_EXISTS,
+	ERROR_FAILED,
+	SUCCESSFUL
+};
+
+enum Seat
 {
-	enum
-	{
-		SILVER,
-		GOLD,
-		PLATINUM
-	};
-}
-namespace Notification
+	SILVER,
+	GOLD,
+	PLATINUM
+};
+
+enum Notification
 {
-	enum
-	{
-		NEW_MOVIE, 
-		BOOKING_CONFIRMED, 
-		BOOKING_CANCELED
-	};
-}
-namespace BookingStatus
+	NEW_MOVIE, 
+	BOOKING_CONFIRMED, 
+	BOOKING_CANCELED
+};
+
+enum BookingStatus
 {
-	enum
-	{
-		PENDING,
-		CONFIRMED,
-		CANCELED
-	};
-}
+	PENDING,
+	CONFIRMED,
+	CANCELED
+};

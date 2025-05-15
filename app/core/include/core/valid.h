@@ -8,4 +8,6 @@ namespace Validation
 	bool IsValidMovie(const Entity::Movie& movie);
 	// return whether a show is valid
 	bool IsValidShow(const Entity::Show& show);
+	// return whether smtp address is valid
+	bool IsValidSmtp(const std::string& addr);
 }

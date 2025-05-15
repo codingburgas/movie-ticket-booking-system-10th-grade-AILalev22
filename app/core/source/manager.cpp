@@ -1,37 +1,55 @@
 #include "pch.h"
+#include "manager.h"
+#include "valid.h"
 namespace Manager
 {
 	// global db manager
 	static std::shared_ptr<ManagerSQL> sql;
+	// global smtp request manager
+	static std::shared_ptr<ManagerSMTP> smtp;
 
-	ManagerSQL::ManagerSQL(const StruConnector& data)
+	void ManagerSQL::Init()
 	{
-		isOK = true;
-
-		ctor = std::make_shared<CTOR>(data.host, data.user, data.pass);
-		if (!ctor->Connect() || !ctor->SetDB(data.schema)) isOK = false;
+		if (!inst->Connect() || !inst->SetDB(dataInst.schema)) isOK = false;
+	}
+	void ManagerSMTP::Init()
+	{
+		if(!Validation::IsValidSmtp(dataInst.smtpAddr)) isOK = false;
 	}
 	///////////
-	std::shared_ptr<CTOR> GetSQL()
+	std::shared_ptr<ManagerSQL> GetSQL()
 	{
-		return sql->GetConnector();
+		return sql;
 	}
-	bool Init(const std::string& host, const std::string& user, const std::string& pass, const std::string& schema)
+	std::shared_ptr<ManagerSMTP> GetSMTP()
 	{
-		StruConnector data = { host,user,pass,schema };
-		if (sql = std::make_shared<ManagerSQL>(data))
+		return smtp;
+	}
+	bool Init(const StruConnector& ctorInit,const StruSMTP& smtpInit)
+	{
+		bool ret = true;
+		if ((sql = std::make_shared<ManagerSQL>(ctorInit)) && (smtp = std::make_shared<ManagerSMTP>(smtpInit)))
 		{
-			if (sql->GetStatus()) // if manager is init correctly
+			sql->Init();
+			smtp->Init();
+			if (!sql->GetStatus()) // if managers are not init correctly
 			{
-				Utils::DbgMsg("manager is ok");
-				return true;
+				Utils::DbgMsg("managerSQL is not ok");
+				ret = false;
+			}
+			if (!smtp->GetStatus())
+			{
+				Utils::DbgMsg("managerSMTP is not ok");
+				ret = false;
 			}
 		}
-		Utils::DbgMsg("manager is not ok");
-		return false;
+		else
+			ret = false;
+		return ret;
 	}
 	void Release()
 	{
 		sql.reset();
+		smtp.reset();
 	}
 }

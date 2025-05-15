@@ -21,6 +21,6 @@ namespace SMTP
 		Request() = default;
 	};
 
-	// send a msg to all customers via smtp
-	void NotifyUsers(const Entity::User& sender, const std::string& smtpAddr, const std::string& subject, const std::string& msg);
+	// send a msg to all users if emailList is empty, else to a group of users
+	void NotifyUsers(const std::string& subject, const std::string& msg, std::vector<std::string> emailList ={});
 }

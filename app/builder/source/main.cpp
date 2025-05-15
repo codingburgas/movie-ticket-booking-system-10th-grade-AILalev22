@@ -5,9 +5,11 @@
 #include "core\manager.h"
 
 Config conf;
+Manager::StruConnector ctorInit;
+Manager::StruSMTP smtpInit;
 int main()
 {
-	if (!LoadConfig(conf) || !Manager::Init(conf.dbhost, conf.dbuser, conf.dbpass, conf.schema)) // if startup fails
+	if (!LoadConfig(conf) || !Manager::Init(ctorInit,smtpInit)) // if startup fails
 	{
 		Utils::ErrMsg("Internal Error. Please try again later");
 		Utils::Exit();
@@ -52,6 +54,8 @@ bool LoadConfig(Config& conf)
 	conf.sender.email = env[3] ? env[3] : "";;
 	conf.sender.password = env[4] ? env[4] : "";
 
-	Utils::DbgMsg("LoadConfig() is ok");
+	ctorInit = { conf.dbhost,conf.dbuser,conf.dbpass,conf.schema};
+	smtpInit = { conf.sender,conf.smtpServer };
+
 	return true;
 }

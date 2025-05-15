@@ -60,7 +60,7 @@ namespace Options
 				"Genre: " + add.genre + "\n"
 				"Language: " + add.language + "\n"
 				"Release year: " + std::to_string(add.releaseYear) + "\n";
-			SMTP::NotifyUsers(conf.sender, conf.smtpServer, "New movie", msg); // notify all users of newly inserted movie
+			SMTP::NotifyUsers("New movie", msg); // notify all users of newly inserted movie
 		}
 	}
 	void DeleteMovie()

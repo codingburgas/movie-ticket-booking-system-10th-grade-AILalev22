@@ -4,15 +4,15 @@ namespace MySQL
 {
 	class Connector
 	{
-		// database connect credentials
+		// host,user,pass db connect credentials
 		 std::string credentials[3];
 
 	public:
 		Connector(const std::string& host, const std::string& user, const std::string& pass);
 		~Connector();
 
-		// set the database to use
-		bool SetDB(const std::string& name);
+		// set the schema to use
+		bool SetDB(const std::string& schema);
 		//connect to the mysql server
 		bool Connect();
 
@@ -22,5 +22,7 @@ namespace MySQL
 		bool Write(std::string fmt, const std::string& query, ...);
 		// executes all types of queries
 		bool Query(const std::string& query);
+		// set db connect credentials
+		void SetCredentials(const std::string& host, const std::string& user, const std::string& pass);
 	};
 }

@@ -7,7 +7,6 @@
 #include "utils.h"
 namespace SMTP
 {
-
     std::string EmailMsg(const std::vector<std::string>& toList, const std::string& from,const std::string& subject, const std::string& body)
     {
         std::string id = "<" + std::to_string(rand() % INT_MAX) + "@gmail.com>"; // unique email id
@@ -128,22 +127,30 @@ namespace SMTP
         }
     }
 
-    static std::unique_ptr<SMTP::Request> req;
-
     void Request::Send(const std::vector<std::string>& receiversEmail, const std::string& subject, const std::string& body)
     {
         std::thread t(&Request::SendThread, this, receiversEmail, subject, body);
         t.detach(); // run thread independetly
     }
 
-    void NotifyUsers(const Entity::User& sender,const std::string& smtpAddr,const std::string& subject, const std::string& msg)
+    void NotifyUsers(const std::string& subject, const std::string& msg, std::vector<std::string> emailList)
     {
         std::vector<std::string> lsEmail; // list with all emails
-        if (Select::SelectAllUsersEmail(lsEmail) == Error::SUCCESSFUL) // if list with emails is available
+        if (emailList.empty())
         {
-            lsEmail.erase(lsEmail.begin(), lsEmail.begin() + 1); //delete admin email from vector
-            req = std::make_unique<SMTP::Request>(sender, smtpAddr);
-            req->Send(lsEmail, subject, msg);
+            if (Select::SelectAllUsersEmail(lsEmail) != Error::SUCCESSFUL) // select all customers emails if none are given
+            {
+                return;
+            }
         }
+        else
+            lsEmail = emailList;
+
+        auto shreq = Manager::GetSMTP();
+        auto shreqInst = shreq->GetInstance();
+
+        shreqInst->SetSender(shreq->GetData().sender); // set smtp config
+        shreqInst->SetServer(shreq->GetData().smtpAddr);
+        shreqInst->Send(lsEmail, subject, msg); // send email to listed users
     }
 }

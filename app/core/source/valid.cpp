@@ -38,4 +38,9 @@ namespace Validation
 		}
 		return false;
 	}
+	bool IsValidSmtp(const std::string& addr)
+	{
+		std::regex pattern(R"(smtps?:\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})");
+		return std::regex_search(addr, pattern);
+	}
 }
