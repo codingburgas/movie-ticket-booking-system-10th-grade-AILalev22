@@ -12,11 +12,11 @@ namespace Crypt
     void CalcHash(const std::string& src, std::string& dst)
     {
         if (src.empty()) return;
-        HCRYPTPROV prov; // crypt context
+        HCRYPTPROV prov; //crypt context
         HCRYPTHASH hash;
         
         byte buf[32]; // hash buffer
-        DWORD len = sizeof(buf); // buff size
+        DWORD len = sizeof(buf); // buff sz
 
         if (!CryptAcquireContextA(&prov, 0, 0, PROV_RSA_AES, CRYPT_VERIFYCONTEXT))
         {
@@ -43,7 +43,7 @@ namespace Crypt
             return;
         }
         char strHash[65];
-        for (int i = 0; i < len; i++)
+        for (DWORD i = 0; i < len; i++)
         {
             sprintf_s(strHash + i * 2, sizeof(strHash) - i * 2, "%02x", buf[i]); // print bytes to hex str representation
         }

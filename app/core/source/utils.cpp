@@ -6,7 +6,7 @@ namespace Utils
 	void Exit()
 	{
 		ErrMsg("Quiting!");
-		exit(0);
+		ExitProcess(0);
 	}
 	void ErrMsg(const std::string& msg, int sec)
 	{
@@ -14,7 +14,7 @@ namespace Utils
 
 		Clear();
 		std::cout << msg << std::endl;
-		std::this_thread::sleep_for(std::chrono::seconds(sec));
+		Sleep(sec * 1000);
 		Clear();
 	}
 	void Clear()
@@ -28,11 +28,18 @@ namespace Utils
 		va_list va;
 		va_start(va, fmt);
 
-		char buf[512];
+		char buf[512] = { 0 };
+
 		vsprintf_s(buf, fmt, va); // print to buf fmt and args after fmt
 
 		size_t len = strlen(buf);
-		if (len < sizeof(buf) - 1) buf[len] = '\n';
+		if (len <= sizeof(buf) - 2)
+		{
+			buf[len] = '\n';
+			buf[len + 1] = 0;
+		}
+		else
+			buf[len] = 0;
 
 		OutputDebugStringA(buf);
 		va_end(va);

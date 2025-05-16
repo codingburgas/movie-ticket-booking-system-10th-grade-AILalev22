@@ -4,7 +4,7 @@
 #include <conio.h>
 #include <iomanip>
 #include "main.h"
-
+#include "core\crud.h"
 namespace Misc
 {
 	void EnterNumber(std::string& num, bool floating)
@@ -65,8 +65,10 @@ namespace Misc
 		std::cout << "Enter movie's name\n:";
 		std::cin >> movie.name;
 
+		Utils::Clear();
 		std::cout << "Enter movie's genre\n:";
 		std::cin >> movie.genre;
+		Utils::Clear();
 
 		std::cout << "Enter movie's release year\n";
 		std::string num;
@@ -78,13 +80,24 @@ namespace Misc
 		movie.releaseYear = std::stoi(num);
 		Utils::Clear();
 	}
-	void EnterShowData(Entity::Show& show)
+	bool EnterShowData(Entity::Show& show)
 	{
-		std::cout << "Enter show name\n:";
-		std::cin >> show.name;
+		std::cout << "Enter movie's name\n:";
+		std::cin >> show.movieName;
 
-		std::cout << "Enter show date in YYYY-MM-DD HH:MM:SS format\n:";
+		Utils::Clear();
+		std::string dstData;
+		if (!Select::SelectMovie(dstData,show.movieName))
+		{
+			Utils::ErrMsg("Movie does not exist"); // if movie doesn't exists, cannot add show for it
+			return false;
+		}
+		std::cout << "Enter show date in YYYY-MM-DD HH:MM:SS format\n";
+		getchar();
+
 		EnterDateTime(show.date);
+
+		Utils::Clear();
 
 		std::cout << "Enter price\n:";
 		std::string price;
@@ -92,6 +105,7 @@ namespace Misc
 		show.price = std::stof(price);
 
 		Utils::Clear();
+		return true;
 	}
 	void EnterUserPassword(Entity::User& user)
 	{
@@ -121,45 +135,91 @@ namespace Misc
 			}
 		}
 	}
-	void PrintStrTok(std::string op, char delim, const std::string fields[], int c_fields)
+	void PrintStrTok(std::string op, char delim, const std::string fields[], int c_fields, const int colWidths[])
 	{
-		const int colWidth = 20;
-		std::cout << std::left;
+		int totalWidth = 0;
+		for (int i = 0; i < c_fields; ++i)
+			totalWidth += colWidths[i] + 1;
+		totalWidth += 1;
 
+		std::cout << std::string(totalWidth, '-') << std::endl;
+
+		std::cout << "|";
 		for (int i = 0; i < c_fields; i++)
 		{
-			std::cout << std::setw(colWidth) << fields[i];
+			std::cout << std::setw(colWidths[i]) << std::left << fields[i] << "|";
 		}
-		std::cout << std::endl << std::string(colWidth * 4, '-') << std::endl;
+		std::cout << std::endl;
 
-		while (op.find_first_of('|') != std::string::npos) 
-		{
-			std::string movie = op.substr(0, op.find_first_of('|'));
-			op = op.substr(op.find_first_of('|') + 1);
+		std::cout << std::string(totalWidth, '-') << std::endl;
 
-			size_t start = 0, end;
-			int column = 0;
-			while ((end = movie.find(',', start)) != std::string::npos) 
+		auto PrintRow = [&](const std::string& row)
 			{
-				std::cout << std::left << std::setw(colWidth) << movie.substr(start, end - start);
-				start = end + 1;
-				column++;
-			}
-			std::cout << std::left << std::setw(colWidth) << movie.substr(start) << std::endl;
+				size_t start = 0, end;
+				int column = 0;
+
+				std::cout << "|";
+				while ((end = row.find(',', start)) != std::string::npos && column < c_fields)
+				{
+					std::cout << std::setw(colWidths[column]) << std::left << row.substr(start, end - start) << "|";
+					start = end + 1;
+					column++;
+				}
+				if (column < c_fields)
+				{
+					std::cout << std::setw(colWidths[column]) << std::left << row.substr(start) << "|";
+					column++;
+				}
+				for (; column < c_fields; ++column)
+				{
+					std::cout << std::setw(colWidths[column]) << "" << "|";
+				}
+
+				std::cout << std::endl;
+			};
+
+		size_t pos;
+		while ((pos = op.find(delim)) != std::string::npos)
+		{
+			std::string record = op.substr(0, pos);
+			PrintRow(record);
+			op = op.substr(pos + 1);
+		}
+		if (!op.empty())
+		{
+			PrintRow(op);
 		}
 
-		if (!op.empty()) 
+		std::cout << std::string(totalWidth, '-') << std::endl;
+	}
+	bool ShowAllMovies()
+	{
+		std::string resSet;
+		if (Select::SelectMovie(resSet) == Error::ERROR_NOT_EXISTS) // get movies result set
 		{
-			size_t start = 0, end;
-			int column = 0;
-			while ((end = op.find(',', start)) != std::string::npos) 
-			{
-				std::cout << std::left << std::setw(colWidth) << op.substr(start, end - start);
-				start = end + 1;
-				column++;
-			}
-			std::cout << std::left << std::setw(colWidth) << op.substr(start) << std::endl;
+			Utils::ErrMsg("Movie does not exist");
+			return false;
 		}
+		std::string fields[] = { "Name","Genre","Language","ReleaseYear" };
+
+		int widthField[] = {20,20,20,10};
+		Misc::PrintStrTok(resSet, '|', fields, 4,widthField);
+
+		return true;
+	}
+	bool ShowAllShows(const std::string& movieName)
+	{
+		std::string shows;
+		if (Select::SelectShow(movieName, shows) == Error::ERROR_NOT_EXISTS || shows.empty())
+		{
+			Utils::ErrMsg("No shows are found");
+			return false;
+		}
+		std::string fields[] = { "ID","Date","Price" };
+
+		int widthField[] = {5,20,10};
+		Misc::PrintStrTok(shows, '|', fields, 3,widthField);
+		return true;
 	}
 	//void EnterMovieCinema(Entity::Movie& movie)
 	//{

@@ -1,4 +1,4 @@
-	#include "pch.h"
+#include "pch.h"
 
 namespace Select
 {
@@ -51,6 +51,35 @@ namespace Select
 
 		if (shsqlInst->Read("%s %s %s %d", name.empty() ? "SELECT NAME,GENRE,LANGUAGE,RELEASEYEAR FROM MOVIES" : "SELECT NAME,GENRE,LANGUAGE,RELEASEYEAR FROM MOVIES WHERE NAME = '" + name + '\'', dst))
 		{
+			return Error::SUCCESSFUL;
+		}
+		return Error::ERROR_NOT_EXISTS;
+	}
+	int SelectShow(const std::string& movieName,std::string& dst)
+	{
+		auto shsqlInst = Manager::GetSQL()->GetInstance();
+
+		if (shsqlInst->Read("%d %s %f", "SELECT ID,DATE,PRICE FROM SHOWS WHERE MOVIENAME = '" + movieName + "'", dst))
+		{
+			return Error::SUCCESSFUL;
+		}
+		return Error::ERROR_NOT_EXISTS;
+	}
+	int SelectUserId(const Entity::User& user, int& dst)
+	{
+		auto shsqlInst = Manager::GetSQL()->GetInstance();
+		std::string id;
+
+		if (shsqlInst->Read("%d", "SELECT ID FROM ACCOUNTS WHERE EMAIL = '" + user.email + "'", id))
+		{
+			try
+			{
+				dst = std::stod(id);
+			}
+			catch (...)
+			{
+				dst = 0;
+			}
 			return Error::SUCCESSFUL;
 		}
 		return Error::ERROR_NOT_EXISTS;

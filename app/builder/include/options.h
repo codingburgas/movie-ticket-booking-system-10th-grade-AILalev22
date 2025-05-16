@@ -15,5 +15,5 @@ namespace Options
 	// admin option
 	void UpdateShow();
 	// customer option
-	void ShowAllMovies();
+	void BookMovie();
 }

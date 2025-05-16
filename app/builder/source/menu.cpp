@@ -245,15 +245,15 @@ namespace Menu
     }
     void MainMenu()
     {
-        Menu customerMenu = CreateMenu({ "Show all movies","Show all shows","Book a show","Return to register" }, "Customer Menu");
+        Menu customerMenu = CreateMenu({ "Book a movie","Cancel a booking","Return to register" }, "Customer Menu");
 
         for (;;)
         {
             int choice = customerMenu.run_menu();
             switch (choice)
             {
-            case 0: Options::ShowAllMovies(); break;
-            case 3: return; break;
+            case 0: Options::BookMovie(); break;
+            case 1: return; break;
             }
         }
     }

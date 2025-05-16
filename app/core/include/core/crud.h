@@ -9,9 +9,15 @@ namespace Insert
 	// return error_exists if query fails
 	int InsertMovie(const Entity::Movie& movie);
 	int InsertShow(const Entity::Show& show);
+	// insert customer booking entity
+	// return successful if inserted correctly
+	// returns error_exists if write fails
+	//int InsertBooking(const Entity::Booking& book);
 }
 namespace Select
 {
+	// select user id
+	int SelectUserId(const Entity::User& user, int& dst);
 	// select a user from db
 	int SelectUser(const Entity::User& acc); 
 	// select all users' emails from db
@@ -19,6 +25,8 @@ namespace Select
 	// get movie data by name
 	// if no name is passed, all movies are retrieved
 	int SelectMovie(std::string& dst, const std::string& name = "");
+	// get all shows of a certain movie
+	int SelectShow(const std::string& movieName, std::string& dst);
 }
 namespace Delete
 {
@@ -26,10 +34,10 @@ namespace Delete
 	// returns successful if successfully deleted
 	// returns error_not_exists if query fails
 	int DeleteMovie(const Entity::Movie& movie);
-	int DeleteShow(const Entity::Show& show);
+	int DeleteShow(const std::string& idShow);
 }
 namespace Update
 {
-	// update a show found by datetime
-	bool UpdateShow(const std::string& oldDate, const Entity::Show& show);
+	// update a show found by id
+	bool UpdateShow(const std::string& idShow, const Entity::Show& show);
 }

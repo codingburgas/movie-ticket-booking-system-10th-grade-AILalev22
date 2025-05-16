@@ -31,6 +31,7 @@ struct Config
 
 	//current user data
 	Entity::User currUser;
+	int idCurrUser;
 
 };
 extern Config conf; // global app config

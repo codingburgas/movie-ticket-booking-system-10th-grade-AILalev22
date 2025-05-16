@@ -15,7 +15,7 @@ int main()
 		Utils::Exit();
 		return 1;
 	}
-	
+
 	for(;;)
 	switch (Menu::AuthMenu())
 	{

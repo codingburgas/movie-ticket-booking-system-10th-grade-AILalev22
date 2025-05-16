@@ -141,7 +141,7 @@ namespace MySQL
 			return false; // if query is invalid and exception is thrown
 		}
 		va_list va;
-		va_start(va, query.c_str());
+		va_start(va, &query);
 
 		// initial pos used in setType db functions
 		int i = 1;

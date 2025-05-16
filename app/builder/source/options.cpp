@@ -30,7 +30,9 @@ namespace Options
 			return res;
 		}
 		conf.currUser = user; // assign current user data to config
-		Utils::DbgMsg("mail: %s\npassword: %s", user.email.c_str(), user.password.c_str());
+		Select::SelectUserId(user, conf.idCurrUser);
+
+		Utils::DbgMsg("mail: %s\npassword: %s\nID: %d", user.email.c_str(), user.password.c_str(),conf.idCurrUser);
 		return user.email == conf.ademail ? Menu::ENTER_ADMIN : Menu::ENTER_CUSTOMER;
 	}
 	void InsertMovie()
@@ -41,7 +43,13 @@ namespace Options
 		int res = Error::ERROR_FAILED;
 		if (Validation::IsValidMovie(add))
 		{
-			res = Insert::InsertMovie(add);
+			std::string dstData;
+			if (!Select::SelectMovie(dstData,add.name))
+			{
+				res = Insert::InsertMovie(add);
+			}
+			else
+				res = ERROR_EXISTS;
 		}
 		else
 		{
@@ -54,6 +62,8 @@ namespace Options
 		}
 		else if(res == Error::SUCCESSFUL)
 		{
+			Utils::ErrMsg("Movie has been added successfully");
+
 			std::string msg =
 				"A new movie has been released!\n\n"
 				"Name: " + add.name + "\n"
@@ -65,46 +75,103 @@ namespace Options
 	}
 	void DeleteMovie()
 	{
+		Misc::ShowAllMovies();
+
 		Entity::Movie add;
-		std::cout << "Enter name\n:";
+		std::cout << "\n\nEnter movie's name\n:";
 		std::cin >> add.name;
 
 		Delete::DeleteMovie(add) == Error::SUCCESSFUL ? Utils::ErrMsg("Successfully deleted") : Utils::ErrMsg("Movie not found");
 	}
 	void InsertShow()
 	{
-		Entity::Show add;
-		Misc::EnterShowData(add);
+		Misc::ShowAllMovies(); // print movies so admin can see names
+		std::cout << "\n\n";
 
-		Insert::InsertShow(add) == Error::SUCCESSFUL ? Utils::ErrMsg("Successfully inserted") : Utils::ErrMsg("Show already exists");
+		Entity::Show add;
+		if (Misc::EnterShowData(add))
+		{
+			std::string dst;
+			if (Select::SelectShow(add.movieName, dst)) // check if show exists before inserting
+			{
+				Utils::ErrMsg("Show already exists");
+				return;
+			}
+			switch (Insert::InsertShow(add))
+			{
+			case Error::SUCCESSFUL: Utils::ErrMsg("Successfully inserted"); break;
+			case Error::ERROR_EXISTS: Utils::ErrMsg("Show already exists"); break;
+			default: Utils::ErrMsg("Unexpected error. Try later"); break;
+			}
+		}
 	}
 	void DeleteShow()
 	{
-		Entity::Show add;
-		std::cout << "Enter show's date in YYYY-MM-DD HH:MM:SS\n";
-		Misc::EnterDateTime(add.date);
+		Misc::ShowAllMovies();
+		std::cout << "\n\nEnter movie's name\n:";
+		std::string movieName;
+		std::cin >> movieName;
+
+		std::string dstData;
+		if (!Select::SelectMovie(dstData,movieName))
+		{
+			Utils::ErrMsg("Movie does not exist"); // check if movie exists
+			return;
+		}
+
+		Utils::Clear();
+		if (!Misc::ShowAllShows(movieName))
+		{
+			return; // stop if now shows are available
+		}
+
+		std::cout << "Enter show's ID\n";
+		std::string id;
+		Misc::EnterNumber(id);
 		
-		Delete::DeleteShow(add) == Error::SUCCESSFUL ? Utils::ErrMsg("Successfully deleted") : Utils::ErrMsg("Show not found");
+		Delete::DeleteShow(id) == Error::SUCCESSFUL ? Utils::ErrMsg("Successfully deleted") : Utils::ErrMsg("Show not found");
 	}
 	void UpdateShow()
 	{
-		std::cout << "Enter show's old date\n";
-		std::string oldDate;
-		Misc::EnterDateTime(oldDate);
+		Misc::ShowAllMovies();
+
+		std::cout << "\n\nEnter movie's name\n:";
+		std::string movieName;
+		std::cin >> movieName;
 		
-		std::cout << "Enter new show's data\n";
+		Utils::Clear();
+		if (!Misc::ShowAllShows(movieName)) // if no shows for entered movie, stop func
+		{
+			return;
+		}
+		
+		std::cout << "\nEnter show's ID\n";
+		std::string id;
+		Misc::EnterNumber(id);
+		
 		Entity::Show newShow;
-		Misc::EnterShowData(newShow);
+		newShow.movieName = movieName; //assign entered movie name
 
-		Update::UpdateShow(oldDate, newShow) ? Utils::ErrMsg("Successfully updated") : Utils::ErrMsg("Update failed");
+		std::cout << "Enter show's new date in YYYY-MM-DD HH:MM:SS format\n";
+		Misc::EnterDateTime(newShow.date);
+		Utils::Clear();
+
+		std::cout << "Enter show's new price\n";
+		std::string price;
+		Misc::EnterNumber(price, true);
+		newShow.price = std::stof(price);
+
+		Update::UpdateShow(id, newShow) ? Utils::ErrMsg("Successfully updated") : Utils::ErrMsg("Update failed");
 	}
-	void ShowAllMovies()
+	void BookMovie()
 	{
-		std::string resSet;
-		Select::SelectMovie(resSet); // get movies result set
-		std::string fields[] = { "Name","Genre","Language","ReleaseYear" };
-
-		Misc::PrintStrTok(resSet, '|', fields, 4);
+		Misc::ShowAllMovies();
+		std::cout << "\n\nEnter movie's name to book\n:";
+		std::string movieName;
+		std::cin >> movieName;
+	
+		Utils::Clear();
+		Misc::ShowAllShows(movieName);
 		_getch();
 	}
 }

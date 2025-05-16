@@ -12,7 +12,7 @@ namespace Validation
 	}
 	bool IsValidMovie(const Entity::Movie& movie)
 	{
-		if (movie.releaseYear >= 1900 && movie.releaseYear <= 2025)
+		if (movie.releaseYear >= 1888 && movie.releaseYear <= 2025)
 		{
 			if (!movie.genre.empty())
 			{
@@ -28,7 +28,7 @@ namespace Validation
 	{
 		if (!show.date.empty())
 		{
-			if (!show.name.empty())
+			if (!show.movieName.empty())
 			{
 				if (show.price > 0)
 				{
