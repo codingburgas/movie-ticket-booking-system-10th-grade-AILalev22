@@ -1,5 +1,7 @@
 #pragma once
 
+// default value for point x and y
+#define DEFAULT_POINT 1000
 namespace Matrix
 {
     class Sparse
@@ -9,7 +11,7 @@ namespace Matrix
         {
             int x;
             int y;
-            char val;
+            std::string val;
         };
         // matrix arr
         Element* data;
@@ -18,20 +20,24 @@ namespace Matrix
         // total columns
         int column;
         // matrix default value
-        char mvalue;
+        std::string mvalue;
 
-        //elements count
+        //elements total size
         int size;
+        // used elements count
+        int count;
     public:
-        Sparse(int sizeCol, int sizeRow, char mvalue);
-        Sparse() : Sparse(5, 5,'x')
+        Sparse(int sizeCol, int sizeRow, std::string mvalue);
+        Sparse() : Sparse(5, 5,"x")
         {
         }
         ~Sparse();         
         // get a value from the matrix
-        char Get(int x, int y);
+        const std::string& Get(int x, int y);
+        // get a point with coordinates based on val
+        POINT Get(const std::string& val);
         // set a value in the matrix
-        bool Set(int x, int y, char val);
+        bool Set(int x, int y, const std::string& val);
         // get row size
         const int Rows() const { return row; }
         // get column size

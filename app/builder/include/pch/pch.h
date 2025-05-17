@@ -3,6 +3,8 @@
 #include <fstream>
 #include <algorithm>
 #include <iostream>
+#include <unordered_map>
+#include <windows.h>
 #include <vector>
 #include "core\models.h"
 #include "core\utils.h"

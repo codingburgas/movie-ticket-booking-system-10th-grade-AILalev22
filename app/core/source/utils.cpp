@@ -44,4 +44,19 @@ namespace Utils
 		va_end(va);
 #endif
 	}
+	void Trim(std::string& src,const std::string& chars, bool possible)
+	{
+		std::string buff;
+
+		for (const auto& c : src)
+		{
+			bool isIn = chars.find(c) != std::string::npos;
+
+			if ((possible && isIn) || (!possible && !isIn))
+			{
+				buff.push_back(c);
+			}
+		}
+		src = buff;
+	}
 }

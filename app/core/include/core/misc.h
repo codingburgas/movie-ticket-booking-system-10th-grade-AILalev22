@@ -13,7 +13,7 @@ enum Error
 
 enum Seat
 {
-	SILVER,
+	SILVER =1,
 	GOLD,
 	PLATINUM
 };
@@ -25,12 +25,7 @@ enum Notification
 	BOOKING_CANCELED
 };
 
-enum BookingStatus
-{
-	PENDING,
-	CONFIRMED,
-	CANCELED
-};
-
+extern std::unordered_map<Seat, int> seatPrice;
+extern std::unordered_map<Seat, std::string> seatType;
 
 

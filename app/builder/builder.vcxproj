@@ -122,6 +122,7 @@
       <AdditionalIncludeDirectories>..\builder\include;..\builder\include\pch;..\core\include;..\builder\include\config\full;</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

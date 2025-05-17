@@ -12,7 +12,7 @@ namespace Insert
 	// insert customer booking entity
 	// return successful if inserted correctly
 	// returns error_exists if write fails
-	//int InsertBooking(const Entity::Booking& book);
+	int InsertBooking(const Entity::Booking& book);
 }
 namespace Select
 {
@@ -28,7 +28,13 @@ namespace Select
 	// if no name is passed, all movies are retrieved
 	int SelectMovie(std::string& dst, const std::string& name = "");
 	// get all shows of a certain movie
-	int SelectShow(const std::string& movieName, std::string& dst);
+	int SelectShows(const std::string& movieName, std::string& dst);
+	// select show by id
+	int SelectShow(const int& id, Entity::Show& show);
+	// select bookings based on userid or hallNumber
+	// if userId or hallNumber are bigger than one they're used in WHERE clause
+	// only one numeric constraint is allowed at a time
+	int SelectBookings(std::vector<Entity::Booking>& bookings, int showId,int userId, int hallNumber);
 }
 namespace Delete
 {

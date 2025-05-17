@@ -30,13 +30,13 @@ namespace Insert
 		return Error::ERROR_EXISTS; // show already exists at the passed date
 	}
 
-	/*int InsertBooking(const Entity::Booking& book)
+	int InsertBooking(const Entity::Booking& book)
 	{
 		auto shsqlInst = Manager::GetSQL()->GetInstance();
-		if (shsqlInst->Write("%d %d %f %s", "INSERT INTO BOOKINGS(SHOWID,SEAT,FINALPRICE,STATUS) VALUES(?,?,?,?)", book.showId, book.seat, book.finalPrice, book.status))
+		if (shsqlInst->Write("%d %f %d %d %d %s %d", "INSERT INTO BOOKINGS(SHOWID,FINALPRICE,USERID,SEATX,SEATY,SEATTYPE,HALLNUMBER) VALUES(?,?,?,?,?,?,?)",book.showId,book.finalPrice,book.userId,book.seatX,book.seatY,&book.seatType,book.hallNumber))
 		{
 			return Error::SUCCESSFUL;
 		}
 		return Error::ERROR_EXISTS;
-	}*/
+	}
 }

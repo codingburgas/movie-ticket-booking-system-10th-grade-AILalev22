@@ -5,6 +5,7 @@
 #include <iomanip>
 #include "main.h"
 #include "core\crud.h"
+#include "core\matrix.h"
 namespace Misc
 {
 	void EnterNumber(std::string& num, bool floating)
@@ -12,6 +13,7 @@ namespace Misc
 		int cdot = 0; // floating point count
 		for (;;)
 		{
+			cdot = 0;
 			std::cout << ":";
 			std::cin >> num;
 
@@ -87,7 +89,7 @@ namespace Misc
 
 		Utils::Clear();
 		std::string dstData;
-		if (!Select::SelectMovie(dstData,show.movieName))
+		if (Select::SelectMovie(dstData,show.movieName) == Error::ERROR_NOT_EXISTS)
 		{
 			Utils::ErrMsg("Movie does not exist"); // if movie doesn't exists, cannot add show for it
 			return false;
@@ -222,7 +224,7 @@ namespace Misc
 	bool ShowAllShows(const std::string& movieName)
 	{
 		std::string shows;
-		if (Select::SelectShow(movieName, shows) == Error::ERROR_NOT_EXISTS || shows.empty())
+		if (Select::SelectShows(movieName, shows) == Error::ERROR_NOT_EXISTS || shows.empty())
 		{
 			Utils::ErrMsg("No shows are found");
 			return false;
@@ -233,16 +235,122 @@ namespace Misc
 		Misc::PrintStrTok(shows, '|', fields, 3,widthField);
 		return true;
 	}
-	//void EnterMovieCinema(Entity::Movie& movie)
-	//{
-	//	std::cout << "Enter movie's cinema:\n1. CinemaVarna\n2. CinemaBurgas\n";
-	//	std::string choice;
-	//	do
-	//	{
-	//		std::cout << ':';
-	//		std::cin >> choice;
-	//	} while (choice != "1" && choice != "2");
-	//	
-	//	//.cinemaName = choice == "1" ? "CinemaVarna" : "CinemaBurgas";	
-	//}
+	bool ChooseMovieShow(Entity::Show& show)
+	{
+		Misc::ShowAllMovies();
+		std::cout << "\n\nEnter movie's name to book\n:";
+		std::string movieName;
+		std::cin >> movieName;
+
+		Utils::Clear();
+		if (!Misc::ShowAllShows(movieName)) return false;
+
+		std::cout << "Enter show's id to book:\n";
+		std::string choice;// id of chosen show
+		Misc::EnterNumber(choice);
+
+		show.id = std::stod(choice);
+		Utils::Clear();
+		
+		return Select::SelectShow(show.id, show) == Error::SUCCESSFUL;
+	}
+	int EnterSeat(const std::vector<Entity::Booking>& lsBookings, Entity::Booking& book);
+
+	void EnterBookingData(Entity::Booking& book,const Entity::Show& show)
+	{
+		std::cout << "Enter seat type number:\n1. Silver\n2. Gold\n3. Platinum\n";
+		std::string choice;
+		do
+		{
+			std::cout << ":";
+			std::cin >> choice;
+		} while (choice != "1" && choice != "2" && choice != "3");
+		book.seatType = seatType.at((Seat)(std::stod(choice))); //assign seat type
+
+		Utils::Clear();
+
+		book.finalPrice = show.price + seatPrice.at((Seat)std::stod(choice)); //final price with added seat price
+
+		Utils::Clear();
+
+		std::string hallNumber;
+		do
+		{
+			std::cout << "Enter hall number:\n1. Hall 1\n2. Hall 2\n3. Hall 3\n4. Hall 4\n";
+			Misc::EnterNumber(hallNumber);
+		} while (std::stod(hallNumber) > HALLS);
+		book.hallNumber = std::stod(hallNumber);
+		
+		std::vector<Entity::Booking> bookings;
+		if (Select::SelectBookings(bookings, show.id,-1, std::stod(hallNumber)) != Error::ERROR_FAILED)
+		{
+			int seatNum = EnterSeat(bookings,book);
+			
+			if (Insert::InsertBooking(book) == Error::SUCCESSFUL)
+			{
+				Utils::ErrMsg("Show booked successfuly");
+				std::string msg =
+					"Price: " + std::to_string(book.finalPrice).substr(0,4) + "\n"
+					"Hall: " + std::to_string(book.hallNumber) + "\n"
+					"Seat type: " + book.seatType + "\n"
+					"Seat row: " + std::to_string(book.seatX) + "\n"
+					"Seat column: " + std::to_string(book.seatY) + "\n"
+					"Seat number: " + std::to_string(seatNum) + "\n"
+					"Show ID: " + std::to_string(book.showId) + "\n";
+
+				SMTP::NotifyUsers("New booking", msg, { conf.currUser.email });
+			}
+			else
+				Utils::ErrMsg("Unexpected error. Please try again later");
+		}
+		else
+		{
+			Utils::ErrMsg("Unexpected error. Please try again later");
+		}
+	}
+
+	int EnterSeat(const std::vector<Entity::Booking>& lsBookings,Entity::Booking& book)
+	{
+		Matrix::Sparse seats(COL_SIZE, ROW_SIZE, "x"); //seats in hall
+		int nSeat = 1;
+
+		for (int i = 0; i < ROW_SIZE; i++) // set all seats initialy to numeric values
+		{
+			for (int j = 0; j < COL_SIZE; j++)
+			{
+				seats.Set(i, j, std::to_string(nSeat));
+				nSeat++;
+			}
+		}
+		for (const auto& book : lsBookings) //mark booked seats at chosen hall as x
+		{
+			seats.Set(book.seatX, book.seatY, "x");
+		}
+
+		for (;;)
+		{
+			std::string seatVal;
+			do
+			{	
+				std::cout << "\nSeats seen as 'x' are booked\n\n";
+				seats.Print();
+
+				std::cout << "Enter seat number:\n";
+				Misc::EnterNumber(seatVal);
+			} while (std::stod(seatVal) > ROW_SIZE * COL_SIZE);
+
+			POINT p = { DEFAULT_POINT,DEFAULT_POINT }; //default pos
+			POINT p2 = seats.Get(seatVal); // entered seat pos
+			if (p2.x == p.x && p2.y == p.y)
+			{
+				Utils::ErrMsg("Seat is booked, try again");
+			}
+			else
+			{			
+				book.seatX = p2.x;
+				book.seatY = p2.y;
+				return std::stod(seatVal);
+			}
+		};	
+	}
 }

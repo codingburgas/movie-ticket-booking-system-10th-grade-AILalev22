@@ -21,4 +21,10 @@ namespace Misc
 	// print all shows of a movie
 	// returns false if no such movie exists
 	bool ShowAllShows(const std::string& movieName);
+	// choose show seat
+	void ChooseShowSeat();
+	// choose show
+	bool ChooseMovieShow(Entity::Show& show);
+	// enter seat choice and calc total price, after entering show data
+	void EnterBookingData(Entity::Booking& book,const Entity::Show& show);
 }

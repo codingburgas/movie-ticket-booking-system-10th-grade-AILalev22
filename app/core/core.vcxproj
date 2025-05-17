@@ -123,7 +123,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -149,6 +149,7 @@
     <ClCompile Include="source\database.cpp" />
     <ClCompile Include="source\manager.cpp" />
     <ClCompile Include="source\matrix.cpp" />
+    <ClCompile Include="source\misc.cpp" />
     <ClCompile Include="source\smtp.cpp" />
     <ClCompile Include="source\utils.cpp" />
     <ClCompile Include="source\pch.cpp">

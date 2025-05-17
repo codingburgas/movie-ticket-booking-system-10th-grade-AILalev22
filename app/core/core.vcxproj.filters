@@ -56,6 +56,9 @@
     <ClCompile Include="source\crud\update.cpp">
       <Filter>Source Files\crud</Filter>
     </ClCompile>
+    <ClCompile Include="source\misc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\core\crypt.h">

@@ -6,6 +6,7 @@
 #include "core\crud.h"
 #include "misc.h"
 #include "core\smtp.h"
+#include "core\matrix.h"
 namespace Options
 {	
 	int LogSign(int mode)
@@ -84,14 +85,14 @@ namespace Options
 	}
 	void InsertShow()
 	{
-		Misc::ShowAllMovies(); // print movies so admin can see names
+		if(!Misc::ShowAllMovies()) return; // print movies so admin can see names
 		std::cout << "\n\n";
 
 		Entity::Show add;
 		if (Misc::EnterShowData(add))
 		{
 			std::string dst;
-			if (Select::SelectShow(add.movieName, dst) == Error::SUCCESSFUL) // check if show exists before inserting
+			if (Select::SelectShows(add.movieName, dst) == Error::SUCCESSFUL) // check if show exists before inserting
 			{
 				Utils::ErrMsg("Show already exists");
 				return;
@@ -164,13 +165,17 @@ namespace Options
 	}
 	void BookMovie()
 	{
-		Misc::ShowAllMovies();
-		std::cout << "\n\nEnter movie's name to book\n:";
-		std::string movieName;
-		std::cin >> movieName;
-	
-		Utils::Clear();
-		Misc::ShowAllShows(movieName);
-		_getch();
+		Entity::Show chosenShow;
+		if (!Misc::ChooseMovieShow(chosenShow))
+		{
+			Utils::ErrMsg("Cannot read show data");
+			return;
+		}
+
+		Entity::Booking book;
+		book.showId = chosenShow.id;
+		book.userId = conf.idCurrUser;
+
+		Misc::EnterBookingData(book,chosenShow);
 	}
 }

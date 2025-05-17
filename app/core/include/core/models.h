@@ -24,6 +24,7 @@ namespace Entity
 
 		std::string cinemaName;
 
+		int id;
 		Show() : price(0) {}
 	};
 	// user data
@@ -37,16 +38,17 @@ namespace Entity
 	struct Booking
 	{
 		int showId;
+		int userId;
 		// seat row
 		int seatX;
 		// seat column
 		int seatY;
 		// price with added seat tax
 		float finalPrice;
-		// booking status
-		std::string status;
-
+		
 		int hallNumber;
+
+		std::string seatType;
 		Booking() : finalPrice(0),seatX(0),seatY(0),showId(0),hallNumber(0) {}
 	};
 }

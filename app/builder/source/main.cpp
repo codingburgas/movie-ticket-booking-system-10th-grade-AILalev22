@@ -3,7 +3,6 @@
 #include "core\database.h"
 #include "main.h"
 #include "core\manager.h"
-
 Config conf;
 Manager::StruConnector ctorInit;
 Manager::StruSMTP smtpInit;

@@ -176,8 +176,6 @@ namespace MySQL
 		return true;
 	}
 
-	void TrimFormat(std::string& fmt);
-
 	bool Connector::Read(std::string fmt, const std::string& query,std::string& dst)
 	{
 		if (!conn)
@@ -185,7 +183,7 @@ namespace MySQL
 			Utils::DbgMsg("error Read() not connected");
 			return false;
 		}
-		TrimFormat(fmt);
+		Utils::Trim(fmt,"difubs");
 		if (fmt.empty()) return false;
 
 		try
@@ -226,23 +224,5 @@ namespace MySQL
 		}
 
 		return !dst.empty();
-	}
-	void TrimFormat(std::string& fmt)
-	{
-		std::string buff;
-		char possible[] = { 'd','i','f','s','u','b'}; // trim format only to possible chars
-
-		for (const auto& c : fmt)
-		{
-			for (const auto& c2 : possible)
-			{
-				if (c == c2)
-				{
-					buff.push_back(c2);
-					break;
-				}
-			}
-		}
-		fmt = buff;
 	}
 }

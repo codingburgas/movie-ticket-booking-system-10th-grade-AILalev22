@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "matrix.h"
-
+#include <utility>
 namespace Matrix
 {
-    Sparse::Sparse(int sizeCol, int sizeRow, char mvalue) : column(sizeCol),row(sizeRow)
+    Sparse::Sparse(int sizeCol, int sizeRow, std::string mvalue) : column(sizeCol),row(sizeRow),count(0)
     {
         size = row * column;
         data = new Element[size];
@@ -24,7 +24,7 @@ namespace Matrix
             data = nullptr;
         }
     }
-    char Sparse::Get(int x, int y)
+    const std::string& Sparse::Get(int x, int y)
     {
         if (!(x >= 0 && x < row && y >= 0 && y < column)) return mvalue; // if x,y are outside the matrix
 
@@ -33,16 +33,38 @@ namespace Matrix
                 return data[i].val;
         return mvalue; // if element isn't found
     }
-    bool Sparse::Set(int x, int y, char val)
+    POINT Sparse::Get(const std::string& val)
+    {
+        POINT ret = { DEFAULT_POINT,DEFAULT_POINT };
+        for (int i = 0; i < count; i++)
+        {
+            if (data[i].val == val)
+            {
+                ret.x = data[i].x;
+                ret.y = data[i].y;
+                break;
+            }
+        }
+        return ret;
+    }
+    bool Sparse::Set(int x, int y, const std::string& val)
     {
         if (!(x >= 0 && x < row && y >= 0 && y < column)) return false; // if x,y are outside the matrix
-        for (int i = 0; i < size; i++)
+
+        for (int i = 0; i < count;i++) // first check if elemnt at x,y already exists
         {
             if (data[i].x == x && data[i].y == y)
             {
-                data[i].val = val; // if data is found at x,y set new val
+                data[i].val = val;
                 return true;
             }
+        }
+        if (count < size)
+        {
+            data[count].x = x;
+            data[count].y = y;
+            data[count++].val = val;
+            return true;
         }
         return false;
     }

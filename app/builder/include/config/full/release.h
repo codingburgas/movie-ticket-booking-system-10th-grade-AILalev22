@@ -6,10 +6,10 @@
 // total cinemas
 #define CINEMAS 2
 
-// row size in each hall
-#define ROW_SIZE 16
-// col size in each hall
-#define COL_SIZE 10
+// seats row size in each hall
+#define ROW_SIZE 25
+// seats col size in each hall
+#define COL_SIZE 4
 
 // admin's email
 #define DB_ADMIN_EMAIL "admin1234@gmail.com"

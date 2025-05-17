@@ -13,7 +13,7 @@ namespace Select
 		std::string retrievedPass;
 		if (shsqlInst->Read("%s", "SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = '" + acc.email + "'", retrievedPass)) // possible injection, fix later Read
 		{
-			retrievedPass.pop_back(); // remove last pipe appended from Read fn
+			Utils::Trim(retrievedPass,"|",false); // remove last pipe appended from Read fn
 
 			Utils::DbgMsg("SelectUserExist() : %s %s", acc.email.c_str(), retrievedPass.c_str());
 
@@ -85,17 +85,117 @@ namespace Select
 		return Error::ERROR_NOT_EXISTS;
 	}
 
-	int SelectShow(const std::string& movieName,std::string& dst)
+	int SelectShows(const std::string& movieName,std::string& dst)
 	{
 		auto shsqlInst = Manager::GetSQL()->GetInstance();
 
 		if (shsqlInst->Read("%d %s %f %s", "SELECT ID,DATE,PRICE,CINEMANAME FROM SHOWS WHERE MOVIENAME = '" + movieName + "'", dst))
 		{
-			Utils::DbgMsg("SelectShow() : %s", dst.c_str());
+			Utils::DbgMsg("SelectShows() : %s", dst.c_str());
 
 			if(!dst.empty())
 			return Error::SUCCESSFUL;
 		}
 		return Error::ERROR_NOT_EXISTS;
 	}
+	int SelectShow(const int& id,Entity::Show& show)
+	{
+		auto shsqlInst = Manager::GetSQL()->GetInstance();
+		std::string dst;
+		if (shsqlInst->Read("%s %s %f", "SELECT DATE,CINEMANAME,PRICE FROM SHOWS WHERE ID = " + std::to_string(id),dst))
+		{
+			if (!dst.empty())
+			{
+				size_t pos1 = dst.find(',');
+				if (pos1 == std::string::npos) return false;
+
+				size_t pos2 = dst.find(',', pos1 + 1);
+				if (pos2 == std::string::npos) return false;
+
+				size_t pos3 = dst.find('|', pos2 + 1);
+				if (pos3 == std::string::npos) pos3 = dst.length();
+
+				show.date = dst.substr(0, pos1);
+				show.cinemaName = dst.substr(pos1 + 1, pos2 - pos1 - 1);
+				try
+				{
+					show.price = std::stof(dst.substr(pos2 + 1, pos3 - pos2 - 1));
+				}
+				catch (...)
+				{
+					return Error::ERROR_NOT_EXISTS;
+				}
+				show.id = id;
+				return Error::SUCCESSFUL;
+			}
+		}
+		return Error::ERROR_NOT_EXISTS;
+	}
+	int SelectBookings(std::vector<Entity::Booking>& bookings,int showId,int userId,int hallNumber)
+	{
+		auto shsqlInst = Manager::GetSQL()->GetInstance();
+
+		std::string query = "SELECT SHOWID,FINALPRICE,USERID,SEATX,SEATY,SEATTYPE,HALLNUMBER FROM BOOKINGS WHERE SHOWID = " + std::to_string(showId);
+
+		if (userId > 0)
+		{
+			query += " AND USERID = " + std::to_string(userId);
+		}
+		else if (hallNumber > 0)
+		{
+			query += " AND HALLNUMBER = " + std::to_string(hallNumber);
+		}
+		else
+		{
+			return Error::ERROR_FAILED;
+		}
+
+		std::string dst;
+		if (shsqlInst->Read("%d %f %d %d %d %s %d", query, dst) && !dst.empty())
+		{
+			size_t start = 0, end;
+			while ((end = dst.find('|', start)) != std::string::npos)
+			{
+				std::string record = dst.substr(start, end - start);
+				start = end + 1;
+
+				std::stringstream ss(record);
+				std::string token;
+				Entity::Booking book;
+
+				if (std::getline(ss, token, ',')) book.showId = std::stoi(token);
+				if (std::getline(ss, token, ',')) book.finalPrice = std::stof(token);
+				if (std::getline(ss, token, ',')) book.userId = std::stoi(token);
+				if (std::getline(ss, token, ',')) book.seatX = std::stoi(token);
+				if (std::getline(ss, token, ',')) book.seatY = std::stoi(token);
+				if (std::getline(ss, token, ',')) book.seatType = token;
+				if (std::getline(ss, token, ',')) book.hallNumber = std::stoi(token);
+
+				bookings.push_back(book);
+				Utils::DbgMsg("SelectBookings() : %d %f %d %d %d %s %d", book.showId, book.finalPrice, book.userId, book.seatX, book.seatY, book.seatType, book.hallNumber);
+			}
+			if (start < dst.length())
+			{
+				std::stringstream ss(dst.substr(start));
+				std::string token;
+				Entity::Booking book;
+
+				if (std::getline(ss, token, ',')) book.showId = std::stoi(token);
+				if (std::getline(ss, token, ',')) book.finalPrice = std::stof(token);
+				if (std::getline(ss, token, ',')) book.userId = std::stoi(token);
+				if (std::getline(ss, token, ',')) book.seatX = std::stoi(token);
+				if (std::getline(ss, token, ',')) book.seatY = std::stoi(token);
+				if (std::getline(ss, token, ',')) book.seatType = token;
+				if (std::getline(ss, token, ',')) book.hallNumber = std::stoi(token);
+
+				bookings.push_back(book);
+				Utils::DbgMsg("SelectBookings() : %d %f %d %d %d %s %d", book.showId, book.finalPrice, book.userId, book.seatX, book.seatY, book.seatType, book.hallNumber);
+			}
+
+			return bookings.empty() ? Error::ERROR_NOT_EXISTS : Error::SUCCESSFUL;
+		}
+
+		return Error::ERROR_NOT_EXISTS;
+	}
+
 }
