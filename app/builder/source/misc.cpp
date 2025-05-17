@@ -235,6 +235,19 @@ namespace Misc
 		Misc::PrintStrTok(shows, '|', fields, 3,widthField);
 		return true;
 	}
+	void ShowBookings()
+	{
+		std::string dstBookings;
+		if (Select::SelectBookings(dstBookings, conf.currUser.id) == Error::ERROR_NOT_EXISTS)
+		{
+			Utils::ErrMsg("No available bookings");
+		}
+		//SHOWID,FINALPRICE,SEATX,SEATY,SEATTYPE,HALLNUMBER
+		std::string fields[] = { "ShowId","Price","Seat row","Seat column","Seat type","Hall number" };
+		int widthField[] = { 10,10,10,10,10,10 };
+		Misc::PrintStrTok(dstBookings, '|', fields, 6, widthField);
+
+	}
 	bool ChooseMovieShow(Entity::Show& show)
 	{
 		Misc::ShowAllMovies();
@@ -282,7 +295,7 @@ namespace Misc
 		book.hallNumber = std::stod(hallNumber);
 		
 		std::vector<Entity::Booking> bookings;
-		if (Select::SelectBookings(bookings, show.id,-1, std::stod(hallNumber)) != Error::ERROR_FAILED)
+		if (Select::SelectBookings(bookings, show.id,std::stod(hallNumber)) != Error::ERROR_FAILED)
 		{
 			int seatNum = EnterSeat(bookings,book);
 			
@@ -290,6 +303,7 @@ namespace Misc
 			{
 				Utils::ErrMsg("Show booked successfuly");
 				std::string msg =
+					"You have made a booking\n"
 					"Price: " + std::to_string(book.finalPrice).substr(0,4) + "\n"
 					"Hall: " + std::to_string(book.hallNumber) + "\n"
 					"Seat type: " + book.seatType + "\n"
@@ -351,6 +365,6 @@ namespace Misc
 				book.seatY = p2.y;
 				return std::stod(seatVal);
 			}
-		};	
+		}	
 	}
 }

@@ -31,10 +31,12 @@ namespace Select
 	int SelectShows(const std::string& movieName, std::string& dst);
 	// select show by id
 	int SelectShow(const int& id, Entity::Show& show);
-	// select bookings based on userid or hallNumber
-	// if userId or hallNumber are bigger than one they're used in WHERE clause
-	// only one numeric constraint is allowed at a time
-	int SelectBookings(std::vector<Entity::Booking>& bookings, int showId,int userId, int hallNumber);
+	// select bookings based on showId or hallNumber
+	// if showId or hallNumber are bigger than one they're used in WHERE clause
+	int SelectBookings(std::vector<Entity::Booking>& bookings, int showId,int hallNumber);
+	// select user bookings based on user id
+	// res set is returned in string
+	int SelectBookings(std::string& dst, int userId);
 }
 namespace Delete
 {
@@ -43,6 +45,8 @@ namespace Delete
 	// returns error_not_exists if query fails
 	int DeleteMovie(const Entity::Movie& movie);
 	int DeleteShow(const std::string& idShow);
+	// delete booking based on row and col coords
+	int DeleteBooking(const POINT& coord);
 }
 namespace Update
 {
