@@ -16,10 +16,12 @@ namespace Insert
 }
 namespace Select
 {
-	// select user id
-	int SelectUserId(const Entity::User& user, int& dst);
-	// select a user from db
-	int SelectUser(const Entity::User& acc); 
+	// check if a user exists
+	// returns successful if exist
+	// returns error_input if password is wrong only
+	// returns errror_not_exist if email and password are not found
+	// puts id into user struct
+	int SelectUserExist(Entity::User& acc);
 	// select all users' emails from db
 	int SelectAllUsersEmail(std::vector<std::string>& vec);
 	// get movie data by name

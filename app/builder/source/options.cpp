@@ -30,10 +30,9 @@ namespace Options
 			return res;
 		}
 		conf.currUser = user; // assign current user data to config
-		Select::SelectUserId(user, conf.idCurrUser);
+		conf.idCurrUser = user.id;
 
-		Utils::DbgMsg("mail: %s\npassword: %s\nID: %d", user.email.c_str(), user.password.c_str(),conf.idCurrUser);
-		return user.email == conf.ademail ? Menu::ENTER_ADMIN : Menu::ENTER_CUSTOMER;
+		return stricmp(user.email.c_str(), conf.ademail.c_str()) == 0 ? Menu::ENTER_ADMIN : Menu::ENTER_CUSTOMER;
 	}
 	void InsertMovie()
 	{
@@ -44,7 +43,7 @@ namespace Options
 		if (Validation::IsValidMovie(add))
 		{
 			std::string dstData;
-			if (!Select::SelectMovie(dstData,add.name))
+			if (Select::SelectMovie(dstData,add.name) == Error::ERROR_NOT_EXISTS)
 			{
 				res = Insert::InsertMovie(add);
 			}
@@ -92,7 +91,7 @@ namespace Options
 		if (Misc::EnterShowData(add))
 		{
 			std::string dst;
-			if (Select::SelectShow(add.movieName, dst)) // check if show exists before inserting
+			if (Select::SelectShow(add.movieName, dst) == Error::SUCCESSFUL) // check if show exists before inserting
 			{
 				Utils::ErrMsg("Show already exists");
 				return;

@@ -29,7 +29,6 @@ namespace Utils
 		va_start(va, fmt);
 
 		char buf[512] = { 0 };
-
 		vsprintf_s(buf, fmt, va); // print to buf fmt and args after fmt
 
 		size_t len = strlen(buf);

@@ -105,6 +105,18 @@ namespace Misc
 		show.price = std::stof(price);
 
 		Utils::Clear();
+
+		std::cout << "Choose show's cinema:\n1. CinemaBurgas\n2. CinemaVarna\n";
+		std::string choice;
+		do
+		{
+			std::cout << ':';
+			std::cin >> choice;
+		} while (choice != "1" && choice != "2");
+
+		show.cinemaName = choice == "1" ? "CinemaBurgas" : "CinemaVarna";
+
+		Utils::Clear();
 		return true;
 	}
 	void EnterUserPassword(Entity::User& user)

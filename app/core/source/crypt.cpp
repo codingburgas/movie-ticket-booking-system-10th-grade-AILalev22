@@ -38,7 +38,6 @@ namespace Crypt
         if (!CryptGetHashParam(hash, HP_HASHVAL, buf, &len, 0))
         {
             Utils::DbgMsg("error CryptGetHashParam()");
-
             Close(prov, hash);
             return;
         }

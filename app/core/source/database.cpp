@@ -29,9 +29,7 @@ namespace MySQL
 		driver = sql::mysql::get_mysql_driver_instance();;
 		stmt = nullptr; pstmt = nullptr; conn = nullptr; rset = nullptr;
 
-		credentials[0] = host;
-		credentials[1] = user;
-		credentials[2] = pass;		
+		SetCredentials(host, user, pass);
 	}
 	Connector::~Connector()
 	{

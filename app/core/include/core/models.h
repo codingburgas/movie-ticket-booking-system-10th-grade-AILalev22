@@ -20,28 +20,33 @@ namespace Entity
 		std::string movieName;
 		// date in YYYY-MM-DD HH:MM:SS format
 		std::string date;
-		// price
 		float price;
+
+		std::string cinemaName;
 
 		Show() : price(0) {}
 	};
-	// admin or customer data
+	// user data
     struct User
 	{
 		std::string email;
 		std::string password;
+		int id;
 	};
 	// customer booking data
 	struct Booking
 	{
 		int showId;
-		// seat number
-		int seat;
+		// seat row
+		int seatX;
+		// seat column
+		int seatY;
 		// price with added seat tax
-		double finalPrice;
+		float finalPrice;
 		// booking status
 		std::string status;
 
-		Booking() : finalPrice(0),seat(0),showId(0) {}
+		int hallNumber;
+		Booking() : finalPrice(0),seatX(0),seatY(0),showId(0),hallNumber(0) {}
 	};
 }

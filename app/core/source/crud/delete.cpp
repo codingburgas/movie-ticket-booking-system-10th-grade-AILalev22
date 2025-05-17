@@ -15,6 +15,7 @@ namespace Delete
 		}
 		return Error::ERROR_NOT_EXISTS;
 	}
+
 	int DeleteShow(const std::string& idShow)
 	{
 		auto shsqlInst = Manager::GetSQL()->GetInstance();

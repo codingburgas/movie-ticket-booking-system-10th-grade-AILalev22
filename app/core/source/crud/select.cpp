@@ -2,7 +2,7 @@
 
 namespace Select
 {
-	int SelectUser(const Entity::User& acc)
+	int SelectUserExist(Entity::User& acc)
 	{
 		auto shsqlInst = Manager::GetSQL()->GetInstance();
 
@@ -14,10 +14,32 @@ namespace Select
 		if (shsqlInst->Read("%s", "SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = '" + acc.email + "'", retrievedPass)) // possible injection, fix later Read
 		{
 			retrievedPass.pop_back(); // remove last pipe appended from Read fn
-			return retrievedPass == hpass ? Error::SUCCESSFUL : Error::ERROR_INPUT; // if email is found but password is wrong, return error_input
+
+			Utils::DbgMsg("SelectUserExist() : %s %s", acc.email.c_str(), retrievedPass.c_str());
+
+			if (retrievedPass == hpass)
+			{
+				std::string idDst;
+				if (shsqlInst->Read("%d", "SELECT ID FROM ACCOUNTS WHERE EMAIL = '" + acc.email + "'", idDst))
+				{
+					try
+					{
+						acc.id = std::stod(idDst);
+
+						Utils::DbgMsg("SelectUserExist() : %d", acc.id);
+					}
+					catch (...)
+					{
+						Utils::DbgMsg("error SelectUserExist() id cannot read");
+					}
+				}
+				return Error::SUCCESSFUL;
+			}
+			return Error::ERROR_INPUT; // if email is found but password is wrong, return error_input
 		}
 		return Error::ERROR_NOT_EXISTS; // if email isn't found return error_not_exist
 	}
+
 	int SelectAllUsersEmail(std::vector<std::string>& vec)
 	{
 		auto shsqlInst = Manager::GetSQL()->GetInstance();
@@ -40,46 +62,38 @@ namespace Select
 			if (!last.empty())
 				vec.push_back(last);
 
+			for(const auto& email : vec)
+			Utils::DbgMsg("SelectAllUsersEmail() : %s", email.c_str());
+
 			if (!vec.empty())
 				return Error::SUCCESSFUL;
 		}
 		return Error::ERROR_FAILED;
 	}
+
 	int SelectMovie(std::string& dst, const std::string& name)
 	{
 		auto shsqlInst = Manager::GetSQL()->GetInstance();
 
 		if (shsqlInst->Read("%s %s %s %d", name.empty() ? "SELECT NAME,GENRE,LANGUAGE,RELEASEYEAR FROM MOVIES" : "SELECT NAME,GENRE,LANGUAGE,RELEASEYEAR FROM MOVIES WHERE NAME = '" + name + '\'', dst))
 		{
+			Utils::DbgMsg("SelectMovie() : %s", dst.c_str());
+
+			if(!dst.empty())
 			return Error::SUCCESSFUL;
 		}
 		return Error::ERROR_NOT_EXISTS;
 	}
+
 	int SelectShow(const std::string& movieName,std::string& dst)
 	{
 		auto shsqlInst = Manager::GetSQL()->GetInstance();
 
-		if (shsqlInst->Read("%d %s %f", "SELECT ID,DATE,PRICE FROM SHOWS WHERE MOVIENAME = '" + movieName + "'", dst))
+		if (shsqlInst->Read("%d %s %f %s", "SELECT ID,DATE,PRICE,CINEMANAME FROM SHOWS WHERE MOVIENAME = '" + movieName + "'", dst))
 		{
-			return Error::SUCCESSFUL;
-		}
-		return Error::ERROR_NOT_EXISTS;
-	}
-	int SelectUserId(const Entity::User& user, int& dst)
-	{
-		auto shsqlInst = Manager::GetSQL()->GetInstance();
-		std::string id;
+			Utils::DbgMsg("SelectShow() : %s", dst.c_str());
 
-		if (shsqlInst->Read("%d", "SELECT ID FROM ACCOUNTS WHERE EMAIL = '" + user.email + "'", id))
-		{
-			try
-			{
-				dst = std::stod(id);
-			}
-			catch (...)
-			{
-				dst = 0;
-			}
+			if(!dst.empty())
 			return Error::SUCCESSFUL;
 		}
 		return Error::ERROR_NOT_EXISTS;
