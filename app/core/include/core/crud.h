@@ -27,7 +27,9 @@ namespace Select
 	// get movie data by name
 	// if no name is passed, all movies are retrieved
 	int SelectMovie(std::string& dst, const std::string& name = "");
-	// get all shows of a certain movie
+	// get all shows of a certain movie in vector
+	int SelectShows(const std::string& movieName, std::vector<Entity::Show>& shows);
+	// get all shows of a certain movie in Read dst format
 	int SelectShows(const std::string& movieName, std::string& dst);
 	// select show by id
 	int SelectShow(const int& id, Entity::Show& show);

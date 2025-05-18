@@ -2,15 +2,20 @@
 
 namespace Update
 {
-	bool UpdateShow(const std::string& idShow,const Entity::Show& show)
+	bool Update(const std::string& query)
 	{
 		auto shsqlInst = Manager::GetSQL()->GetInstance();
-		if (shsqlInst->Query("UPDATE SHOWS SET MOVIENAME = '" + show.movieName + "',PRICE = " + std::to_string(show.price) + " ,DATE = '" + show.date + "' WHERE ID = " + idShow))
-		{
-			return true;
-		}
+		return shsqlInst->Query(query);
+	}
+	bool UpdateShow(const std::string& idShow,const Entity::Show& show)
+	{
+		std::string query = "UPDATE SHOWS SET MOVIENAME = '" + show.movieName + "',PRICE = " + std::to_string(show.price) + " ,DATE = '" + show.date + "',CINEMANAME = '" + show.cinemaName + "' WHERE ID = " + idShow;
 
+		bool ret = Update(query);
+
+		if(!ret)
 		Utils::DbgMsg("UpdateShow() : query not is ok");
-		return false;
+
+		return ret;
 	}
 }

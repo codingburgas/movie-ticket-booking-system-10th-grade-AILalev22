@@ -19,7 +19,7 @@ namespace MySQL
 		// get data from multiple columns with a select query and C format
 		bool Read(std::string fmt, const std::string& query, std::string& dst);
 		// insert values with a insert into query with C format
-		bool Write(std::string fmt, const std::string& query, ...);
+		bool Write(std::string fmt, const std::string& query, va_list va);
 		// executes all types of queries
 		bool Query(const std::string& query);
 		// set db connect credentials

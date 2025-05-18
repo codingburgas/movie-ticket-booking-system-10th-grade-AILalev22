@@ -120,7 +120,7 @@ namespace MySQL
 		}
 		return true;
 	}
-	bool Connector::Write(std::string fmt, const std::string& query, ...)
+	bool Connector::Write(std::string fmt, const std::string& query, va_list va)
 	{	
 		if (fmt.empty() || query.empty()) return false;
 		if (!conn)
@@ -138,14 +138,13 @@ namespace MySQL
 			Utils::DbgMsg("error Write() query is not ok");
 			return false; // if query is invalid and exception is thrown
 		}
-		va_list va;
-		va_start(va, &query);
+		/*va_list va;
+		va_start(va, &query);*/
 
-		// initial pos used in setType db functions
-		int i = 1;
+		
+		int i = 1; //initial pos used in setType db functions
 
-		// temp vars for row data
-		int arg_d;
+		int arg_d; // temp vars for row data
 		double arg_f;
 		std::string* arg_s;
 		uint arg_u;
@@ -183,7 +182,7 @@ namespace MySQL
 			Utils::DbgMsg("error Read() not connected");
 			return false;
 		}
-		Utils::Trim(fmt,"difubs");
+		Utils::Trim(fmt,"difubs"); // trim format only to passed charset
 		if (fmt.empty()) return false;
 
 		try

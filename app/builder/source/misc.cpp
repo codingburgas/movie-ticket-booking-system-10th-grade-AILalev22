@@ -108,15 +108,7 @@ namespace Misc
 
 		Utils::Clear();
 
-		std::cout << "Choose show's cinema:\n1. CinemaBurgas\n2. CinemaVarna\n";
-		std::string choice;
-		do
-		{
-			std::cout << ':';
-			std::cin >> choice;
-		} while (choice != "1" && choice != "2");
-
-		show.cinemaName = choice == "1" ? "CinemaBurgas" : "CinemaVarna";
+		EnterShowCinema(show);
 
 		Utils::Clear();
 		return true;
@@ -216,23 +208,23 @@ namespace Misc
 		}
 		std::string fields[] = { "Name","Genre","Language","ReleaseYear" };
 
-		int widthField[] = {20,20,20,10};
+		int widthField[] = {20,20,20,15};
 		Misc::PrintStrTok(resSet, '|', fields, 4,widthField);
 
 		return true;
 	}
 	bool ShowAllShows(const std::string& movieName)
 	{
-		std::string shows;
-		if (Select::SelectShows(movieName, shows) == Error::ERROR_NOT_EXISTS || shows.empty())
+		std::string dst;
+		if (Select::SelectShows(movieName, dst) == Error::ERROR_NOT_EXISTS || dst.empty())
 		{
 			Utils::ErrMsg("No shows are found");
 			return false;
 		}
-		std::string fields[] = { "ID","Date","Price" };
+		std::string fields[] = { "ID","Date","Price","CinemaName"};
 
-		int widthField[] = {5,20,10};
-		Misc::PrintStrTok(shows, '|', fields, 3,widthField);
+		int widthField[] = {5,20,10,15};
+		Misc::PrintStrTok(dst, '|', fields, 4,widthField);
 		return true;
 	}
 	void ShowBookings()
@@ -250,7 +242,7 @@ namespace Misc
 	}
 	bool ChooseMovieShow(Entity::Show& show)
 	{
-		Misc::ShowAllMovies();
+		if(!Misc::ShowAllMovies()) return false;
 		std::cout << "\n\nEnter movie's name to book\n:";
 		std::string movieName;
 		std::cin >> movieName;
@@ -366,5 +358,18 @@ namespace Misc
 				return std::stod(seatVal);
 			}
 		}	
+	}
+	void EnterShowCinema(Entity::Show& show)
+	{
+		std::cout << "Choose show's cinema:\n1. CinemaBurgas\n2. CinemaVarna\n";
+		std::string choice;
+		do
+		{
+			std::cout << ':';
+			std::cin >> choice;
+		} while (choice != "1" && choice != "2");
+
+		show.cinemaName = choice == "1" ? "CinemaBurgas" : "CinemaVarna";
+		Utils::Clear();
 	}
 }

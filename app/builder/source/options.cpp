@@ -89,11 +89,17 @@ namespace Options
 		Entity::Show add;
 		if (Misc::EnterShowData(add))
 		{
-			std::string dst;
-			if (Select::SelectShows(add.movieName, dst) == Error::SUCCESSFUL) // check if show exists before inserting
+			std::vector<Entity::Show> shows;
+			if (Select::SelectShows(add.movieName, shows) == Error::SUCCESSFUL) // check if show exists before inserting
 			{
-				Utils::ErrMsg("Show already exists");
-				return;
+				for (const auto& show : shows)
+				{
+					if (show.date == add.date && show.cinemaName == add.cinemaName)
+					{
+						Utils::ErrMsg("Show already exists");
+						return;
+					}
+				}
 			}
 			switch (Insert::InsertShow(add))
 			{
@@ -159,6 +165,9 @@ namespace Options
 		Misc::EnterNumber(price, true);
 		newShow.price = std::stof(price);
 
+		Utils::Clear();
+		Misc::EnterShowCinema(newShow);
+
 		Update::UpdateShow(id, newShow) ? Utils::ErrMsg("Successfully updated") : Utils::ErrMsg("Update failed");
 	}
 	void BookMovie()
@@ -166,7 +175,6 @@ namespace Options
 		Entity::Show chosenShow;
 		if (!Misc::ChooseMovieShow(chosenShow))
 		{
-			Utils::ErrMsg("Cannot read show data");
 			return;
 		}
 
