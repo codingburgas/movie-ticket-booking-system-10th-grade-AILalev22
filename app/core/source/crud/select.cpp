@@ -131,19 +131,19 @@ namespace Select
 		}
 		return Error::ERROR_NOT_EXISTS;
 	}
-	int SelectBookings(std::vector<Entity::Booking>& bookings,int showId,int userId,int hallNumber)
+	int SelectBookings(std::vector<Entity::Booking>& bookings,int showId,int hallNumber)
 	{
 		auto shsqlInst = Manager::GetSQL()->GetInstance();
 
-		std::string query = "SELECT SHOWID,FINALPRICE,USERID,SEATX,SEATY,SEATTYPE,HALLNUMBER FROM BOOKINGS WHERE SHOWID = " + std::to_string(showId);
+		std::string query = "SELECT SHOWID,FINALPRICE,USERID,SEATX,SEATY,SEATTYPE,HALLNUMBER FROM BOOKINGS";
 
-		if (userId > 0)
+		if (showId > 0)
 		{
-			query += " AND USERID = " + std::to_string(userId);
-		}
-		else if (hallNumber > 0)
-		{
-			query += " AND HALLNUMBER = " + std::to_string(hallNumber);
+			query.append(" WHERE SHOWID = " + std::to_string(showId));
+			if (hallNumber > 0)
+			{
+				query += " AND HALLNUMBER = " + std::to_string(hallNumber);
+			}
 		}
 		else
 		{
@@ -197,5 +197,45 @@ namespace Select
 
 		return Error::ERROR_NOT_EXISTS;
 	}
+	int SelectBookings(std::string& dst, int userId)
+	{
+		auto shsqlInst = Manager::GetSQL()->GetInstance();
+		std::string raw;
+		std::string query = "SELECT SHOWID,FINALPRICE,SEATX,SEATY,SEATTYPE,HALLNUMBER FROM BOOKINGS WHERE USERID = '" + std::to_string(userId) + "'";
 
+		if (shsqlInst->Read("%d %f %d %d %s %d", query, raw) && !raw.empty())
+		{
+			std::stringstream input(raw);
+			std::stringstream output;
+			std::string record;
+
+			while (std::getline(input, record, '|'))
+			{
+				std::stringstream row(record);
+				std::string token;
+				int fieldIndex = 0;
+
+				while (std::getline(row, token, ','))
+				{
+					if (fieldIndex == 1)
+					{
+						float price = std::stof(token);
+						output << std::fixed << std::setprecision(2) << price;
+					}
+					else
+					{
+						output << token;
+					}
+
+					if (++fieldIndex < 6) output << ",";
+				}
+				output << "|";
+			}
+
+			dst = output.str();
+			if (!dst.empty()) return Error::SUCCESSFUL;
+		}
+
+		return Error::ERROR_NOT_EXISTS;
+	}
 }

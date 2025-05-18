@@ -16,4 +16,6 @@ namespace Options
 	void UpdateShow();
 	// customer option
 	void BookMovie();
+	//customer option
+	void CancelBooking();
 }

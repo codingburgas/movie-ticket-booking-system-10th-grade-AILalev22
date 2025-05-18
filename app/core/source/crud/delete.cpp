@@ -29,4 +29,20 @@ namespace Delete
 		}
 		return Error::ERROR_NOT_EXISTS;
 	}
+	int DeleteBooking(const POINT& coord)
+	{
+		auto shsqlInst = Manager::GetSQL()->GetInstance();
+		std::string tmp;
+		if (shsqlInst->Read("%s", "SELECT USERID FROM BOOKINGS WHERE SEATX = " + std::to_string(coord.x) + " AND SEATY = " + std::to_string(coord.y), tmp))
+		{
+			if (!tmp.empty())
+			{
+				if (shsqlInst->Query("DELETE FROM BOOKINGS WHERE SEATX = " + std::to_string(coord.x) + " AND SEATY = " + std::to_string(coord.y)))
+				{
+					return Error::SUCCESSFUL;
+				}
+			}
+		}
+		return Error::ERROR_NOT_EXISTS;
+	}
 }

@@ -245,7 +245,7 @@ namespace Menu
     }
     void MainMenu()
     {
-        Menu customerMenu = CreateMenu({ "Book a movie","Show bookings","Cancel a booking","Return to register" }, "Customer Menu");
+        Menu customerMenu = CreateMenu({ "Book a movie","Cancel a booking","Return to register" }, "Customer Menu");
 
         for (;;)
         {
@@ -253,9 +253,8 @@ namespace Menu
             switch (choice)
             {
             case 0: Options::BookMovie(); break;
-            case 1: break;
-            case 2: break;
-            case 3: return; break;
+            case 1: Options::CancelBooking(); break;
+            case 2: return; break;
             }
         }
     }

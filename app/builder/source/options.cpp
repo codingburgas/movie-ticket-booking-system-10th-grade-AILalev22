@@ -6,7 +6,6 @@
 #include "core\crud.h"
 #include "misc.h"
 #include "core\smtp.h"
-#include "core\matrix.h"
 namespace Options
 {	
 	int LogSign(int mode)
@@ -31,7 +30,6 @@ namespace Options
 			return res;
 		}
 		conf.currUser = user; // assign current user data to config
-		conf.idCurrUser = user.id;
 
 		return stricmp(user.email.c_str(), conf.ademail.c_str()) == 0 ? Menu::ENTER_ADMIN : Menu::ENTER_CUSTOMER;
 	}
@@ -174,8 +172,37 @@ namespace Options
 
 		Entity::Booking book;
 		book.showId = chosenShow.id;
-		book.userId = conf.idCurrUser;
+		book.userId = conf.currUser.id;
 
 		Misc::EnterBookingData(book,chosenShow);
+	}
+	void CancelBooking()
+	{
+		Misc::ShowBookings();
+		
+		std::string x, y;
+		std::cout << "\n\nEnter seat row:\n";
+		Misc::EnterNumber(x);
+
+		Misc::ShowBookings();
+
+		std::cout << "\n\nEnter seat column:\n";
+		Misc::EnterNumber(y);
+
+		POINT p = { std::stod(x),std::stod(y) }; // seat row and col of booking to delete
+
+		if (Delete::DeleteBooking(p) == Error::SUCCESSFUL)
+		{
+			Utils::ErrMsg("Canceled successfully");
+			std::string msg =
+				"You have canceled a booking\n"
+				"Seat column: " + x + "\n"
+				"Seat row: " + y + "\n";
+			SMTP::NotifyUsers("Booking cancel", msg, { conf.currUser.email });
+		}
+		else
+		{
+			Utils::ErrMsg("Internal error, please try again later");
+		}
 	}
 }

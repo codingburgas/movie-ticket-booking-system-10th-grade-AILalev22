@@ -41,11 +41,7 @@ bool LoadConfig(Config& conf)
 		}
 
 	conf.ademail = DB_ADMIN_EMAIL;
-	conf.cinemas = CINEMAS;
-	conf.cols = COL_SIZE;
 	conf.schema = DB_SCHEMA;
-	conf.halls = HALLS;
-	conf.rows = ROW_SIZE;
 	conf.smtpServer = SMTP_SERVER;
 	conf.dbhost = env[0] ?  env[0] : "";
 	conf.dbpass = env[1] ? env[1] : "";
