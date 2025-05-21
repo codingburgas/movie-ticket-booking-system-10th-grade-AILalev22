@@ -6,6 +6,7 @@
 #include "main.h"
 #include "core\crud.h"
 #include "core\matrix.h"
+
 namespace Misc
 {
 	void EnterNumber(std::string& num, bool floating)
@@ -30,7 +31,7 @@ namespace Misc
 						}
 						catch (...)
 						{
-							Utils::DbgMsg("error stof()");
+							DbgMsg("error stof()");
 						}
 					}
 					cdot = 0;
@@ -46,7 +47,7 @@ namespace Misc
 					}
 					catch (...)
 					{
-						Utils::DbgMsg("error stod()");
+						DbgMsg("error stod()");
 					}
 			}
 		}

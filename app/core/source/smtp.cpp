@@ -119,7 +119,7 @@ namespace SMTP
             res = curl_easy_perform(curl);
             if (res != CURLE_OK)
             {              
-                Utils::DbgMsg("error curl_easy_perform(): %s\n", curl_easy_strerror(res)); // dbg curl err if send fails
+                DbgMsg("error curl_easy_perform(): %s\n", curl_easy_strerror(res)); // dbg curl err if send fails
             }
 
             curl_slist_free_all(recipients);

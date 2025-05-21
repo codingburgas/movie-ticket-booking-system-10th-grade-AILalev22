@@ -34,12 +34,12 @@ namespace Manager
 			smtp->Init();
 			if (!sql->GetStatus()) // if managers are not init correctly
 			{
-				Utils::DbgMsg("managerSQL is not ok");
+				DbgMsg("managerSQL is not ok");
 				ret = false;
 			}
 			if (!smtp->GetStatus())
 			{
-				Utils::DbgMsg("managerSMTP is not ok");
+				DbgMsg("managerSMTP is not ok");
 				ret = false;
 			}
 		}

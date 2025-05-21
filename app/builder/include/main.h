@@ -1,6 +1,6 @@
 #pragma once
-
-#include "release.h"
+#include <string>
+#include "config.h"
 #include "core\type.h"
 
 struct Config

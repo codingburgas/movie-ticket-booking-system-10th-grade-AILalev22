@@ -14,7 +14,7 @@ namespace Update
 		bool ret = Update(query);
 
 		if(!ret)
-		Utils::DbgMsg("UpdateShow() : query not is ok");
+		DbgMsg("UpdateShow() : query not is ok");
 
 		return ret;
 	}

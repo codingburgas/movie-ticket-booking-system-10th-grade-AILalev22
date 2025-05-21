@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\config">
-      <UniqueIdentifier>{3db3622a-64ba-4c3f-b00f-a29194bf4a48}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\menu.cpp">
@@ -44,13 +41,13 @@
     <ClInclude Include="include\pch\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\config\full\release.h">
-      <Filter>Header Files\config</Filter>
-    </ClInclude>
     <ClInclude Include="include\options.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\misc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

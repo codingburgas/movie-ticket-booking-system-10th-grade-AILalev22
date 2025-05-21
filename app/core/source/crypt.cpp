@@ -20,24 +20,24 @@ namespace Crypt
 
         if (!CryptAcquireContextA(&prov, 0, 0, PROV_RSA_AES, CRYPT_VERIFYCONTEXT))
         {
-            Utils::DbgMsg("error CryptAcuqireContextA()");
+            DbgMsg("error CryptAcuqireContextA()");
             return;
         }
         if (!CryptCreateHash(prov, CALG_SHA_256, 0, 0, &hash))
         {
-            Utils::DbgMsg("error CryptCreateHash()");
+            DbgMsg("error CryptCreateHash()");
             return;
         }
         if (!CryptHashData(hash, (byte*)src.c_str(), src.size(), 0))
         {
-            Utils::DbgMsg("error CryptHashData()");
+            DbgMsg("error CryptHashData()");
 
             Close(prov, hash);
             return;
         }
         if (!CryptGetHashParam(hash, HP_HASHVAL, buf, &len, 0))
         {
-            Utils::DbgMsg("error CryptGetHashParam()");
+            DbgMsg("error CryptGetHashParam()");
             Close(prov, hash);
             return;
         }

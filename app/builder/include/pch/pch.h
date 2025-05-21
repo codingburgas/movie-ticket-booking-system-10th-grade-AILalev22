@@ -10,3 +10,4 @@
 #include "core\utils.h"
 #include "core\misc.h"
 #include "core\smtp.h"
+#include "core\debug.h"

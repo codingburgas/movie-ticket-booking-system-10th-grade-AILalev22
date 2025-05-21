@@ -77,7 +77,7 @@ namespace MySQL
 		{
 			if (conn)
 				delete conn;
-			Utils::DbgMsg("error Connect()");
+			DbgMsg("error Connect()");
 
 			return false;
 		}
@@ -87,7 +87,7 @@ namespace MySQL
 	{
 		if (!conn)
 		{
-			Utils::DbgMsg("error SetDB() not connected");
+			DbgMsg("error SetDB() not connected");
 			return false;
 		}
 		try
@@ -96,7 +96,7 @@ namespace MySQL
 		}
 		catch (...)
 		{
-			Utils::DbgMsg("error SetDB()");
+			DbgMsg("error SetDB()");
 			return false;
 		}
 		return true;
@@ -105,7 +105,7 @@ namespace MySQL
 	{
 		if (!conn)
 		{
-			Utils::DbgMsg("error Query() not connected");
+			DbgMsg("error Query() not connected");
 			return false;
 		}
 		try
@@ -115,7 +115,7 @@ namespace MySQL
 		}
 		catch (...)
 		{
-			Utils::DbgMsg("error Query()");
+			DbgMsg("error Query()");
 			return false;
 		}
 		return true;
@@ -125,7 +125,7 @@ namespace MySQL
 		if (fmt.empty() || query.empty()) return false;
 		if (!conn)
 		{
-			Utils::DbgMsg("error Write() not connected");
+			DbgMsg("error Write() not connected");
 			return false;
 		}
 
@@ -135,7 +135,7 @@ namespace MySQL
 		}
 		catch (...)
 		{
-			Utils::DbgMsg("error Write() query is not ok");
+			DbgMsg("error Write() query is not ok");
 			return false; // if query is invalid and exception is thrown
 		}
 		/*va_list va;
@@ -169,7 +169,7 @@ namespace MySQL
 		}
 		catch (...)
 		{
-			Utils::DbgMsg("error Write() args are not ok");
+			DbgMsg("error Write() args are not ok");
 			return false;
 		}
 		return true;
@@ -179,7 +179,7 @@ namespace MySQL
 	{
 		if (!conn)
 		{
-			Utils::DbgMsg("error Read() not connected");
+			DbgMsg("error Read() not connected");
 			return false;
 		}
 		Utils::Trim(fmt,"difubs"); // trim format only to passed charset
@@ -192,7 +192,7 @@ namespace MySQL
 		}
 		catch (...)
 		{
-			Utils::DbgMsg("error Read() query is not ok");
+			DbgMsg("error Read() query is not ok");
 			return false;
 		}
 

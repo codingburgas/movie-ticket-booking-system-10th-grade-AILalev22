@@ -7,19 +7,19 @@ namespace Menu
     Menu::Menu(int max_len, std::string header, std::string head_color, std::string body_color,
         char up_key, char down_key, char sel_key) {
         if (max_len <= 0) {
-            Utils::DbgMsg("Error: Max String Length is set to 0.");
+            DbgMsg("Error: Max String Length is set to 0.");
             return;
         }
 
         max_string_len = max_len;
 
         if (head_color.size() != 2) {
-            Utils::DbgMsg("Error: Head Color must contain only two characters in ANSI Color Code form.");
+            DbgMsg("Error: Head Color must contain only two characters in ANSI Color Code form.");
             return;
         }
 
         if (body_color.size() != 2) {
-            Utils::DbgMsg("Error: Body Color must contain only two characters in ANSI Color Code form.");
+            DbgMsg("Error: Body Color must contain only two characters in ANSI Color Code form.");
             return;
         }
 
@@ -42,7 +42,7 @@ namespace Menu
 
     void Menu::set_max_len(int max_len) {
         if (max_len <= 0) {
-            Utils::DbgMsg("Error: Max String Length is set to 0.");
+            DbgMsg("Error: Max String Length is set to 0.");
             return;
         }
 
@@ -100,7 +100,7 @@ namespace Menu
             }
         }
 
-        Utils::DbgMsg("Error: Entry doesn\'t exist in the first place.");
+        DbgMsg("Error: Entry doesn\'t exist in the first place.");
     }
 
     void Menu::edit_field(std::string old_name, std::string new_name) {
@@ -112,7 +112,7 @@ namespace Menu
             }
         }
 
-        Utils::DbgMsg("Error: Entry doesn\'t exist in the first place.");
+        DbgMsg("Error: Entry doesn\'t exist in the first place.");
     }
 
     bool Menu::has_field(std::string name) {
@@ -134,7 +134,7 @@ namespace Menu
 
     void Menu::printMenu() {
         if (max_string_len <= 0) {
-            Utils::DbgMsg("Error: Invalid Max String Length provided.");
+            DbgMsg("Error: Invalid Max String Length provided.");
             return;
         }
 

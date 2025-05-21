@@ -8,8 +8,6 @@ namespace Utils
 	void ErrMsg(const std::string& msg,int sec = 0);
 	// clear cmd command
 	void Clear();
-	// debug a msg using c-style printf format
-	void DbgMsg(const char* format, ...);
 	// trim src bassed on chars string
 	// if possible is true only matching characters are left
 	// is possible is false characters found in chars string are removed

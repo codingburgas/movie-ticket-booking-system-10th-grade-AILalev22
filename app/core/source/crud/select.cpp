@@ -18,7 +18,7 @@ namespace Select
 		{
 			Utils::Trim(retrievedPass, "|", false); // remove last pipe appended from Read fn
 
-			Utils::DbgMsg("SelectUserExist() : %s %s", acc.email.c_str(), retrievedPass.c_str());
+			DbgMsg("SelectUserExist() : %s %s", acc.email.c_str(), retrievedPass.c_str());
 			ret = Error::ERROR_INPUT; // if email is found but password is wrong, return error_input
 
 			if (retrievedPass == hpass)
@@ -29,12 +29,12 @@ namespace Select
 					try
 					{
 						acc.id = std::stod(idDst); // assign user id
-						Utils::DbgMsg("SelectUserExist() : %d", acc.id);
+						DbgMsg("SelectUserExist() : %d", acc.id);
 						ret = Error::SUCCESSFUL;
 					}
 					catch (...)
 					{
-						Utils::DbgMsg("error SelectUserExist() id cannot read");
+						DbgMsg("error SelectUserExist() id cannot read");
 						ret = Error::ERROR_FAILED;
 					}
 				}
@@ -66,7 +66,7 @@ namespace Select
 				vec.push_back(last);
 
 			for(const auto& email : vec)
-			Utils::DbgMsg("SelectAllUsersEmail() : %s", email.c_str());
+			DbgMsg("SelectAllUsersEmail() : %s", email.c_str());
 
 			if (!vec.empty())
 				ret = Error::SUCCESSFUL;
@@ -79,7 +79,7 @@ namespace Select
 		int ret = Error::ERROR_NOT_EXISTS;
 		if (Select("%s %s %s %d", name.empty() ? "SELECT NAME,GENRE,LANGUAGE,RELEASEYEAR FROM MOVIES" : "SELECT NAME,GENRE,LANGUAGE,RELEASEYEAR FROM MOVIES WHERE NAME = '" + name + '\'', dst) == Error::SUCCESSFUL)
 		{
-			Utils::DbgMsg("SelectMovie() : %s", dst.c_str());
+			DbgMsg("SelectMovie() : %s", dst.c_str());
 
 			if(!dst.empty())
 			ret = Error::SUCCESSFUL;
@@ -94,7 +94,7 @@ namespace Select
 		std::string dst;
 		if (Select("%d %s %f %s", "SELECT ID,DATE,PRICE,CINEMANAME FROM SHOWS WHERE MOVIENAME = '" + movieName + "'", dst) == Error::SUCCESSFUL) 
 		{
-			Utils::DbgMsg("SelectShows() : %s", dst.c_str());
+			DbgMsg("SelectShows() : %s", dst.c_str());
 
 			if (!dst.empty())
 			{
@@ -127,7 +127,7 @@ namespace Select
 		int ret = Error::ERROR_NOT_EXISTS;
 		if (Select("%d %s %f %s", "SELECT ID,DATE,PRICE,CINEMANAME FROM SHOWS WHERE MOVIENAME = '" + movieName + "'", dst) == Error::SUCCESSFUL)
 		{
-			Utils::DbgMsg("SelectShows() : %s", dst.c_str());
+			DbgMsg("SelectShows() : %s", dst.c_str());
 
 			if (!dst.empty())
 				ret = Error::SUCCESSFUL;
@@ -211,7 +211,7 @@ namespace Select
 				if (std::getline(ss, token, ',')) book.hallNumber = std::stoi(token);
 
 				bookings.push_back(book);
-				Utils::DbgMsg("SelectBookings() : %d %f %d %d %d %s %d", book.showId, book.finalPrice, book.userId, book.seatX, book.seatY, book.seatType, book.hallNumber);
+				DbgMsg("SelectBookings() : %d %f %d %d %d %s %d", book.showId, book.finalPrice, book.userId, book.seatX, book.seatY, book.seatType, book.hallNumber);
 			}
 			if (start < dst.length())
 			{
@@ -228,7 +228,7 @@ namespace Select
 				if (std::getline(ss, token, ',')) book.hallNumber = std::stoi(token);
 
 				bookings.push_back(book);
-				Utils::DbgMsg("SelectBookings() : %d %f %d %d %d %s %d", book.showId, book.finalPrice, book.userId, book.seatX, book.seatY, book.seatType, book.hallNumber);
+				DbgMsg("SelectBookings() : %d %f %d %d %d %s %d", book.showId, book.finalPrice, book.userId, book.seatX, book.seatY, book.seatType, book.hallNumber);
 			}
 
 			ret = bookings.empty() ? Error::ERROR_NOT_EXISTS : Error::SUCCESSFUL;

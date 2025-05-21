@@ -36,8 +36,8 @@ bool LoadConfig(Config& conf)
 	for (const auto& e : env)
 		if (!e)
 		{
-			Utils::DbgMsg("error LoadConfig() env");
-			return false;			
+			DbgMsg("error LoadConfig() env");
+			return false;
 		}
 
 	conf.ademail = DB_ADMIN_EMAIL;
