@@ -10,4 +10,6 @@ namespace Validation
 	bool IsValidShow(const Entity::Show& show);
 	// return whether smtp address is valid
 	bool IsValidSmtp(const std::string& addr);
+	// return whether credit card number is valid
+	bool LuhnCheck(const std::string& number);
 }

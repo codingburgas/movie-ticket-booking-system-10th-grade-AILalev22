@@ -135,22 +135,19 @@ namespace SMTP
 
     void NotifyUsers(const std::string& subject, const std::string& msg, std::vector<std::string> emailList)
     {
-        std::vector<std::string> lsEmail; // list with all emails
         if (emailList.empty())
         {
-            if (Select::SelectAllUsersEmail(lsEmail) != Error::SUCCESSFUL) // select all customers emails if none are given
+            if (Select::SelectAllUsersEmail(emailList) != Error::SUCCESSFUL) // select all customers emails if none are given
             {
                 return;
             }
         }
-        else
-            lsEmail = emailList;
 
         auto shreq = Manager::GetSMTP();
         auto shreqInst = shreq->GetInstance();
 
         shreqInst->SetSender(shreq->GetData().sender); // set smtp config
         shreqInst->SetServer(shreq->GetData().smtpAddr);
-        shreqInst->Send(lsEmail, subject, msg); // send email to listed users
+        shreqInst->Send(emailList, subject, msg); // send email to listed users
     }
 }

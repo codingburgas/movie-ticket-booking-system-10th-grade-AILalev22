@@ -140,7 +140,6 @@ namespace MySQL
 		}
 		/*va_list va;
 		va_start(va, &query);*/
-
 		
 		int i = 1; //initial pos used in setType db functions
 

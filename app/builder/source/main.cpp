@@ -5,7 +5,7 @@
 #include "core\manager.h"
 Config conf;
 Manager::StruConnector ctorInit;
-Manager::StruSMTP smtpInit;
+Manager::StruRequest smtpInit;
 int main()
 {
 	if (!LoadConfig(conf) || !Manager::Init(ctorInit,smtpInit)) // if startup fails

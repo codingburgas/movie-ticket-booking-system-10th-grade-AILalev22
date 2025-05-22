@@ -13,7 +13,7 @@ namespace Manager
 		std::string schema;
 	};
 	// smtp request init data
-	struct StruSMTP
+	struct StruRequest
 	{
 		Entity::User sender;
 		std::string smtpAddr;
@@ -57,10 +57,10 @@ namespace Manager
 		}
 		void Init();
 	};
-	class ManagerSMTP : public Manager<REQ, StruSMTP>
+	class ManagerSMTP : public Manager<REQ, StruRequest>
 	{
 	public:
-		ManagerSMTP(const StruSMTP& data) : Manager(data) 
+		ManagerSMTP(const StruRequest& data) : Manager(data)
 		{
 			inst = std::make_shared<REQ>(dataInst.sender, dataInst.smtpAddr);
 		}
@@ -73,7 +73,7 @@ namespace Manager
 	std::shared_ptr<ManagerSMTP> GetSMTP();
 
 	// init global managers
-	bool Init(const StruConnector& ctorInit, const StruSMTP& smtpInit);
+	bool Init(const StruConnector& ctorInit, const StruRequest& reqInit);
 	// release global managers
 	void Release();
 }

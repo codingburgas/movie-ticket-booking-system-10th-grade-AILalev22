@@ -3,16 +3,16 @@
 
 namespace Matrix
 {
-    Sparse::Sparse(int sizeCol, int sizeRow, std::string mvalue) : column(sizeCol),row(sizeRow),count(0)
+    Sparse::Sparse(int sizeCol, int sizeRow, std::string mvalue) : count(0),rowSize(sizeRow),colSize(sizeCol)
     {
-        size = row * column;
+        size = sizeCol * sizeRow;
         data = new Element[size];
 
         this->mvalue = mvalue;
         
         for (int i = 0; i < size; i++)
         {
-            data[i].x = data[i].y = -1;
+            data[i].x = data[i].y = DEFAULT_POINT;
             data[i].val = mvalue;
         }       
     }
@@ -26,7 +26,7 @@ namespace Matrix
     }
     const std::string& Sparse::Get(int x, int y)
     {
-        if (!(x >= 0 && x < row && y >= 0 && y < column)) return mvalue; // if x,y are outside the matrix
+        if (!(x >= 0 && x < rowSize && y >= 0 && y < colSize)) return mvalue; // if x,y are outside the matrix
 
         for (int i = 0; i < size; i++)
             if (data[i].x == x && data[i].y == y)
@@ -49,7 +49,7 @@ namespace Matrix
     }
     bool Sparse::Set(int x, int y, const std::string& val)
     {
-        if (!(x >= 0 && x < row && y >= 0 && y < column)) return false; // if x,y are outside the matrix
+        if (!(x >= 0 && x < rowSize && y >= 0 && y < colSize)) return false; // if x,y are outside the matrix
 
         for (int i = 0; i < count;i++) // first check if elemnt at x,y already exists
         {
@@ -70,9 +70,9 @@ namespace Matrix
     }
     void Sparse::Print()
     {
-        for (int i = 0; i < row; i++)
+        for (int i = 0; i < rowSize; i++)
         {
-            for (int j = 0; j < column; j++)
+            for (int j = 0; j < colSize; j++)
             {
                 std::cout << Get(i,j) << ' '; // print the whole matrix
             }

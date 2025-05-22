@@ -43,4 +43,20 @@ namespace Validation
 		std::regex pattern(R"(smtps?:\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})");
 		return std::regex_search(addr, pattern);
 	}
+	bool LuhnCheck(const std::string& number)
+	{
+		int sum = 0;
+		bool alternate = false;
+		for (int i = number.length() - 1; i >= 0; i--) 
+		{
+			int n = number[i] - '0';
+			if (alternate) {
+				n *= 2;
+				if (n > 9) n -= 9;
+			}
+			sum += n;
+			alternate = !alternate;
+		}
+		return (sum % 10 == 0);
+	}
 }

@@ -164,7 +164,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\builder\include;..\builder\include\pch;..\core\include;..\builder\include\config\full;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\builder\include;..\core\include;</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
@@ -186,7 +186,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>ON_DEBUG_STRINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\builder\include;..\builder\include\pch;..\core\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\builder\include;..\core\include;</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
@@ -201,8 +201,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\input.cpp" />
     <ClCompile Include="source\main.cpp" />
-    <ClCompile Include="source\misc.cpp" />
+    <ClCompile Include="source\display.cpp" />
     <ClCompile Include="source\options.cpp" />
     <ClCompile Include="source\menu.cpp" />
     <ClCompile Include="source\pch.cpp">
@@ -217,8 +218,8 @@
     <ClInclude Include="include\main.h" />
     <ClInclude Include="include\misc.h" />
     <ClInclude Include="include\options.h" />
-    <ClInclude Include="include\pch\pch.h" />
     <ClInclude Include="include\menu.h" />
+    <ClInclude Include="include\pch.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

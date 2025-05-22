@@ -18,14 +18,8 @@ enum Seat
 	PLATINUM
 };
 
-enum Notification
-{
-	NEW_MOVIE, 
-	BOOKING_CONFIRMED, 
-	BOOKING_CANCELED
-};
-
 extern std::unordered_map<Seat, int> seatPrice;
 extern std::unordered_map<Seat, std::string> seatType;
+
 
 

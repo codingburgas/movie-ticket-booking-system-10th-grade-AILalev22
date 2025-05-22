@@ -11,3 +11,5 @@
 #include "core\misc.h"
 #include "core\smtp.h"
 #include "core\debug.h"
+#include <regex>
+#include "core\crud.h"

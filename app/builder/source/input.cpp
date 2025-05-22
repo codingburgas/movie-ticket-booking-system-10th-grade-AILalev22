@@ -1,54 +1,38 @@
 #include "pch.h"
 #include "misc.h"
-#include <regex>
 #include <conio.h>
-#include <iomanip>
+#include "core\valid.h"
 #include "main.h"
-#include "core\crud.h"
 #include "core\matrix.h"
-
 namespace Misc
 {
 	void EnterNumber(std::string& num, bool floating)
 	{
-		int cdot = 0; // floating point count
 		for (;;)
 		{
-			cdot = 0;
 			std::cout << ":";
 			std::cin >> num;
+			try
+			{
+				size_t pos;
 
-			if (floating)
-			{
-				if (std::all_of(num.begin(), num.end(), [&cdot](char c) {if (c == '.') { cdot++; return 1; } return isdigit(c); }))
+				if (floating)
 				{
-					if (!(cdot > 1 || num[0] == '.' || num[num.size() - 1] == '.'))
-					{
-						try
-						{
-							if (std::stof(num) > 0)
-								break;// break if num is a non-negative floating point number
-						}
-						catch (...)
-						{
-							DbgMsg("error stof()");
-						}
-					}
-					cdot = 0;
+					float val = std::stof(num, &pos);
+					if (pos != num.length() || val < 0)
+						throw std::runtime_error("error");
 				}
+				else
+				{
+					int val = std::stoi(num, &pos);
+					if (pos != num.length() || val < 0)
+						throw std::runtime_error("error");
+				}
+
+				break;
 			}
-			else
+			catch (...)
 			{
-				if (std::all_of(num.begin(), num.end(), isdigit))
-					try
-					{
-						if (std::stod(num) > 0)
-							break;// break if num is a non-negative number
-					}
-					catch (...)
-					{
-						DbgMsg("error stod()");
-					}
 			}
 		}
 		Utils::Clear();
@@ -90,7 +74,7 @@ namespace Misc
 
 		Utils::Clear();
 		std::string dstData;
-		if (Select::SelectMovie(dstData,show.movieName) == Error::ERROR_NOT_EXISTS)
+		if (Select::SelectMovie(dstData, show.movieName) == Error::ERROR_NOT_EXISTS)
 		{
 			Utils::ErrMsg("Movie does not exist"); // if movie doesn't exists, cannot add show for it
 			return false;
@@ -129,7 +113,7 @@ namespace Misc
 				break;
 			if (c == 8) //back
 			{
-				if (!pass.empty()) 
+				if (!pass.empty())
 				{
 					pass.pop_back();
 					std::cout << "\b \b";
@@ -142,127 +126,10 @@ namespace Misc
 			}
 		}
 	}
-	void PrintStrTok(std::string op, char delim, const std::string fields[], int c_fields, const int colWidths[])
-	{
-		int totalWidth = 0;
-		for (int i = 0; i < c_fields; ++i)
-			totalWidth += colWidths[i] + 1;
-		totalWidth += 1;
-
-		std::cout << std::string(totalWidth, '-') << std::endl;
-
-		std::cout << "|";
-		for (int i = 0; i < c_fields; i++)
-		{
-			std::cout << std::setw(colWidths[i]) << std::left << fields[i] << "|";
-		}
-		std::cout << std::endl;
-
-		std::cout << std::string(totalWidth, '-') << std::endl;
-
-		auto PrintRow = [&](const std::string& row)
-			{
-				size_t start = 0, end;
-				int column = 0;
-
-				std::cout << "|";
-				while ((end = row.find(',', start)) != std::string::npos && column < c_fields)
-				{
-					std::cout << std::setw(colWidths[column]) << std::left << row.substr(start, end - start) << "|";
-					start = end + 1;
-					column++;
-				}
-				if (column < c_fields)
-				{
-					std::cout << std::setw(colWidths[column]) << std::left << row.substr(start) << "|";
-					column++;
-				}
-				for (; column < c_fields; ++column)
-				{
-					std::cout << std::setw(colWidths[column]) << "" << "|";
-				}
-
-				std::cout << std::endl;
-			};
-
-		size_t pos;
-		while ((pos = op.find(delim)) != std::string::npos)
-		{
-			std::string record = op.substr(0, pos);
-			PrintRow(record);
-			op = op.substr(pos + 1);
-		}
-		if (!op.empty())
-		{
-			PrintRow(op);
-		}
-
-		std::cout << std::string(totalWidth, '-') << std::endl;
-	}
-	bool ShowAllMovies()
-	{
-		std::string resSet;
-		if (Select::SelectMovie(resSet) == Error::ERROR_NOT_EXISTS) // get movies result set
-		{
-			Utils::ErrMsg("Movie does not exist");
-			return false;
-		}
-		std::string fields[] = { "Name","Genre","Language","ReleaseYear" };
-
-		int widthField[] = {20,20,20,15};
-		Misc::PrintStrTok(resSet, '|', fields, 4,widthField);
-
-		return true;
-	}
-	bool ShowAllShows(const std::string& movieName)
-	{
-		std::string dst;
-		if (Select::SelectShows(movieName, dst) == Error::ERROR_NOT_EXISTS || dst.empty())
-		{
-			Utils::ErrMsg("No shows are found");
-			return false;
-		}
-		std::string fields[] = { "ID","Date","Price","CinemaName"};
-
-		int widthField[] = {5,20,10,15};
-		Misc::PrintStrTok(dst, '|', fields, 4,widthField);
-		return true;
-	}
-	void ShowBookings()
-	{
-		std::string dstBookings;
-		if (Select::SelectBookings(dstBookings, conf.currUser.id) == Error::ERROR_NOT_EXISTS)
-		{
-			Utils::ErrMsg("No available bookings");
-		}
-		//SHOWID,FINALPRICE,SEATX,SEATY,SEATTYPE,HALLNUMBER
-		std::string fields[] = { "ShowId","Price","Seat row","Seat column","Seat type","Hall number" };
-		int widthField[] = { 10,10,10,10,10,10 };
-		Misc::PrintStrTok(dstBookings, '|', fields, 6, widthField);
-
-	}
-	bool ChooseMovieShow(Entity::Show& show)
-	{
-		if(!Misc::ShowAllMovies()) return false;
-		std::cout << "\n\nEnter movie's name to book\n:";
-		std::string movieName;
-		std::cin >> movieName;
-
-		Utils::Clear();
-		if (!Misc::ShowAllShows(movieName)) return false;
-
-		std::cout << "Enter show's id to book:\n";
-		std::string choice;// id of chosen show
-		Misc::EnterNumber(choice);
-
-		show.id = std::stod(choice);
-		Utils::Clear();
-		
-		return Select::SelectShow(show.id, show) == Error::SUCCESSFUL;
-	}
 	int EnterSeat(const std::vector<Entity::Booking>& lsBookings, Entity::Booking& book);
 
-	void EnterBookingData(Entity::Booking& book,const Entity::Show& show)
+	void EnterPaymentData();
+	void EnterBookingData(Entity::Booking& book, const Entity::Show& show)
 	{
 		std::cout << "Enter seat type number:\n1. Silver\n2. Gold\n3. Platinum\n";
 		std::string choice;
@@ -286,18 +153,19 @@ namespace Misc
 			Misc::EnterNumber(hallNumber);
 		} while (std::stod(hallNumber) > HALLS);
 		book.hallNumber = std::stod(hallNumber);
-		
+
 		std::vector<Entity::Booking> bookings;
-		if (Select::SelectBookings(bookings, show.id,std::stod(hallNumber)) != Error::ERROR_FAILED)
+		if (Select::SelectBookings(bookings, show.id, std::stod(hallNumber)) != Error::ERROR_FAILED)
 		{
-			int seatNum = EnterSeat(bookings,book);
-			
+			int seatNum = EnterSeat(bookings, book);
+
+			EnterPaymentData();
 			if (Insert::InsertBooking(book) == Error::SUCCESSFUL)
 			{
 				Utils::ErrMsg("Show booked successfuly");
 				std::string msg =
 					"You have made a booking\n"
-					"Price: " + std::to_string(book.finalPrice).substr(0,4) + "\n"
+					"Price: " + std::to_string(book.finalPrice).substr(0, 4) + "\n"
 					"Hall: " + std::to_string(book.hallNumber) + "\n"
 					"Seat type: " + book.seatType + "\n"
 					"Seat row: " + std::to_string(book.seatX) + "\n"
@@ -316,7 +184,7 @@ namespace Misc
 		}
 	}
 
-	int EnterSeat(const std::vector<Entity::Booking>& lsBookings,Entity::Booking& book)
+	int EnterSeat(const std::vector<Entity::Booking>& lsBookings, Entity::Booking& book)
 	{
 		Matrix::Sparse seats(COL_SIZE, ROW_SIZE, "x"); //seats in hall
 		int nSeat = 1;
@@ -338,7 +206,7 @@ namespace Misc
 		{
 			std::string seatVal;
 			do
-			{	
+			{
 				std::cout << "\nSeats seen as 'x' are booked\n\n";
 				seats.Print();
 
@@ -353,12 +221,12 @@ namespace Misc
 				Utils::ErrMsg("Seat is booked, try again");
 			}
 			else
-			{			
+			{
 				book.seatX = p2.x;
 				book.seatY = p2.y;
 				return std::stod(seatVal);
 			}
-		}	
+		}
 	}
 	void EnterShowCinema(Entity::Show& show)
 	{
@@ -372,5 +240,66 @@ namespace Misc
 
 		show.cinemaName = choice == "1" ? "CinemaBurgas" : "CinemaVarna";
 		Utils::Clear();
+	}
+	void EnterPaymentData()
+	{
+		std::cout << "Enter payment info:\n";
+		Sleep(1000);
+		Utils::Clear();
+
+		std::string input;
+		for (int i = 0; i < 2; i++)
+		{
+			std::cout << "Enter placeholder " << (i == 0 ? "name:\n" : "surname:\n");
+			do
+			{
+				std::cout << ":";
+				std::cin >> input;
+			} while (!std::all_of(input.begin(), input.end(), [](int c) {return isalpha(c); }));
+			Utils::Clear();
+		}
+		std::cout << "Enter credit card number:\n";
+		do
+		{
+			std::cout << ":";
+			std::cin >> input;
+		} while (!Validation::LuhnCheck(input));
+		Utils::Clear();
+
+		std::regex patternExpDate(R"(^(0[1-9]|1[0-2])\/\d{2}$)");
+		std::cout << "Enter expiration date in YY/MM format:\n";
+		do
+		{
+			std::cout << ":";
+			std::cin >> input;
+		} while (!std::regex_match(input, patternExpDate));
+		Utils::Clear();
+
+		std::cout << "Enter cvv:\n";
+		do
+		{
+			std::cout << ":";
+			std::cin >> input;
+		} while (input.size() != 3 || !std::all_of(input.begin(), input.end(), [](int c) {return isdigit(c); }));
+		Utils::Clear();
+	}
+	bool ChooseMovieShow(Entity::Show& show)
+	{
+		if (!Misc::ShowAllMovies()) return false;
+		std::cout << "\n\nEnter movie's name to book\n:";
+		std::string movieName;
+		std::cin >> movieName;
+
+		Utils::Clear();
+		if (!Misc::ShowAllShows(movieName)) return false;
+
+		std::cout << "Enter show's id to book:\n";
+		std::string choice;// id of chosen show
+		Misc::EnterNumber(choice);
+
+		show.id = std::stod(choice);
+		Utils::Clear();
+
+		return Select::SelectShow(show.id, show) == Error::SUCCESSFUL;
 	}
 }

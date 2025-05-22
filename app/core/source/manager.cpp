@@ -25,10 +25,10 @@ namespace Manager
 	{
 		return smtp;
 	}
-	bool Init(const StruConnector& ctorInit,const StruSMTP& smtpInit)
+	bool Init(const StruConnector& ctorInit,const StruRequest& reqInit)
 	{
 		bool ret = true;
-		if ((sql = std::make_shared<ManagerSQL>(ctorInit)) && (smtp = std::make_shared<ManagerSMTP>(smtpInit)))
+		if ((sql = std::make_shared<ManagerSQL>(ctorInit)) && (smtp = std::make_shared<ManagerSMTP>(reqInit)))
 		{
 			sql->Init();
 			smtp->Init();
