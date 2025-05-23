@@ -22,7 +22,7 @@ namespace Misc
 	// returns false if no such movie exists
 	bool ShowAllShows(const std::string& movieName);
 	// show all bookings of current user
-	void ShowBookings();
+	bool ShowBookings();
 	void EnterShowCinema(Entity::Show& show);
 	void EnterBookingData(Entity::Booking& book, const Entity::Show& show);
 	bool ChooseMovieShow(Entity::Show& show);

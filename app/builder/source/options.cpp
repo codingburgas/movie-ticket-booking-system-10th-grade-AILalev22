@@ -186,7 +186,7 @@ namespace Options
 	}
 	void CancelBooking()
 	{
-		Misc::ShowBookings();
+		if (!Misc::ShowBookings()) return;
 		
 		std::string x, y;
 		std::cout << "\n\nEnter seat row:\n";

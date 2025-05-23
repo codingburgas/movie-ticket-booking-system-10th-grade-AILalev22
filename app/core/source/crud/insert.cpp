@@ -14,8 +14,15 @@ namespace Insert
 	{
 		std::string hpass; // hashed passwword
 
-		Crypt::CalcHash(acc.password, hpass);
-		return Insert("%s %s", "INSERT INTO ACCOUNTS(EMAIL,PASSWORD) VALUES(?,?)", &acc.email, &hpass);		
+		byte salt[SALT_BYTES];
+		Crypt::GenSalt(salt, SALT_BYTES);
+
+		Crypt::CalcHash(acc.password,salt, SALT_BYTES,hpass); // generate password hash combined with salt
+
+		std::string hexSalt;
+		Crypt::ByteToHex(salt, SALT_BYTES, hexSalt);
+
+		return Insert("%s %s %s", "INSERT INTO ACCOUNTS(EMAIL,PASSWORD,SALT) VALUES(?,?,?)", &acc.email, &hpass,&hexSalt);		
 	}
 	int InsertMovie(const Entity::Movie& movie)
 	{

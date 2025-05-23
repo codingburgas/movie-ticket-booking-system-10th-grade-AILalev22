@@ -2,14 +2,12 @@
 #include "crypt.h"
 #include "type.h"
 
+#pragma warning(disable : 4996)
 namespace Crypt
 {
-    void Close(const HCRYPTPROV& prov,const HCRYPTHASH& hash)
-    {
-        CryptReleaseContext(prov, 0);
-        CryptDestroyHash(hash);
-    }
-    void CalcHash(const std::string& src, std::string& dst)
+    void Close(const HCRYPTPROV& prov, const HCRYPTHASH& hash);
+
+    void CalcHash(const std::string& src, byte srcSalt[],DWORD dwLenSalt,std::string& dst)
     {
         if (src.empty()) return;
         HCRYPTPROV prov; //crypt context
@@ -26,6 +24,13 @@ namespace Crypt
         if (!CryptCreateHash(prov, CALG_SHA_256, 0, 0, &hash))
         {
             DbgMsg("error CryptCreateHash()");
+            return;
+        }
+        if (!CryptHashData(hash, srcSalt, dwLenSalt, 0))
+        {
+            DbgMsg("error CryptHashData()");
+
+            Close(prov, hash);
             return;
         }
         if (!CryptHashData(hash, (byte*)src.c_str(), src.size(), 0))
@@ -50,5 +55,43 @@ namespace Crypt
 
         dst = strHash;
         Close(prov, hash);
+    }
+    void GenSalt(byte dst[], DWORD dwLen)
+    {
+        HCRYPTPROV prov;
+        if (!CryptAcquireContextA(&prov, 0, 0, PROV_RSA_AES, CRYPT_VERIFYCONTEXT))
+        {
+            DbgMsg("error CryptAcuqireContextA()");
+            return;
+        }
+        if (!CryptGenRandom(prov, dwLen, dst))
+        {
+            DbgMsg("error CryptGenRandom()");
+            return;
+        }
+        CryptReleaseContext(prov, 0);
+    }
+    void ByteToHex(const byte src[], DWORD dwLenSrc, std::string& hex)
+    {
+        char buf[3];
+        for (DWORD i = 0; i < dwLenSrc;i++)
+        {
+            sprintf(buf, "%02x", src[i]);
+            hex.append(buf);
+        }
+    }
+    void HexToByte(const std::string& src, DWORD dwLenDst, byte dst[])
+    {
+        for (DWORD i = 0; i < dwLenDst; i++)
+        {
+            uint v;
+            sscanf(src.c_str() + i * 2, "%02x", &v);
+            dst[i] = (byte)v;
+        }
+    }
+    void Close(const HCRYPTPROV& prov, const HCRYPTHASH& hash)
+    {
+        CryptReleaseContext(prov, 0);
+        CryptDestroyHash(hash);
     }
 }

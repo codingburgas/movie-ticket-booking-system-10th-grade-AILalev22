@@ -9,8 +9,16 @@ namespace Select
 	}
 	int SelectUserExist(Entity::User& acc)
 	{
+		std::string retrievedSalt;
+		if (Select("%s", "SELECT SALT FROM ACCOUNTS WHERE EMAIL = '" + acc.email + "'", retrievedSalt) != Error::SUCCESSFUL) return Error::ERROR_NOT_EXISTS;
+		Utils::Trim(retrievedSalt, "|,", false); // remove unnecessary chars from salt
+
+		byte salt[SALT_BYTES];
+		Crypt::HexToByte(retrievedSalt, SALT_BYTES, salt);
+
 		std::string hpass;
-		Crypt::CalcHash(acc.password, hpass);
+		Crypt::CalcHash(acc.password,salt, SALT_BYTES,hpass);
+
 		std::string retrievedPass;
 
 		int ret = Select("%s", "SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = '" + acc.email + "'", retrievedPass);

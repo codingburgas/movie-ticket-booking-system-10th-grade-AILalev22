@@ -1,6 +1,13 @@
 #pragma once
+#define SALT_BYTES 16
 namespace Crypt
 {
     // calculate a sha256 hash based on src
-    void CalcHash(const std::string& src, std::string& dst);
+    void CalcHash(const std::string& src, byte srcSalt[], DWORD dwLenSalt, std::string& dst);
+
+    // fill a buffer with random bytes
+    void GenSalt(byte dst[], DWORD dwLen);
+
+    void ByteToHex(const byte src[], DWORD dwLenSrc, std::string& hex);
+    void HexToByte(const std::string& src, DWORD dwLenDst, byte dst[]);
 }
