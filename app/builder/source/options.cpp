@@ -23,7 +23,7 @@ namespace Options
 			switch (res)
 			{
 			case Error::ERROR_NOT_EXISTS: Utils::ErrMsg("User does not exist"); break;
-			case Error::ERROR_INPUT: Utils::ErrMsg(mode == 1 ? "Invalid input!" : "Email needs to follow this example:\n\"example@gmail.com\"\nPassword needs to contain:\n1 small letter\n1 big letter\n1 number",2); break;
+			case Error::ERROR_INPUT: Utils::ErrMsg(mode == 1 ? "Invalid input!" : "Email needs to follow this example:\n\"example@gmail.com\"\nPassword needs to contain:\n1 small letter\n1 big letter\n1 number",5); break;
 			case Error::ERROR_EXISTS: Utils::ErrMsg("User already exists"); break;
 			default: Utils::ErrMsg("Unexpected error"); break;
 			}
@@ -186,7 +186,7 @@ namespace Options
 	}
 	void CancelBooking()
 	{
-		Misc::ShowBookings();
+		if (!Misc::ShowBookings()) return;
 		
 		std::string x, y;
 		std::cout << "\n\nEnter seat row:\n";

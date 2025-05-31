@@ -263,10 +263,12 @@ namespace Misc
 		{
 			std::cout << ":";
 			std::cin >> input;
+			std::remove_if(input.begin(), input.end(), [](int c) {return c == '-'; });
+
 		} while (!Validation::LuhnCheck(input));
 		Utils::Clear();
 
-		std::regex patternExpDate(R"(^(0[1-9]|1[0-2])\/\d{2}$)");
+		std::regex patternExpDate(R"(^\d{2}\/(0[1-9]|1[0-2])$)");
 		std::cout << "Enter expiration date in YY/MM format:\n";
 		do
 		{

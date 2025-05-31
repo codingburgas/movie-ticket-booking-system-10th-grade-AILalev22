@@ -91,17 +91,19 @@ namespace Misc
 		Misc::PrintStrTok(dst, '|', fields, 4,widthField);
 		return true;
 	}
-	void ShowBookings()
+	bool ShowBookings()
 	{
 		std::string dstBookings;
 		if (Select::SelectBookings(dstBookings, conf.currUser.id) == Error::ERROR_NOT_EXISTS)
 		{
 			Utils::ErrMsg("No available bookings");
+			return false;
 		}
 		//SHOWID,FINALPRICE,SEATX,SEATY,SEATTYPE,HALLNUMBER
 		std::string fields[] = { "ShowId","Price","Seat row","Seat column","Seat type","Hall number" };
 		int widthField[] = { 15,15,15,15,15,15 };
 		Misc::PrintStrTok(dstBookings, '|', fields, 6, widthField);
 
+		return true;
 	}
 }

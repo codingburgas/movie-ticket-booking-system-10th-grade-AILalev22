@@ -67,7 +67,7 @@ namespace MySQL
 		credentials[1] = user;
 		credentials[2] = pass;
 	}
-	bool Connector::Connect()
+	bool Connector::Connect() const
 	{
 		try
 		{
@@ -83,7 +83,7 @@ namespace MySQL
 		}
 		return true;
 	}
-	bool Connector::SetDB(const std::string& schema)
+	bool Connector::SetDB(const std::string& schema) const
 	{
 		if (!conn)
 		{
@@ -101,7 +101,7 @@ namespace MySQL
 		}
 		return true;
 	}
-	bool Connector::Query(const std::string& query)
+	bool Connector::Query(const std::string& query) const
 	{
 		if (!conn)
 		{
@@ -120,7 +120,7 @@ namespace MySQL
 		}
 		return true;
 	}
-	bool Connector::Write(std::string fmt, const std::string& query, va_list va)
+	bool Connector::Write(std::string fmt, const std::string& query, va_list va) const
 	{	
 		if (fmt.empty() || query.empty()) return false;
 		if (!conn)
@@ -174,7 +174,7 @@ namespace MySQL
 		return true;
 	}
 
-	bool Connector::Read(std::string fmt, const std::string& query,std::string& dst)
+	bool Connector::Read(std::string fmt, const std::string& query,std::string& dst) const
 	{
 		if (!conn)
 		{

@@ -36,17 +36,17 @@ namespace Manager
 		}
 
 		// returns manager status
-		bool GetStatus()
+		bool GetStatus() const
 		{
 			return isOK;
 		}
 		// returns manager instance
-		std::shared_ptr<T> GetInstance() { return inst; }
+		std::shared_ptr<T> GetInstance() const { return inst; }
 		// init manager func
 		virtual void Init() = 0;
 
 		// return init data
-		const ST& GetData() { return dataInst; }
+		const ST& GetData() const { return dataInst; }
 	};
 	class ManagerSQL : public Manager<CTOR,StruConnector>
 	{

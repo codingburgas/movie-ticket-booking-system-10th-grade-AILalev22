@@ -24,7 +24,7 @@ namespace Matrix
             data = nullptr;
         }
     }
-    const std::string& Sparse::Get(int x, int y)
+    const std::string& Sparse::Get(int x, int y) const
     {
         if (!(x >= 0 && x < rowSize && y >= 0 && y < colSize)) return mvalue; // if x,y are outside the matrix
 
@@ -33,7 +33,7 @@ namespace Matrix
                 return data[i].val;
         return mvalue; // if element isn't found
     }
-    POINT Sparse::Get(const std::string& val)
+    POINT Sparse::Get(const std::string& val) const
     {
         POINT ret = { DEFAULT_POINT,DEFAULT_POINT };
         for (int i = 0; i < count; i++)
@@ -68,7 +68,7 @@ namespace Matrix
         }
         return false;
     }
-    void Sparse::Print()
+    void Sparse::Print() const
     {
         for (int i = 0; i < rowSize; i++)
         {

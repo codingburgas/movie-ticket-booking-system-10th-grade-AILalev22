@@ -7,7 +7,7 @@
 #include "utils.h"
 namespace SMTP
 {
-    std::string EmailMsg(const std::vector<std::string>& toList, const std::string& from,const std::string& subject, const std::string& body)
+    static std::string EmailMsg(const std::vector<std::string>& toList, const std::string& from,const std::string& subject, const std::string& body)
     {
         std::string id = "<" + std::to_string(rand() % INT_MAX) + "@gmail.com>"; // unique email id
 
@@ -75,7 +75,7 @@ namespace SMTP
     {
         this->smtpAddr = smtpAddr;
     }
-    void Request::SendThread(const std::vector<std::string>& receiversEmail,const std::string& subject,const std::string& body)
+    void Request::Send(const std::vector<std::string>& receiversEmail,const std::string& subject,const std::string& body) const
     {
         CURL* curl;
         CURLcode res = CURLE_OK;
@@ -127,10 +127,10 @@ namespace SMTP
         }
     }
 
-    void Request::Send(const std::vector<std::string>& receiversEmail, const std::string& subject, const std::string& body)
+    void Request::SendAsync(const std::vector<std::string>& receiversEmail, const std::string& subject, const std::string& body) const
     {
-        std::thread t(&Request::SendThread, this, receiversEmail, subject, body);
-        t.detach(); // run thread independetly
+        std::thread t(&Request::Send, this, receiversEmail, subject, body);
+        t.detach();
     }
 
     void NotifyUsers(const std::string& subject, const std::string& msg, std::vector<std::string> emailList)
@@ -148,6 +148,6 @@ namespace SMTP
 
         shreqInst->SetSender(shreq->GetData().sender); // set smtp config
         shreqInst->SetServer(shreq->GetData().smtpAddr);
-        shreqInst->Send(emailList, subject, msg); // send email to listed users
+        shreqInst->SendAsync(emailList, subject, msg); // send email to listed users
     }
 }

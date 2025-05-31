@@ -32,12 +32,12 @@ namespace Matrix
         }
         ~Sparse();         
         // get a value from the matrix
-        const std::string& Get(int x, int y);
+        const std::string& Get(int x, int y) const;
         // get a point with coordinates based on val
-        POINT Get(const std::string& val);
+        POINT Get(const std::string& val) const;
         // set a value in the matrix
         bool Set(int x, int y, const std::string& val);
         // print the matrix
-        void Print();
+        void Print() const;
     };
 }
