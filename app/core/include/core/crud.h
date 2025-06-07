@@ -45,6 +45,7 @@ namespace Delete
 	// delete a movie from the database
 	// returns successful if successfully deleted
 	// returns error_not_exists if query fails
+	//returns error_exists if movie has shows
 	int DeleteMovie(const Entity::Movie& movie);
 	int DeleteShow(const std::string& idShow);
 	// delete booking based on row and col coords

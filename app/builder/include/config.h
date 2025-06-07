@@ -15,7 +15,7 @@
 #define DB_ADMIN_EMAIL "admin1234@gmail.com"
 
 // app database schema
-#define DB_SCHEMA "dataticket"
+#define DB_SCHEMA_ENV "schemaAZ"
 
 // env variables names for db credentials
 #define DB_USER_ENV "userAZ"
@@ -27,4 +27,4 @@
 #define SMTP_PASS_ENV "passSMTP"
 
 // app smtp server
-#define SMTP_SERVER "smtp://smtp.gmail.com:587"
+#define SMTP_SERVER_ENV "serverSMTP"

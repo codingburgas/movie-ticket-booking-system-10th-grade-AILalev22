@@ -15,7 +15,7 @@ namespace Insert
 		std::string hpass; // hashed passwword
 
 		byte salt[SALT_BYTES];
-		Crypt::GenSalt(salt, SALT_BYTES);
+		Crypt::GenRandom(salt, SALT_BYTES);
 
 		Crypt::CalcHash(acc.password,salt, SALT_BYTES,hpass); // generate password hash combined with salt
 

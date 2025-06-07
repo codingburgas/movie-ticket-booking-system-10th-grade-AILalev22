@@ -14,7 +14,6 @@ int main()
 		Utils::Exit();
 		return 1;
 	}
-
 	for(;;)
 	switch (Menu::AuthMenu())
 	{
@@ -31,18 +30,21 @@ bool LoadConfig(Config& conf)
 	getenv(DB_PASS_ENV),
 	getenv(DB_USER_ENV),
 	getenv(SMTP_EMAIL_ENV),
-	getenv(SMTP_PASS_ENV)
+	getenv(SMTP_PASS_ENV),
+	getenv(SMTP_SERVER_ENV),
+	getenv(DB_SCHEMA_ENV)
 	};
-	for (const auto& e : env)
-		if (!e)
+	
+	for (int i = 0; i < sizeof(env) / sizeof(char*);i++)
+		if (!env[i])
 		{
-			DbgMsg("error LoadConfig() env");
+			DbgMsg("error LoadConfig() env[%d]",i + 1);
 			return false;
 		}
 
 	conf.ademail = DB_ADMIN_EMAIL;
-	conf.schema = DB_SCHEMA;
-	conf.smtpServer = SMTP_SERVER;
+	conf.schema = env[6] ? env[6] : "";
+	conf.smtpServer = env[5] ? env[5] : "";
 	conf.dbhost = env[0] ?  env[0] : "";
 	conf.dbpass = env[1] ? env[1] : "";
 	conf.dbuser = env[2] ? env[2] : "";

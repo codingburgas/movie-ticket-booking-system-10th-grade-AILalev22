@@ -61,7 +61,7 @@ namespace Crypt
         dst = strHash;
         Close(prov, hash);
     }
-    void GenSalt(byte dst[], DWORD dwLen)
+    void GenRandom(byte dst[], DWORD dwLen)
     {
         if (!dst || dwLen == 0) return;
 
