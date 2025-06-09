@@ -2,14 +2,16 @@
 
 namespace Delete
 {
-	int Delete(const std::string& fmt, const std::string& querySelect,const std::string& queryDelete)
+	int Delete(const std::string& fmt, const std::string& querySelect,const std::string& queryDelete, bool checkDstEmpty = false)
 	{
 		auto shsqlInst = Manager::GetSQL()->GetInstance();
 		std::string dstRead;
 		
 		if (shsqlInst->Read(fmt, querySelect, dstRead)) // select query to check if data exists because delete from always executes
 		{
-			if (shsqlInst->Query(queryDelete))
+			if (checkDstEmpty && dstRead.empty()) return Error::ERROR_FAILED;
+
+ 			if (shsqlInst->Query(queryDelete))
 			{
 				return Error::SUCCESSFUL;
 			}
@@ -17,8 +19,10 @@ namespace Delete
 		return Error::ERROR_FAILED;
 	}
 	int DeleteMovie(const Entity::Movie& movie)
-	{
-		return Delete("%s", "SELECT NAME FROM MOVIES WHERE NAME = '" + movie.name + "'", "DELETE FROM MOVIES WHERE NAME = '" + movie.name + '\'');
+	{		
+		return Delete("%s", "SELECT NAME AS MovieName FROM MOVIES WHERE NAME = '" + movie.name + "' "
+			"UNION "
+			"SELECT MOVIENAME AS MovieName FROM SHOWS WHERE MOVIENAME = '" + movie.name + "'", "DELETE FROM MOVIES WHERE NAME = '" + movie.name + '\'',true);
 	}
 	int DeleteShow(const std::string& idShow)
 	{
@@ -26,6 +30,7 @@ namespace Delete
 	}
 	int DeleteBooking(const POINT& coord)
 	{
-		return Delete("%s", "SELECT USERID FROM BOOKINGS WHERE SEATX = " + std::to_string(coord.x) + " AND SEATY = " + std::to_string(coord.y), "DELETE FROM BOOKINGS WHERE SEATX = " + std::to_string(coord.x) + " AND SEATY = " + std::to_string(coord.y));
+		return Delete("%s", "SELECT USERID FROM BOOKINGS WHERE SEATX = " + std::to_string(coord.x) + " AND SEATY = " + std::to_string(coord.y), 
+			"DELETE FROM BOOKINGS WHERE SEATX = " + std::to_string(coord.x) + " AND SEATY = " + std::to_string(coord.y));
 	}
 }

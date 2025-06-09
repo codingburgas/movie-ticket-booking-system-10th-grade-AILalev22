@@ -74,7 +74,7 @@ namespace Misc
 
 		int widthField[] = {20,20,20,15};
 		Misc::PrintStrTok(resSet, '|', fields, 4,widthField);
-
+		
 		return true;
 	}
 	bool ShowAllShows(const std::string& movieName)

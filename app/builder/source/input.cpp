@@ -86,7 +86,7 @@ namespace Misc
 
 		Utils::Clear();
 
-		std::cout << "Enter price\n:";
+		std::cout << "Enter price\n";
 		std::string price;
 		EnterNumber(price, true);
 		show.price = std::stof(price);
@@ -126,9 +126,9 @@ namespace Misc
 			}
 		}
 	}
-	int EnterSeat(const std::vector<Entity::Booking>& lsBookings, Entity::Booking& book);
+	static int EnterSeat(const std::vector<Entity::Booking>& lsBookings, Entity::Booking& book);
 
-	void EnterPaymentData();
+	static void EnterPaymentData();
 	void EnterBookingData(Entity::Booking& book, const Entity::Show& show)
 	{
 		std::cout << "Enter seat type number:\n1. Silver\n2. Gold\n3. Platinum\n";
@@ -186,20 +186,20 @@ namespace Misc
 
 	int EnterSeat(const std::vector<Entity::Booking>& lsBookings, Entity::Booking& book)
 	{
-		Matrix::Sparse seats(COL_SIZE, ROW_SIZE, "x"); //seats in hall
+		Matrix::Sparse seats(ROW_SIZE, COL_SIZE, "x"); //seats in hall
 		int nSeat = 1;
 
-		for (int i = 0; i < ROW_SIZE; i++) // set all seats initialy to numeric values
+		for (int i = 0; i < COL_SIZE; i++) // set all seats initialy to numeric values
 		{
-			for (int j = 0; j < COL_SIZE; j++)
+			for (int j = 0; j < ROW_SIZE; j++)
 			{
-				seats.Set(i, j, std::to_string(nSeat));
+				seats.Set(i,j, std::to_string(nSeat));
 				nSeat++;
 			}
 		}
 		for (const auto& book : lsBookings) //mark booked seats at chosen hall as x
 		{
-			seats.Set(book.seatX, book.seatY, "x");
+			seats.Set(book.seatY, book.seatX, "x");
 		}
 
 		for (;;)
@@ -208,9 +208,9 @@ namespace Misc
 			do
 			{
 				std::cout << "\nSeats seen as 'x' are booked\n\n";
-				seats.Print();
+				seats.PrintRows();
 
-				std::cout << "Enter seat number:\n";
+				std::cout << "\nEnter seat number:\n";
 				Misc::EnterNumber(seatVal);
 			} while (std::stod(seatVal) > ROW_SIZE * COL_SIZE);
 
@@ -250,7 +250,7 @@ namespace Misc
 		std::string input;
 		for (int i = 0; i < 2; i++)
 		{
-			std::cout << "Enter placeholder " << (i == 0 ? "name:\n" : "surname:\n");
+			std::cout << "Enter placeholder " << (i == 0 ? "first name:\n" : "last name:\n");
 			do
 			{
 				std::cout << ":";
@@ -258,18 +258,18 @@ namespace Misc
 			} while (!std::all_of(input.begin(), input.end(), [](int c) {return isalpha(c); }));
 			Utils::Clear();
 		}
-		std::cout << "Enter credit card number:\n";
+		std::cout << "Enter credit card number in XXXX-XXXX-XXXX-XXXX format:\n";
 		do
 		{
 			std::cout << ":";
 			std::cin >> input;
-			std::remove_if(input.begin(), input.end(), [](int c) {return c == '-'; });
+			Utils::Trim(input, "-", false);
 
 		} while (!Validation::LuhnCheck(input));
 		Utils::Clear();
 
-		std::regex patternExpDate(R"(^\d{2}\/(0[1-9]|1[0-2])$)");
-		std::cout << "Enter expiration date in YY/MM format:\n";
+		std::regex patternExpDate(R"(^(0[1-9]|1[0-2])\/\d{2}$)");
+		std::cout << "Enter expiration date in MM/YY format:\n";
 		do
 		{
 			std::cout << ":";
@@ -277,7 +277,7 @@ namespace Misc
 		} while (!std::regex_match(input, patternExpDate));
 		Utils::Clear();
 
-		std::cout << "Enter cvv:\n";
+		std::cout << "Enter cvv in XXX format:\n";
 		do
 		{
 			std::cout << ":";

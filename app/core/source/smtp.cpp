@@ -20,9 +20,7 @@ namespace SMTP
         }
         std::string message =
             "Date: Mon, 29 Nov 2010 21:54:29 +1100\r\n"
-            "To: " + toCombined + "\r\n"
             "From: " + from + "\r\n"
-            "Cc: " + "\r\n"
             "Message-ID: " + id + "\r\n"
             "Subject: " + subject + "\r\n"
             "Mime-Version: 1.0\r\n"

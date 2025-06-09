@@ -25,6 +25,8 @@ namespace Matrix
 
         int rowSize;
         int colSize;
+        // print the matrix
+        void Print(int size1, int size2) const;
     public:
         Sparse(int sizeCol, int sizeRow, std::string mvalue);
         Sparse() : Sparse(5, 5,"x")
@@ -37,7 +39,15 @@ namespace Matrix
         POINT Get(const std::string& val) const;
         // set a value in the matrix
         bool Set(int x, int y, const std::string& val);
-        // print the matrix
-        void Print() const;
+        // print matrix row by row
+        void PrintRows()
+        {
+            Print(rowSize, colSize);
+        }
+        // print matrix column by column
+        void PrintCols()
+        {
+            Print(colSize, rowSize);
+        }
     };
 }

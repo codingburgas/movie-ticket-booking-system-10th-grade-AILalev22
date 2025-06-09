@@ -68,13 +68,13 @@ namespace Matrix
         }
         return false;
     }
-    void Sparse::Print() const
+    void Sparse::Print(int size1, int size2) const
     {
-        for (int i = 0; i < rowSize; i++)
+        for (int i = 0; i < size1; i++)
         {
-            for (int j = 0; j < colSize; j++)
+            for (int j = 0; j < size2; j++)
             {
-                std::cout << Get(i,j) << ' '; // print the whole matrix
+                std::cout << Get(i, j) << ' '; // print the whole matrix
             }
             std::cout << "\n";
         }

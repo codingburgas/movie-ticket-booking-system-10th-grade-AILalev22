@@ -23,7 +23,7 @@ namespace Options
 			switch (res)
 			{
 			case Error::ERROR_NOT_EXISTS: Utils::ErrMsg("User does not exist"); break;
-			case Error::ERROR_INPUT: Utils::ErrMsg(mode == 1 ? "Invalid input!" : "Email needs to follow this example:\n\"example@gmail.com\"\nPassword needs to contain:\n1 small letter\n1 big letter\n1 number",5); break;
+			case Error::ERROR_INPUT: mode == 1 ? Utils::ErrMsg("Invalid input") : Utils::ErrMsg("Email needs to follow this example:\n\"example@gmail.com\"\nPassword needs to contain:\n1 small letter\n1 big letter\n1 number", 5); break;
 			case Error::ERROR_EXISTS: Utils::ErrMsg("User already exists"); break;
 			default: Utils::ErrMsg("Unexpected error"); break;
 			}
@@ -78,8 +78,12 @@ namespace Options
 		Entity::Movie add;
 		std::cout << "\n\nEnter movie's name\n:";
 		std::cin >> add.name;
-
-		Delete::DeleteMovie(add) == Error::SUCCESSFUL ? Utils::ErrMsg("Successfully deleted") : Utils::ErrMsg("Movie not found");
+		
+		switch (Delete::DeleteMovie(add))
+		{
+		case Error::SUCCESSFUL: Utils::ErrMsg("Successfully deleted"); break;
+		case Error::ERROR_FAILED: Utils::ErrMsg("Error! Movie cannot be deleted");; break;
+		}
 	}
 	void InsertShow()
 	{
@@ -133,7 +137,11 @@ namespace Options
 		std::string id;
 		Misc::EnterNumber(id);
 		
-		Delete::DeleteShow(id) == Error::SUCCESSFUL ? Utils::ErrMsg("Successfully deleted") : Utils::ErrMsg("Show not found");
+		switch (Delete::DeleteShow(id))
+		{
+		case Error::SUCCESSFUL: Utils::ErrMsg("Successfully deleted"); break;
+		case Error::ERROR_FAILED: Utils::ErrMsg("Show not found"); break;
+		}
 	}
 	void UpdateShow()
 	{
@@ -188,12 +196,14 @@ namespace Options
 	{
 		if (!Misc::ShowBookings()) return;
 		
+		std::cout << "\n\nEnter the following data to cancel:\n";
 		std::string x, y;
 		std::cout << "\n\nEnter seat row:\n";
 		Misc::EnterNumber(x);
 
 		Misc::ShowBookings();
 
+		std::cout << "\n\nEnter the following data to cancel:\n";
 		std::cout << "\n\nEnter seat column:\n";
 		Misc::EnterNumber(y);
 

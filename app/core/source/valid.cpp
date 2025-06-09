@@ -8,7 +8,7 @@ namespace Validation
 		std::regex patternEmail(R"(^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$)");
 		std::regex patternPass(R"(^[a-zA-Z0-9]+$)");
 
-		return std::regex_search(acc.email, patternEmail) && std::regex_search(acc.password, patternPass) && acc.password.size() >= 8;
+		return std::regex_match(acc.email, patternEmail) && std::regex_match(acc.password, patternPass) && acc.password.size() >= 8;
 	}
 	bool IsValidMovie(const Entity::Movie& movie)
 	{
