@@ -19,7 +19,6 @@
 */
 
 
-// allow unsafe c-style functions
 #pragma warning(disable : 4996)
 # include <iostream>
 # include <vector>
@@ -33,6 +32,7 @@
 
 namespace Menu
 {
+    /// @brief Colors for menu text output.
     enum color
     {
         DEFAULT = 0,
@@ -48,11 +48,15 @@ namespace Menu
         BRIGHT_GREEN = 92,
         BRIGHT_BLUE = 94
     };
+
+    /// @brief Special menu entry codes.
     enum
     {
         ENTER_ADMIN = 80,
         ENTER_CUSTOMER = 81,
     };
+
+    /// @brief Menu state identifiers.
     enum
     {
         empty,
@@ -60,85 +64,135 @@ namespace Menu
         SIGN,
     };
 
-class Menu {
-    // Read thw following comments above the variables and functions
-    // to get a brief idea of what they do
-private:
-    // this list stores the name of menu items, and the functions associated to them
-    std::vector<std::string> names;
-    // these are the pairs of colors (head color and body color) for colorizing the menu
-    std::pair<std::string, std::string> colors;
-    // neutral is const value with -> \033[0m to neutralize the effect of the head and body colors
-    std::string neutral;
-    // contains three keybinds as string format -> the up key, down key, and select key
-    std::string keybinds;
-    // stores the heading of the menu
-    std::string heading;
-    // it is the maximum characters count that the menu will extend upto. Default is 32.
-    int max_string_len;
-    // stores the position of the currently selected item in the menu
-    std::vector<std::string>::iterator pos;
+    /// @brief Class representing a customizable terminal menu with color and keybind support.
+    class Menu {
+    private:
+        /// @brief List of menu item names.
+        std::vector<std::string> names;
 
-    // prints the entirity of the menu in the terminal
-    void printMenu();
-    // helps to print the menu field in a centered manner
-    void gen_element(std::string str, std::string color);
-    // true if run_menu has been called atleast once
-    bool is_run;
-public:
-    // constructor to initialize all non-constant values in the class
-    Menu(
-        int max_len, std::string header, std::string head_color, std::string body_color,
-        char up_key, char down_key, char sel_key
-    );
-    // default constructor for the class
-    Menu() : Menu(32,"MENU",std::to_string(color::RED),std::to_string(color::CYAN),'w','s','e') {}
+        /// @brief Pair of strings representing head and body colors for menu.
+        std::pair<std::string, std::string> colors;
 
-    // returns the max string length
-    int get_max_len();
-    // sets the max string length to a new value
-    void set_max_len(int max_len);
+        /// @brief ANSI escape sequence to reset text formatting.
+        std::string neutral;
 
-    // returns the heading of the class
-    std::string get_heading();
-    // sets the new heading for the class
-    void set_heading(std::string header);
+        /// @brief Keybinds stored as string: up key, down key, select key.
+        std::string keybinds;
 
-    // returns the head and the body colors
-    std::pair<std::string, std::string> get_colors();
-    // sets the new head and body colors
-    void set_colors(color c_head, color c_body);
+        /// @brief Heading/title of the menu.
+        std::string heading;
 
-    // returns all the keybinds
-    std::string get_keybinds();
-    // sets the up key
-    void set_up_key(char key);
-    // sets the down key
-    void set_down_key(char key);
-    // sets the select key
-    void set_sel_key(char key);
+        /// @brief Maximum number of characters menu items can extend to. Default is 32.
+        int max_string_len;
 
-    // adding a field to the map
-    void add_field(std::string name);
-    // removing a field from the map
-    void remove_field(std::string name);
-    // editing a currently existing field
-    void edit_field(std::string old_name, std::string new_name);
-    // if the map has a certain field
-    bool has_field(std::string name);
+        /// @brief Iterator pointing to currently selected menu item.
+        std::vector<std::string>::iterator pos;
 
-    // it is like the main method of the class, the event loop for the menu resides here
-    // returns choice, 0 index based
-    int run_menu();
-    
-};
-// create menu object based on headings vector
-Menu CreateMenu(const std::vector<std::string>& options, const std::string& heading = "");
+        /// @brief Prints the entire menu to the terminal.
+        void printMenu();
 
-// log and sign menu
-int AuthMenu();
-// main app menu
-void MainMenu();
-// admin menu
-void AdminMenu();
+        /// @brief Helper to print a string centered with a given color.
+        /// @param str The string to print.
+        /// @param color The ANSI color code as a string.
+        void gen_element(std::string str, std::string color);
+
+        /// @brief Flag indicating whether run_menu() has been called at least once.
+        bool is_run;
+
+    public:
+        /// @brief Constructor initializing menu parameters.
+        /// @param max_len Maximum string length for menu items.
+        /// @param header Menu heading.
+        /// @param head_color ANSI color code string for heading.
+        /// @param body_color ANSI color code string for menu items.
+        /// @param up_key Key to move up in the menu.
+        /// @param down_key Key to move down in the menu.
+        /// @param sel_key Key to select the current menu item.
+        Menu(
+            int max_len, std::string header, std::string head_color, std::string body_color,
+            char up_key, char down_key, char sel_key
+        );
+
+        /// @brief Default constructor with default parameters.
+        Menu() : Menu(32, "MENU", std::to_string(color::RED), std::to_string(color::CYAN), 'w', 's', 'e') {}
+
+        /// @brief Returns the maximum length for menu items.
+        /// @return Maximum string length.
+        int get_max_len();
+
+        /// @brief Sets the maximum length for menu items.
+        /// @param max_len New maximum length.
+        void set_max_len(int max_len);
+
+        /// @brief Gets the menu heading.
+        /// @return Current heading string.
+        std::string get_heading();
+
+        /// @brief Sets the menu heading.
+        /// @param header New heading string.
+        void set_heading(std::string header);
+
+        /// @brief Gets the current head and body colors.
+        /// @return Pair of color strings (head color, body color).
+        std::pair<std::string, std::string> get_colors();
+
+        /// @brief Sets new colors for the head and body text.
+        /// @param c_head Head color enum.
+        /// @param c_body Body color enum.
+        void set_colors(color c_head, color c_body);
+
+        /// @brief Gets the keybinds as a string.
+        /// @return String containing up, down, and select keys.
+        std::string get_keybinds();
+
+        /// @brief Sets the key used for moving up in the menu.
+        /// @param key Character key.
+        void set_up_key(char key);
+
+        /// @brief Sets the key used for moving down in the menu.
+        /// @param key Character key.
+        void set_down_key(char key);
+
+        /// @brief Sets the key used for selecting a menu item.
+        /// @param key Character key.
+        void set_sel_key(char key);
+
+        /// @brief Adds a new menu item.
+        /// @param name Name of the menu item to add.
+        void add_field(std::string name);
+
+        /// @brief Removes a menu item by name.
+        /// @param name Name of the menu item to remove.
+        void remove_field(std::string name);
+
+        /// @brief Edits an existing menu item name.
+        /// @param old_name Current name of the menu item.
+        /// @param new_name New name to replace with.
+        void edit_field(std::string old_name, std::string new_name);
+
+        /// @brief Checks if a menu item exists by name.
+        /// @param name Name to check.
+        /// @return True if item exists, false otherwise.
+        bool has_field(std::string name);
+
+        /// @brief Runs the menu event loop and handles user interaction.
+        /// @return The zero-based index of the selected menu item.
+        int run_menu();
+    };
+
+    /// @brief Factory function to create a Menu object from options and an optional heading.
+    /// @param options List of menu item names.
+    /// @param heading Optional heading string.
+    /// @return A configured Menu object.
+    Menu CreateMenu(const std::vector<std::string>& options, const std::string& heading = "");
+
+    /// @brief Displays the authentication menu.
+    /// @return Menu selection code.
+    int AuthMenu();
+
+    /// @brief Displays the customer menu.
+    void CustomerMenu();
+
+    /// @brief Displays the admin menu.
+    void AdminMenu();
 }

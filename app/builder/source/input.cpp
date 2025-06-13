@@ -76,7 +76,7 @@ namespace Misc
 		std::string dstData;
 		if (Select::SelectMovie(dstData, show.movieName) == Error::ERROR_NOT_EXISTS)
 		{
-			Utils::ErrMsg("Movie does not exist"); // if movie doesn't exists, cannot add show for it
+			Utils::ErrMsg("Movie does not exist!"); // if movie doesn't exists, cannot add show for it
 			return false;
 		}
 		std::cout << "Enter show date in YYYY-MM-DD HH:MM:SS format\n";
@@ -162,7 +162,7 @@ namespace Misc
 			EnterPaymentData();
 			if (Insert::InsertBooking(book) == Error::SUCCESSFUL)
 			{
-				Utils::ErrMsg("Show booked successfuly");
+				Utils::ErrMsg("Show booked successfuly!");
 				std::string msg =
 					"You have made a booking\n"
 					"Price: " + std::to_string(book.finalPrice).substr(0, 4) + "\n"
@@ -176,11 +176,11 @@ namespace Misc
 				SMTP::NotifyUsers("New booking", msg, { conf.currUser.email });
 			}
 			else
-				Utils::ErrMsg("Unexpected error. Please try again later");
+				Utils::ErrMsg("Unexpected error. Please try again later.");
 		}
 		else
 		{
-			Utils::ErrMsg("Unexpected error. Please try again later");
+			Utils::ErrMsg("Unexpected error. Please try again later.");
 		}
 	}
 
@@ -218,7 +218,7 @@ namespace Misc
 			POINT p2 = seats.Get(seatVal); // entered seat pos
 			if (p2.x == p.x && p2.y == p.y)
 			{
-				Utils::ErrMsg("Seat is booked, try again");
+				Utils::ErrMsg("Seat is booked, try again!");
 			}
 			else
 			{

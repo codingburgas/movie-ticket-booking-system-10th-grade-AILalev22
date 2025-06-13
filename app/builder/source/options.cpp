@@ -22,10 +22,10 @@ namespace Options
 		{
 			switch (res)
 			{
-			case Error::ERROR_NOT_EXISTS: Utils::ErrMsg("User does not exist"); break;
-			case Error::ERROR_INPUT: mode == 1 ? Utils::ErrMsg("Invalid input") : Utils::ErrMsg("Email needs to follow this example:\n\"example@gmail.com\"\nPassword needs to contain:\n1 small letter\n1 big letter\n1 number", 5); break;
-			case Error::ERROR_EXISTS: Utils::ErrMsg("User already exists"); break;
-			default: Utils::ErrMsg("Unexpected error"); break;
+			case Error::ERROR_NOT_EXISTS: Utils::ErrMsg("User does not exist!"); break;
+			case Error::ERROR_INPUT: mode == 1 ? Utils::ErrMsg("Invalid password!") : Utils::ErrMsg("Email needs to follow this example:\n\"example@gmail.com\"\nPassword needs to contain:\n1 small letter\n1 big letter\n1 number", 5); break;
+			case Error::ERROR_EXISTS: Utils::ErrMsg("User already exists."); break;
+			default: Utils::ErrMsg("Unexpected error! Try again later."); break;
 			}
 			return res;
 		}
@@ -51,16 +51,16 @@ namespace Options
 		}
 		else
 		{
-			Utils::ErrMsg("Incorrect movie data");
+			Utils::ErrMsg("Incorrect movie data!");
 		}
 
 		if (res == Error::ERROR_EXISTS)
 		{
-			Utils::ErrMsg("Movie already exists");
+			Utils::ErrMsg("Movie already exists!");
 		}
 		else if(res == Error::SUCCESSFUL)
 		{
-			Utils::ErrMsg("Movie has been added successfully");
+			Utils::ErrMsg("Movie has been added successfully!");
 
 			std::string msg =
 				"A new movie has been released!\n\n"
@@ -81,8 +81,8 @@ namespace Options
 		
 		switch (Delete::DeleteMovie(add))
 		{
-		case Error::SUCCESSFUL: Utils::ErrMsg("Successfully deleted"); break;
-		case Error::ERROR_FAILED: Utils::ErrMsg("Error! Movie cannot be deleted");; break;
+		case Error::SUCCESSFUL: Utils::ErrMsg("Successfully deleted!"); break;
+		case Error::ERROR_FAILED: Utils::ErrMsg("Error! Movie cannot be deleted.");; break;
 		}
 	}
 	void InsertShow()
@@ -100,16 +100,16 @@ namespace Options
 				{
 					if (show.date == add.date && show.cinemaName == add.cinemaName)
 					{
-						Utils::ErrMsg("Show already exists");
+						Utils::ErrMsg("Show already exists!");
 						return;
 					}
 				}
 			}
 			switch (Insert::InsertShow(add))
 			{
-			case Error::SUCCESSFUL: Utils::ErrMsg("Successfully inserted"); break;
-			case Error::ERROR_EXISTS: Utils::ErrMsg("Show already exists"); break;
-			default: Utils::ErrMsg("Unexpected error. Try later"); break;
+			case Error::SUCCESSFUL: Utils::ErrMsg("Successfully inserted!"); break;
+			case Error::ERROR_EXISTS: Utils::ErrMsg("Show already exists!"); break;
+			default: Utils::ErrMsg("Unexpected error. Try later."); break;
 			}
 		}
 	}
@@ -123,7 +123,7 @@ namespace Options
 		std::string dstData;
 		if (!Select::SelectMovie(dstData,movieName))
 		{
-			Utils::ErrMsg("Movie does not exist"); // check if movie exists
+			Utils::ErrMsg("Movie does not exist!"); // check if movie exists
 			return;
 		}
 
@@ -139,8 +139,8 @@ namespace Options
 		
 		switch (Delete::DeleteShow(id))
 		{
-		case Error::SUCCESSFUL: Utils::ErrMsg("Successfully deleted"); break;
-		case Error::ERROR_FAILED: Utils::ErrMsg("Show not found"); break;
+		case Error::SUCCESSFUL: Utils::ErrMsg("Successfully deleted!"); break;
+		case Error::ERROR_FAILED: Utils::ErrMsg("Show not found!"); break;
 		}
 	}
 	void UpdateShow()
@@ -176,7 +176,7 @@ namespace Options
 		Utils::Clear();
 		Misc::EnterShowCinema(newShow);
 
-		Update::UpdateShow(id, newShow) ? Utils::ErrMsg("Successfully updated") : Utils::ErrMsg("Update failed");
+		Update::UpdateShow(id, newShow) ? Utils::ErrMsg("Successfully updated!") : Utils::ErrMsg("Update failed!");
 	}
 	void BookMovie()
 	{
@@ -220,7 +220,7 @@ namespace Options
 		}
 		else
 		{
-			Utils::ErrMsg("Internal error, please try again later");
+			Utils::ErrMsg("Internal error, please try again later.");
 		}
 	}
 }

@@ -190,7 +190,8 @@ namespace Menu
 
         names.pop_back();
     }
-  
+    //////////////////////////////////////////////////////////////////////////////////
+
     Menu CreateMenu(const std::vector<std::string>& options,const std::string& heading)
     {
         Menu ret; // returned menu obj
@@ -203,31 +204,30 @@ namespace Menu
 
         return ret;
     }
-    //////////////////////////////////////////////////////////////////////////////////
     int AuthMenu()
     {
-        Menu authMenu = CreateMenu({ "LogIn","SignUp" }, "MovieSystem");
+        static Menu authMenu = CreateMenu({ "LogIn","SignUp" }, "MovieSystem");
 
         // auth menu choice
-        int opt = -1;
+        int ret = -1;
         for (;;)
         {
 
             int choice = authMenu.run_menu();
             switch (choice)
             {
-            case 0: opt = Options::LogSign(LOG); break;
-            case 1: opt = Options::LogSign(SIGN); break;
+            case 0: ret = Options::LogSign(LOG); break;
+            case 1: ret = Options::LogSign(SIGN); break;
             case 2: Utils::Exit(); break;
             }
-            if (opt == ENTER_ADMIN || opt == ENTER_CUSTOMER) break;
+            if (ret == ENTER_ADMIN || ret == ENTER_CUSTOMER) break;
         }
         
-        return opt;
+        return ret;
     }
     void AdminMenu()
     {
-        Menu adminMenu = CreateMenu({ "Insert Movie" ,"Delete Movie","Insert Show","Delete Show","Update Show","Return to register" }, "Admin Panel");
+        static Menu adminMenu = CreateMenu({ "Insert Movie" ,"Delete Movie","Insert Show","Delete Show","Update Show","Return to register" }, "Admin Panel");
 
         for(;;)
         {
@@ -243,9 +243,9 @@ namespace Menu
             }
         }
     }
-    void MainMenu()
+    void CustomerMenu()
     {
-        Menu customerMenu = CreateMenu({ "Book a movie","Cancel a booking","Return to register" }, "Customer Menu");
+        static Menu customerMenu = CreateMenu({ "Book a movie","Cancel a booking","Return to register" }, "Customer Menu");
 
         for (;;)
         {

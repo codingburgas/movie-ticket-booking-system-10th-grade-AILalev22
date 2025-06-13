@@ -1,54 +1,59 @@
 #pragma once
 #include <string>
+
 namespace Entity
 {
-	// movie data
+	/// @brief Represents movie main information.
 	struct Movie
 	{
-		// main info
-		std::string name;
-		std::string genre;
-		int releaseYear;
-		std::string language;
+		std::string name;       ///< Movie name.
+		std::string genre;      ///< Movie genre.
+		int releaseYear;        ///< Year the movie was released.
+		std::string language;   ///< Language of the movie.
 
+		/// @brief Default constructor initializing releaseYear to 1888.
 		Movie() : releaseYear(1888) {}
 	};
-	// movie display data
+
+	/// @brief Represents a movie show/display data.
 	struct Show
 	{
-		// movie name
-		std::string movieName;
-		// date in YYYY-MM-DD HH:MM:SS format
-		std::string date;
-		float price;
+		std::string movieName;  ///< Name of the movie.
+		std::string date;       ///< Show date and time in "YYYY-MM-DD HH:MM:SS" format.
+		float price;            ///< Ticket price.
 
-		std::string cinemaName;
+		std::string cinemaName; ///< Cinema name where the show takes place.
 
-		int id;
+		int id;                 ///< Show identifier.
+
+		/// @brief Default constructor initializing price to 0.
 		Show() : price(0) {}
 	};
-	// user data
-    struct User
+
+	/// @brief Represents a user account.
+	struct User
 	{
-		std::string email;
-		std::string password;
-		int id;
+		std::string email;      ///< User email address.
+		std::string password;   ///< User password.
+		int id;                 ///< User identifier.
 	};
-	// customer booking data
+
+	/// @brief Represents a customer booking.
 	struct Booking
 	{
-		int showId;
-		int userId;
-		// seat row
-		int seatX;
-		// seat column
-		int seatY;
-		// price with added seat tax
-		float finalPrice;
-		
-		int hallNumber;
+		int showId;             ///< Associated show identifier.
+		int userId;             ///< Associated user identifier.
 
-		std::string seatType;
-		Booking() : finalPrice(0),seatX(0),seatY(0),showId(0),hallNumber(0) {}
+		int seatX;              ///< Seat row coordinate.
+		int seatY;              ///< Seat column coordinate.
+
+		float finalPrice;       ///< Price with seat tax included.
+
+		int hallNumber;         ///< Hall number where the booking is made.
+
+		std::string seatType;   ///< Type of seat booked.
+
+		/// @brief Default constructor initializing numeric members to zero.
+		Booking() : finalPrice(0), seatX(0), seatY(0), showId(0), hallNumber(0) {}
 	};
 }
