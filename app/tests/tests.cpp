@@ -4,15 +4,14 @@
 #include <vector>
 
 #include "core\crypt.h"
+#include "core\models.h"
 #include "core\misc.h"
 #include "core\debug.h"
 #include "core\utils.h"
 #include "core\matrix.h"
-#include "core\models.h"
 #include "core\smtp.h"
 #include "core\database.h"
 #include "core\manager.h"
-#include "core\auth.h"
 
 #pragma warning(disable : 4996)
 void test1()
@@ -100,9 +99,9 @@ void test6()
 		}
 		testUser.email.insert(4, rnd);
 
-		std::cout << "Log no reg : " << Auth::LogUser(testUser) << std::endl; // print whether login without sign up works
-		std::cout << "Reg : " << Auth::SignUser(testUser) << std::endl;
-		std::cout << "Log with reg : " << Auth::LogUser(testUser) << std::endl << std::endl; // print whether login with sign up works
+		std::cout << "Log no reg : " << LogUser(testUser) << std::endl; // print whether login without sign up works
+		std::cout << "Reg : " << SignUser(testUser) << std::endl;
+		std::cout << "Log with reg : " << LogUser(testUser) << std::endl << std::endl; // print whether login with sign up works
 
 		std::cout << "email: " << testUser.email;
 	}

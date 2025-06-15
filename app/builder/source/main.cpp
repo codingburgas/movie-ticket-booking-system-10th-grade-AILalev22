@@ -10,7 +10,7 @@ int main()
 {
 	if (!LoadConfig(conf) || !Manager::Init(ctorInit,smtpInit)) // if startup fails
 	{
-		Utils::ErrMsg("Internal Error. Please try again later");
+		Utils::ErrMsg("Internal Error! Please try again later.");
 		Utils::Exit();
 		return 1;
 	}
@@ -18,7 +18,7 @@ int main()
 	switch (Menu::AuthMenu())
 	{
 	case Menu::ENTER_ADMIN: Menu::AdminMenu(); break;
-	case Menu::ENTER_CUSTOMER: Menu::MainMenu(); break;
+	case Menu::ENTER_CUSTOMER: Menu::CustomerMenu(); break;
 	}
 }
 

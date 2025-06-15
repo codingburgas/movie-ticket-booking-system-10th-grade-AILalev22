@@ -10,11 +10,11 @@ namespace Manager
 
 	void ManagerSQL::Init()
 	{
-		if (!inst->Connect() || !inst->SetDB(dataInst.schema)) isOK = false;
+		if (!inst->Connect() || !inst->SetDB(dataInst.schema)) isInit = false;
 	}
 	void ManagerSMTP::Init()
 	{
-		if(!Validation::IsValidSmtp(dataInst.smtpAddr)) isOK = false;
+		if(!Validation::IsValidSmtp(dataInst.smtpAddr)) isInit = false;
 	}
 	///////////
 	std::shared_ptr<ManagerSQL> GetSQL()
