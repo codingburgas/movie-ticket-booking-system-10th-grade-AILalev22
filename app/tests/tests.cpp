@@ -2,9 +2,10 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <fstream>
 
 #include "core\crypt.h"
-#include "core\models.h"
+#include "core\models\user.h"
 #include "core\misc.h"
 #include "core\debug.h"
 #include "core\utils.h"
@@ -91,19 +92,23 @@ void test6()
 	auto shSql = Manager::GetSQL();
 	if (shSql->GetStatus())
 	{
-		Entity::User testUser = { "test@gmail.com","Pass1234" };
+		Entity::User testUser;
+		std::string email = "test@gmail.com", pass = "Pass1234";
+
 		std::string rnd;
 		for (int i = 0; i < 4; i++)
 		{
 			rnd += std::to_string(rand() % 10);
 		}
-		testUser.email.insert(4, rnd);
+		email.insert(4, rnd);
 
-		std::cout << "Log no reg : " << LogUser(testUser) << std::endl; // print whether login without sign up works
-		std::cout << "Reg : " << SignUser(testUser) << std::endl;
-		std::cout << "Log with reg : " << LogUser(testUser) << std::endl << std::endl; // print whether login with sign up works
+		testUser.SetEmail(email);
+		testUser.SetPassword(pass);
+		std::cout << "Log no reg : " << testUser.LogIn() << std::endl; // print whether login without sign up works
+		std::cout << "Reg : " << testUser.SignUp() << std::endl;
+		std::cout << "Log with reg : " << testUser.LogIn() << std::endl << std::endl; // print whether login with sign up works
 
-		std::cout << "email: " << testUser.email;
+		std::cout << "email: " << testUser.GetEmail();
 	}
 	else
 		std::cout << "ManagerSQL is not ok";
@@ -119,10 +124,37 @@ int main()
 
 	srand(time(0));
 	
-	test4();
+	test6();
 }
 void Init()
 {
+	std::ifstream file("var.env");
+	if (!file.is_open())
+	{
+		return;
+	}
+
+	std::string line;
+	while (std::getline(file, line))
+	{
+		if (line.empty() || line[0] == '#')
+			continue;
+
+		size_t pos = line.find('=');
+		if (pos == std::string::npos)
+			continue;
+
+		std::string name = line.substr(0, pos);
+		std::string val = line.substr(pos + 1);
+
+		std::string env = name + '=' + val;//name=value
+
+		if (putenv(env.c_str()))
+		{
+			return;
+		}
+	}
+
 	char* env[] = 
 	{
 		getenv("hostAZ"),
@@ -137,8 +169,8 @@ void Init()
 	dataCtor.user = env[1] ? env[1] : "";
 	dataCtor.pass = env[2] ? env[2] : "";
 
-	dataReq.sender.email = env[3] ? env[3] : "";
-	dataReq.sender.password = env[4] ? env[4] : "";
+	dataReq.sender.SetEmail(env[3] ? env[3] : "");
+	dataReq.sender.SetPassword(env[4] ? env[4] : "");
 	dataReq.smtpAddr = env[5] ? env[5] : "";
 
 	dataCtor.schema = env[6] ? env[6] : "";

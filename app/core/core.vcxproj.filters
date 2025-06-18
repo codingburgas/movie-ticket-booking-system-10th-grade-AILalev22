@@ -12,8 +12,8 @@
     <Filter Include="Header Files">
       <UniqueIdentifier>{819f353c-6185-42b6-bc73-4dec83585145}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\crud">
-      <UniqueIdentifier>{99ec0b07-0f78-4529-baa1-02ff14af3cee}</UniqueIdentifier>
+    <Filter Include="Header Files\models">
+      <UniqueIdentifier>{208645c2-6ca9-4ec4-97e8-dfd1da3a0905}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -38,25 +38,22 @@
     <ClCompile Include="source\manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\valid.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\crud\delete.cpp">
-      <Filter>Source Files\crud</Filter>
-    </ClCompile>
-    <ClCompile Include="source\crud\insert.cpp">
-      <Filter>Source Files\crud</Filter>
-    </ClCompile>
-    <ClCompile Include="source\crud\select.cpp">
-      <Filter>Source Files\crud</Filter>
-    </ClCompile>
-    <ClCompile Include="source\crud\update.cpp">
-      <Filter>Source Files\crud</Filter>
-    </ClCompile>
     <ClCompile Include="source\misc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\debug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\user.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\movie.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\booking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\show.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -85,20 +82,23 @@
     <ClInclude Include="include\core\manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\core\crud.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\core\valid.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\core\models.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\core\debug.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\core\pch.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\core\models\movie.h">
+      <Filter>Header Files\models</Filter>
+    </ClInclude>
+    <ClInclude Include="include\core\models\user.h">
+      <Filter>Header Files\models</Filter>
+    </ClInclude>
+    <ClInclude Include="include\core\models\show.h">
+      <Filter>Header Files\models</Filter>
+    </ClInclude>
+    <ClInclude Include="include\core\models\booking.h">
+      <Filter>Header Files\models</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

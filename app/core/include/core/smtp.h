@@ -1,4 +1,5 @@
 #pragma once
+#include "models/user.h"
 
 namespace SMTP
 {
@@ -37,6 +38,8 @@ namespace SMTP
 
 		/// @brief Default constructor.
 		Request() = default;
+
+		bool IsValidSmtp();
 	};
 
 	/// @brief Sends a notification email to users.

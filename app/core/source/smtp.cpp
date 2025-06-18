@@ -73,6 +73,11 @@ namespace SMTP
     {
         this->smtpAddr = smtpAddr;
     }
+    bool Request::IsValidSmtp()
+    {
+        std::regex pattern(R"(smtps?:\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})");
+        return std::regex_search(smtpAddr, pattern);
+    }
     void Request::Send(const std::vector<std::string>& receiversEmail,const std::string& subject,const std::string& body) const
     {
         CURL* curl;
@@ -83,7 +88,7 @@ namespace SMTP
         std::srand(std::time(0));
 
         ctx.readed = 0;
-        ctx.payload = EmailMsg(receiversEmail, sender.email, subject, body); // get email msg
+        ctx.payload = EmailMsg(receiversEmail, sender.GetEmail(), subject, body); // get email msg
 
         curl = curl_easy_init();
         if (curl)
@@ -91,8 +96,8 @@ namespace SMTP
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, nullptr);
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, nullptr);
 
-            curl_easy_setopt(curl, CURLOPT_USERNAME, sender.email.c_str());
-            curl_easy_setopt(curl, CURLOPT_PASSWORD, sender.password.c_str());
+            curl_easy_setopt(curl, CURLOPT_USERNAME, sender.GetEmail().c_str());
+            curl_easy_setopt(curl, CURLOPT_PASSWORD, sender.GetPassword().c_str());
 
             curl_easy_setopt(curl, CURLOPT_URL, smtpAddr.c_str());
             curl_easy_setopt(curl, CURLOPT_USE_SSL, CURLUSESSL_ALL);
@@ -100,7 +105,7 @@ namespace SMTP
             curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 1L);
             curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 2L);
 
-            curl_easy_setopt(curl, CURLOPT_MAIL_FROM, sender.email.c_str());
+            curl_easy_setopt(curl, CURLOPT_MAIL_FROM, sender.GetEmail().c_str());
 
             for (const auto& email : receiversEmail)
             {
@@ -135,7 +140,7 @@ namespace SMTP
     {
         if (emailList.empty())
         {
-            if (Select::SelectAllUsersEmail(emailList) != Error::SUCCESSFUL) // select all customers emails if none are given
+            if (Entity::User::SelectAllUsersEmail(emailList) != Error::SUCCESSFUL) // select all customers emails if none are given
             {
                 return;
             }

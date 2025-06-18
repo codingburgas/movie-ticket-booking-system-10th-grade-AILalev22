@@ -1,22 +1,22 @@
 #include "pch.h"
 #include "options.h"
 #include "menu.h"
-#include "core\valid.h"
-#include "core\crud.h"
 #include "misc.h"
 #include "core\smtp.h"
 namespace Options
 {	
 	int LogSign(int mode)
 	{	
-		Entity::User user; // user data struct
+		Entity::User user; // user data
 
 		std::cout << "\nEnter email\n:";
-		std::cin >> user.email;
+		std::string email;
+		std::cin >> email;
+		user.SetEmail(email);
 
 		Misc::EnterUserPassword(user);
 
-		int res = mode == 1 ? LogUser(user) : SignUser(user);
+		int res = mode == 1 ? user.LogIn() : user.SignUp();
 		if (res != Error::SUCCESSFUL) // if logging or signing is not successful
 		{
 			switch (res)
@@ -30,7 +30,7 @@ namespace Options
 		}
 		conf.currUser = user; // assign current user data to config
 
-		return stricmp(user.email.c_str(), conf.ademail.c_str()) == 0 ? Menu::ENTER_ADMIN : Menu::ENTER_CUSTOMER;
+		return stricmp(user.GetEmail().c_str(), conf.ademail.c_str()) == 0 ? Menu::ENTER_ADMIN : Menu::ENTER_CUSTOMER;
 	}
 	void InsertMovie()
 	{
@@ -38,12 +38,12 @@ namespace Options
 		Misc::EnterMovieData(add);
 
 		int res = Error::ERROR_FAILED;
-		if (Validation::IsValidMovie(add))
+		if (add.IsValid())
 		{
 			std::string dstData;
-			if (Select::SelectMovie(dstData,add.name) == Error::ERROR_NOT_EXISTS)
+			if (add.Select(dstData) == Error::ERROR_NOT_EXISTS)
 			{
-				res = Insert::InsertMovie(add);
+				res = add.Insert();
 			}
 			else
 				res = ERROR_EXISTS;
@@ -63,22 +63,24 @@ namespace Options
 
 			std::string msg =
 				"A new movie has been released!\n\n"
-				"Name: " + add.name + "\n"
-				"Genre: " + add.genre + "\n"
-				"Language: " + add.language + "\n"
-				"Release year: " + std::to_string(add.releaseYear) + "\n";
+				"Name: " + add.GetName() + "\n"
+				"Genre: " + add.GetGenre() + "\n"
+				"Language: " + add.GetLanguage() + "\n"
+				"Release year: " + std::to_string(add.GetReleaseYear()) + "\n";
 			SMTP::NotifyUsers("New movie", msg); // notify all users of newly inserted movie
 		}
 	}
 	void DeleteMovie()
 	{
-		Misc::ShowAllMovies();
+		if(!Misc::ShowAllMovies()) return;
 
 		Entity::Movie add;
 		std::cout << "\n\nEnter movie's name\n:";
-		std::cin >> add.name;
+		std::string name;
+		std::cin >> name;
+		add.SetName(name);
 		
-		switch (Delete::DeleteMovie(add))
+		switch (add.Delete())
 		{
 		case Error::SUCCESSFUL: Utils::ErrMsg("Successfully deleted!"); break;
 		case Error::ERROR_FAILED: Utils::ErrMsg("Error! Movie cannot be deleted.");; break;
@@ -93,18 +95,18 @@ namespace Options
 		if (Misc::EnterShowData(add))
 		{
 			std::vector<Entity::Show> shows;
-			if (Select::SelectShows(add.movieName, shows) == Error::SUCCESSFUL) // check if show exists before inserting
+			if (add.Select(shows) == Error::SUCCESSFUL) // check if show exists before inserting
 			{
 				for (const auto& show : shows)
 				{
-					if (show.date == add.date && show.cinemaName == add.cinemaName)
+					if (show.GetDate() == add.GetDate() && show.GetCinemaName() == add.GetCinemaName())
 					{
 						Utils::ErrMsg("Show already exists!");
 						return;
 					}
 				}
 			}
-			switch (Insert::InsertShow(add))
+			switch (add.Insert())
 			{
 			case Error::SUCCESSFUL: Utils::ErrMsg("Successfully inserted!"); break;
 			case Error::ERROR_EXISTS: Utils::ErrMsg("Show already exists!"); break;
@@ -114,13 +116,16 @@ namespace Options
 	}
 	void DeleteShow()
 	{
-		Misc::ShowAllMovies();
+		if(!Misc::ShowAllMovies()) return;
 		std::cout << "\n\nEnter movie's name\n:";
 		std::string movieName;
 		std::cin >> movieName;
 
 		std::string dstData;
-		if (!Select::SelectMovie(dstData,movieName))
+		Entity::Movie mov;
+		mov.SetName(movieName);
+
+		if (mov.Select(dstData) != Error::SUCCESSFUL)
 		{
 			Utils::ErrMsg("Movie does not exist!"); // check if movie exists
 			return;
@@ -136,7 +141,9 @@ namespace Options
 		std::string id;
 		Misc::EnterNumber(id);
 		
-		switch (Delete::DeleteShow(id))
+		Entity::Show del;
+		del.SetId(std::stoi(id));
+		switch (del.Delete())
 		{
 		case Error::SUCCESSFUL: Utils::ErrMsg("Successfully deleted!"); break;
 		case Error::ERROR_FAILED: Utils::ErrMsg("Show not found!"); break;
@@ -144,7 +151,7 @@ namespace Options
 	}
 	void UpdateShow()
 	{
-		Misc::ShowAllMovies();
+		if(!Misc::ShowAllMovies()) return;
 
 		std::cout << "\n\nEnter movie's name\n:";
 		std::string movieName;
@@ -155,27 +162,28 @@ namespace Options
 		{
 			return;
 		}
-		
+		Entity::Show newShow;
+
 		std::cout << "\nEnter show's ID\n";
 		std::string id;
 		Misc::EnterNumber(id);
-		
-		Entity::Show newShow;
-		newShow.movieName = movieName; //assign entered movie name
+		newShow.SetId(std::stoi(id));
+
+		newShow.SetMovieName(movieName); //assign entered movie name
 
 		std::cout << "Enter show's new date in YYYY-MM-DD HH:MM:SS format\n";
-		Misc::EnterDateTime(newShow.date);
+		Misc::EnterDateTime(newShow);
 		Utils::Clear();
 
 		std::cout << "Enter show's new price\n";
 		std::string price;
 		Misc::EnterNumber(price, true);
-		newShow.price = std::stof(price);
+		newShow.SetPrice(std::stof(price));
 
 		Utils::Clear();
 		Misc::EnterShowCinema(newShow);
 
-		Update::UpdateShow(id, newShow) ? Utils::ErrMsg("Successfully updated!") : Utils::ErrMsg("Update failed!");
+		newShow.Update() ? Utils::ErrMsg("Successfully updated!") : Utils::ErrMsg("Update failed!");
 	}
 	void BookMovie()
 	{
@@ -186,8 +194,8 @@ namespace Options
 		}
 
 		Entity::Booking book;
-		book.showId = chosenShow.id;
-		book.userId = conf.currUser.id;
+		book.SetShowId(chosenShow.GetId());
+		book.SetUserId(conf.currUser.GetId());
 
 		Misc::EnterBookingData(book,chosenShow);
 	}
@@ -206,16 +214,18 @@ namespace Options
 		std::cout << "\n\nEnter seat column:\n";
 		Misc::EnterNumber(y);
 
-		POINT p = { std::stod(x),std::stod(y) }; // seat row and col of booking to delete
+		Entity::Booking book;
+		book.SetSeatX(std::stod(x));
+		book.SetSeatY(std::stod(y));
 
-		if (Delete::DeleteBooking(p) == Error::SUCCESSFUL)
+		if (book.Delete() == Error::SUCCESSFUL)
 		{
 			Utils::ErrMsg("Canceled successfully");
 			std::string msg =
 				"You have canceled a booking\n"
 				"Seat column: " + x + "\n"
 				"Seat row: " + y + "\n";
-			SMTP::NotifyUsers("Booking cancel", msg, { conf.currUser.email });
+			SMTP::NotifyUsers("Booking cancel", msg, { conf.currUser.GetEmail()});
 		}
 		else
 		{

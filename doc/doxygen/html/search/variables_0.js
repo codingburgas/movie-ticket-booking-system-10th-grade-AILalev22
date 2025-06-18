@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['cinemaname_0',['cinemaName',['../struct_entity_1_1_show.html#a4f89684873bb79d7a3a42294f210f578',1,'Entity::Show']]]
+  ['datainst_0',['dataInst',['../class_manager_1_1_manager.html#ab8463d37decf3c173feaec1e32a088d7',1,'Manager::Manager']]]
 ];

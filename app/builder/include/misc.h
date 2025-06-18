@@ -8,7 +8,7 @@ namespace Misc
 	void EnterMovieData(Entity::Movie& movie);
 	//// enter movie cinema name
 	//void EnterMovieCinema(Entity::Movie& movie);
-	void EnterDateTime(std::string& date);
+	void EnterDateTime(Entity::Show& show);
 	// enter show struct data
 	bool EnterShowData(Entity::Show& show);
 	// enter user's password securly

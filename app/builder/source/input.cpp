@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "misc.h"
 #include <conio.h>
-#include "core\valid.h"
 #include "main.h"
 #include "core\matrix.h"
 namespace Misc
@@ -37,24 +36,32 @@ namespace Misc
 		}
 		Utils::Clear();
 	}
-	void EnterDateTime(std::string& date)
+	void EnterDateTime(Entity::Show& show)
 	{
 		std::regex pattern(R"(^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$)");
+		std::string date;
 		do
 		{
 			std::cout << ':';
+			
 			std::getline(std::cin, date);
 		} while (!std::regex_match(date, pattern));
+		show.SetDate(date);
 		Utils::Clear();
 	}
 	void EnterMovieData(Entity::Movie& movie)
 	{
 		std::cout << "Enter movie's name\n:";
-		std::cin >> movie.name;
+		std::string name;
+		std::cin >> name;
+		movie.SetName(name);
 
 		Utils::Clear();
 		std::cout << "Enter movie's genre\n:";
-		std::cin >> movie.genre;
+		std::string genre;
+		std::cin >> genre;
+		movie.SetGenre(genre);
+
 		Utils::Clear();
 
 		std::cout << "Enter movie's release year\n";
@@ -62,19 +69,26 @@ namespace Misc
 		EnterNumber(num);
 
 		std::cout << "Enter movie's language\n:";
-		std::cin >> movie.language;
+		std::string language;
+		std::cin >> language;
+		movie.SetLanguage(language);
 
-		movie.releaseYear = std::stoi(num);
+		movie.SetReleaseYear(std::stoi(num));
 		Utils::Clear();
 	}
 	bool EnterShowData(Entity::Show& show)
 	{
 		std::cout << "Enter movie's name\n:";
-		std::cin >> show.movieName;
+		std::string movieName;
+		std::cin >> movieName;
+		show.SetMovieName(movieName);
 
 		Utils::Clear();
 		std::string dstData;
-		if (Select::SelectMovie(dstData, show.movieName) == Error::ERROR_NOT_EXISTS)
+		Entity::Movie movTmp;
+		movTmp.SetName(movieName);
+
+		if (movTmp.Select(dstData) == Error::ERROR_NOT_EXISTS)
 		{
 			Utils::ErrMsg("Movie does not exist!"); // if movie doesn't exists, cannot add show for it
 			return false;
@@ -82,14 +96,14 @@ namespace Misc
 		std::cout << "Enter show date in YYYY-MM-DD HH:MM:SS format\n";
 		getchar();
 
-		EnterDateTime(show.date);
+		EnterDateTime(show);
 
 		Utils::Clear();
 
 		std::cout << "Enter price\n";
 		std::string price;
 		EnterNumber(price, true);
-		show.price = std::stof(price);
+		show.SetPrice(std::stof(price));
 
 		Utils::Clear();
 
@@ -100,7 +114,7 @@ namespace Misc
 	}
 	void EnterUserPassword(Entity::User& user)
 	{
-		std::string& pass = user.password;
+		std::string pass;;
 		char c;
 
 		std::cout << "\nEnter password\n:";
@@ -125,6 +139,7 @@ namespace Misc
 				std::cout << '*';
 			}
 		}
+		user.SetPassword(pass);
 	}
 	static int EnterSeat(const std::vector<Entity::Booking>& lsBookings, Entity::Booking& book);
 
@@ -138,11 +153,11 @@ namespace Misc
 			std::cout << ":";
 			std::cin >> choice;
 		} while (choice != "1" && choice != "2" && choice != "3");
-		book.seatType = seatType.at((Seat)(std::stod(choice))); //assign seat type
+		book.SetSeatType(seatType.at((Seat)(std::stod(choice)))); //assign seat type
 
 		Utils::Clear();
 
-		book.finalPrice = show.price + seatPrice.at((Seat)std::stod(choice)); //final price with added seat price
+		book.SetFinalPrice(show.GetPrice() + seatPrice.at((Seat)std::stod(choice))); //final price with added seat price
 
 		Utils::Clear();
 
@@ -152,28 +167,28 @@ namespace Misc
 			std::cout << "Enter hall number:\n1. Hall 1\n2. Hall 2\n3. Hall 3\n4. Hall 4\n";
 			Misc::EnterNumber(hallNumber);
 		} while (std::stod(hallNumber) > HALLS);
-		book.hallNumber = std::stod(hallNumber);
+		book.SetHallNumber(std::stod(hallNumber));
 
 		std::vector<Entity::Booking> bookings;
-		if (Select::SelectBookings(bookings, show.id, std::stod(hallNumber)) != Error::ERROR_FAILED)
+		if (book.Select(bookings) != Error::ERROR_FAILED)
 		{
 			int seatNum = EnterSeat(bookings, book);
 
 			EnterPaymentData();
-			if (Insert::InsertBooking(book) == Error::SUCCESSFUL)
+			if (book.Insert() == Error::SUCCESSFUL)
 			{
 				Utils::ErrMsg("Show booked successfuly!");
 				std::string msg =
 					"You have made a booking\n"
-					"Price: " + std::to_string(book.finalPrice).substr(0, 4) + "\n"
-					"Hall: " + std::to_string(book.hallNumber) + "\n"
-					"Seat type: " + book.seatType + "\n"
-					"Seat row: " + std::to_string(book.seatX) + "\n"
-					"Seat column: " + std::to_string(book.seatY) + "\n"
+					"Price: " + std::to_string(book.GetFinalPrice()).substr(0, 4) + "\n"
+					"Hall: " + std::to_string(book.GetHallNumber()) + "\n"
+					"Seat type: " + book.GetSeatType() + "\n"
+					"Seat row: " + std::to_string(book.GetSeatX()) + "\n"
+					"Seat column: " + std::to_string(book.GetSeatY()) + "\n"
 					"Seat number: " + std::to_string(seatNum) + "\n"
-					"Show ID: " + std::to_string(book.showId) + "\n";
+					"Show ID: " + std::to_string(book.GetShowId()) + "\n";
 
-				SMTP::NotifyUsers("New booking", msg, { conf.currUser.email });
+				SMTP::NotifyUsers("New booking", msg, { conf.currUser.GetEmail()});
 			}
 			else
 				Utils::ErrMsg("Unexpected error. Please try again later.");
@@ -199,7 +214,7 @@ namespace Misc
 		}
 		for (const auto& book : lsBookings) //mark booked seats at chosen hall as x
 		{
-			seats.Set(book.seatY, book.seatX, "x");
+			seats.Set(book.GetSeatX(), book.GetSeatY(), "x");
 		}
 
 		for (;;)
@@ -222,8 +237,8 @@ namespace Misc
 			}
 			else
 			{
-				book.seatX = p2.x;
-				book.seatY = p2.y;
+				book.SetSeatX(p2.x);
+				book.SetSeatY(p2.y);
 				return std::stod(seatVal);
 			}
 		}
@@ -238,7 +253,7 @@ namespace Misc
 			std::cin >> choice;
 		} while (choice != "1" && choice != "2");
 
-		show.cinemaName = choice == "1" ? "CinemaBurgas" : "CinemaVarna";
+		show.SetCinemaName(choice == "1" ? "CinemaBurgas" : "CinemaVarna");
 		Utils::Clear();
 	}
 	void EnterPaymentData()
@@ -265,7 +280,7 @@ namespace Misc
 			std::cin >> input;
 			Utils::Trim(input, "-", false);
 
-		} while (!Validation::LuhnCheck(input));
+		} while (!Misc::LuhnCheck(input));
 		Utils::Clear();
 
 		std::regex patternExpDate(R"(^(0[1-9]|1[0-2])\/\d{2}$)");
@@ -299,9 +314,9 @@ namespace Misc
 		std::string choice;// id of chosen show
 		Misc::EnterNumber(choice);
 
-		show.id = std::stod(choice);
+		show.SetId(std::stod(choice));
 		Utils::Clear();
 
-		return Select::SelectShow(show.id, show) == Error::SUCCESSFUL;
+		return show.Select() == Error::SUCCESSFUL;
 	}
 }

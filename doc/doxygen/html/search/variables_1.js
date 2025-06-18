@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['datainst_0',['dataInst',['../class_manager_1_1_manager.html#ab8463d37decf3c173feaec1e32a088d7',1,'Manager::Manager']]],
-  ['date_1',['date',['../struct_entity_1_1_show.html#af62f5d5f9b528ca33d024ae0ed39398a',1,'Entity::Show']]]
+  ['inst_0',['inst',['../class_manager_1_1_manager.html#afc37d7db89888f5f617cf216008d9d47',1,'Manager::Manager']]],
+  ['isinit_1',['isInit',['../class_manager_1_1_manager.html#aeac436b129de9ecf631cf7a6b926e94f',1,'Manager::Manager']]]
 ];

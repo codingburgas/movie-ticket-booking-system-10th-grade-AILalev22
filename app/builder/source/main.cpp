@@ -4,11 +4,11 @@
 #include "main.h"
 #include "core\manager.h"
 Config conf;
-Manager::StruConnector ctorInit;
-Manager::StruRequest smtpInit;
+
+static bool Init();
 int main()
 {
-	if (!LoadConfig(conf) || !Manager::Init(ctorInit,smtpInit)) // if startup fails
+	if (!Init()) // if startup fails
 	{
 		Utils::ErrMsg("Internal Error! Please try again later.");
 		Utils::Exit();
@@ -21,38 +21,60 @@ int main()
 	case Menu::ENTER_CUSTOMER: Menu::CustomerMenu(); break;
 	}
 }
-
-bool LoadConfig(Config& conf)
+bool Init()
 {
-	char* env[] = 
+	Manager::StruConnector sqlInit;
+	Manager::StruRequest smtpInit;
+
+	std::ifstream file(ENV_FILE);
+	if (!file.is_open())
 	{
-	getenv(DB_HOST_ENV),
-	getenv(DB_PASS_ENV),
-	getenv(DB_USER_ENV),
-	getenv(SMTP_EMAIL_ENV),
-	getenv(SMTP_PASS_ENV),
-	getenv(SMTP_SERVER_ENV),
-	getenv(DB_SCHEMA_ENV)
-	};
-	
-	for (int i = 0; i < sizeof(env) / sizeof(char*);i++)
-		if (!env[i])
+		return false;
+	}
+
+	std::string line;
+	while (std::getline(file, line))
+	{
+		if (line.empty() || line[0] == '#')
+			continue;
+
+		size_t pos = line.find('=');
+		if (pos == std::string::npos)
+			continue;
+
+		std::string name = line.substr(0, pos);
+		std::string val = line.substr(pos + 1);
+
+		std::string env = name + '=' + val;//name=value
+
+		if (putenv(env.c_str()))
 		{
-			DbgMsg("error LoadConfig() env[%d]",i + 1);
 			return false;
 		}
+	}
 
+	char* env[] = 
+	{
+		getenv("hostAZ"),
+		getenv("userAZ"),
+		getenv("passAZ"),
+		getenv("emailSMTP"),
+		getenv("passSMTP"),
+		getenv("serverSMTP"),
+		getenv("schemaAZ")
+	};
+	conf.dbhost = sqlInit.host = env[0] ? env[0] : "";
+	conf.dbuser = sqlInit.user = env[1] ? env[1] : "";
+	conf.dbpass = sqlInit.pass = env[2] ? env[2] : "";
+
+	smtpInit.sender.SetEmail(env[3] ? env[3] : "");
+	smtpInit.sender.SetPassword(env[4] ? env[4] : "");
+	conf.sender = smtpInit.sender;
+
+	conf.smtpServer = smtpInit.smtpAddr = env[5] ? env[5] : "";
+	conf.schema = sqlInit.schema = env[6] ? env[6] : "";
+	
 	conf.ademail = DB_ADMIN_EMAIL;
-	conf.schema = env[6] ? env[6] : "";
-	conf.smtpServer = env[5] ? env[5] : "";
-	conf.dbhost = env[0] ?  env[0] : "";
-	conf.dbpass = env[1] ? env[1] : "";
-	conf.dbuser = env[2] ? env[2] : "";
-	conf.sender.email = env[3] ? env[3] : "";;
-	conf.sender.password = env[4] ? env[4] : "";
-
-	ctorInit = { conf.dbhost,conf.dbuser,conf.dbpass,conf.schema};
-	smtpInit = { conf.sender,conf.smtpServer };
-
-	return true;
+	
+	return Manager::Init(sqlInit, smtpInit);
 }
