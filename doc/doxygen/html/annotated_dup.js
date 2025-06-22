@@ -1,10 +1,10 @@
 var annotated_dup =
 [
     [ "Entity", null, [
-      [ "Booking", "struct_entity_1_1_booking.html", "struct_entity_1_1_booking" ],
-      [ "Movie", "struct_entity_1_1_movie.html", "struct_entity_1_1_movie" ],
-      [ "Show", "struct_entity_1_1_show.html", "struct_entity_1_1_show" ],
-      [ "User", "struct_entity_1_1_user.html", "struct_entity_1_1_user" ]
+      [ "Booking", "class_entity_1_1_booking.html", "class_entity_1_1_booking" ],
+      [ "Movie", "class_entity_1_1_movie.html", "class_entity_1_1_movie" ],
+      [ "Show", "class_entity_1_1_show.html", "class_entity_1_1_show" ],
+      [ "User", "class_entity_1_1_user.html", "class_entity_1_1_user" ]
     ] ],
     [ "Manager", null, [
       [ "Manager", "class_manager_1_1_manager.html", "class_manager_1_1_manager" ],

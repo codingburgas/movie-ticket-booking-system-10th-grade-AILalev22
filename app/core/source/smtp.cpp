@@ -59,6 +59,7 @@ namespace SMTP
         return len;
     }
 
+    using guard = std::lock_guard <std::mutex>;
     ///////////////////
     Request::Request(const Entity::User& sender, const std::string& smtpAddr)
     {
@@ -67,13 +68,21 @@ namespace SMTP
     }
     void Request::SetSender(const Entity::User& sender)
     {
+        guard lock(mx);
         this->sender = sender;
     }
     void Request::SetServer(const std::string& smtpAddr)
     {
+        guard lock(mx);
         this->smtpAddr = smtpAddr;
     }
-    void Request::Send(const std::vector<std::string>& receiversEmail,const std::string& subject,const std::string& body) const
+    bool Request::IsValidSmtp()
+    {
+        guard lock(mx);
+        std::regex pattern(R"(smtps?:\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})");
+        return std::regex_search(smtpAddr, pattern);
+    }
+    void Request::Send(const std::vector<std::string>& receiversEmail, const std::string& subject, const std::string& body) const
     {
         CURL* curl;
         CURLcode res = CURLE_OK;
@@ -82,8 +91,15 @@ namespace SMTP
 
         std::srand(std::time(0));
 
+        std::string tmpEmail, tmpPass, tmpAddr;
+        {
+            guard lock(mx);
+            tmpEmail = sender.GetEmail();
+            tmpPass = sender.GetPassword();
+            tmpAddr = smtpAddr;
+        }
         ctx.readed = 0;
-        ctx.payload = EmailMsg(receiversEmail, sender.email, subject, body); // get email msg
+        ctx.payload = EmailMsg(receiversEmail, tmpEmail.c_str(), subject, body); // get email msg
 
         curl = curl_easy_init();
         if (curl)
@@ -91,16 +107,16 @@ namespace SMTP
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, nullptr);
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, nullptr);
 
-            curl_easy_setopt(curl, CURLOPT_USERNAME, sender.email.c_str());
-            curl_easy_setopt(curl, CURLOPT_PASSWORD, sender.password.c_str());
+            curl_easy_setopt(curl, CURLOPT_USERNAME, tmpEmail.c_str());
+            curl_easy_setopt(curl, CURLOPT_PASSWORD, tmpPass.c_str());
 
-            curl_easy_setopt(curl, CURLOPT_URL, smtpAddr.c_str());
+            curl_easy_setopt(curl, CURLOPT_URL, tmpAddr.c_str());
             curl_easy_setopt(curl, CURLOPT_USE_SSL, CURLUSESSL_ALL);
 
             curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 1L);
             curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 2L);
 
-            curl_easy_setopt(curl, CURLOPT_MAIL_FROM, sender.email.c_str());
+            curl_easy_setopt(curl, CURLOPT_MAIL_FROM, tmpEmail.c_str());
 
             for (const auto& email : receiversEmail)
             {
@@ -116,7 +132,7 @@ namespace SMTP
 
             res = curl_easy_perform(curl);
             if (res != CURLE_OK)
-            {              
+            {
                 DbgMsg("error curl_easy_perform(): %s\n", curl_easy_strerror(res)); // dbg curl err if send fails
             }
 
@@ -135,7 +151,7 @@ namespace SMTP
     {
         if (emailList.empty())
         {
-            if (Select::SelectAllUsersEmail(emailList) != Error::SUCCESSFUL) // select all customers emails if none are given
+            if (Entity::User::SelectAllUsersEmail(emailList) != Error::SUCCESSFUL) // select all customers emails if none are given
             {
                 return;
             }

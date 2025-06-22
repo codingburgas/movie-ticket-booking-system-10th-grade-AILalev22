@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "manager.h"
-#include "valid.h"
 namespace Manager
 {
 	// global db manager
@@ -14,7 +13,7 @@ namespace Manager
 	}
 	void ManagerSMTP::Init()
 	{
-		if(!Validation::IsValidSmtp(dataInst.smtpAddr)) isInit = false;
+		if(!inst->IsValidSmtp()) isInit = false;
 	}
 	///////////
 	std::shared_ptr<ManagerSQL> GetSQL()

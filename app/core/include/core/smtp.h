@@ -1,4 +1,6 @@
 #pragma once
+#include "models/user.h"
+#include <mutex>
 
 namespace SMTP
 {
@@ -8,7 +10,7 @@ namespace SMTP
 	{
 		std::string smtpAddr;
 		Entity::User sender;
-
+		mutable std::mutex mx;
 	public:
 		/// @brief Sets the sender email and app password.
 		/// @param sender Sender user credentials.
@@ -37,6 +39,8 @@ namespace SMTP
 
 		/// @brief Default constructor.
 		Request() = default;
+
+		bool IsValidSmtp();
 	};
 
 	/// @brief Sends a notification email to users.

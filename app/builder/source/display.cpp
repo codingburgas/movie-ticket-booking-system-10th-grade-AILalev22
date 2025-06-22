@@ -65,7 +65,8 @@ namespace Misc
 	bool ShowAllMovies()
 	{
 		std::string resSet;
-		if (Select::SelectMovie(resSet) == Error::ERROR_NOT_EXISTS) // get movies result set
+		Entity::Movie movie;
+		if (movie.Select(resSet) == Error::ERROR_NOT_EXISTS) // get movies result set
 		{
 			Utils::ErrMsg("Movie does not exist");
 			return false;
@@ -80,7 +81,9 @@ namespace Misc
 	bool ShowAllShows(const std::string& movieName)
 	{
 		std::string dst;
-		if (Select::SelectShows(movieName, dst) == Error::ERROR_NOT_EXISTS || dst.empty())
+		Entity::Show show;
+		show.SetMovieName(movieName);
+		if (show.Select(dst) == Error::ERROR_NOT_EXISTS || dst.empty())
 		{
 			Utils::ErrMsg("No shows are found");
 			return false;
@@ -94,7 +97,10 @@ namespace Misc
 	bool ShowBookings()
 	{
 		std::string dstBookings;
-		if (Select::SelectBookings(dstBookings, conf.currUser.id) == Error::ERROR_NOT_EXISTS)
+		Entity::Booking book;
+		book.SetUserId(conf.currUser.GetId());
+
+		if (book.Select(dstBookings) == Error::ERROR_NOT_EXISTS)
 		{
 			Utils::ErrMsg("No available bookings");
 			return false;

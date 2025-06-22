@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['password_0',['password',['../struct_entity_1_1_user.html#a47380c6eaef322212f23a9d217c3bf45',1,'Entity::User']]],
-  ['price_1',['price',['../struct_entity_1_1_show.html#aaf63b42bebe11d3f002ee7dd57e2b8cb',1,'Entity::Show']]],
-  ['printcols_2',['PrintCols',['../class_matrix_1_1_sparse.html#af29de6c7ff211082afbe764015987492',1,'Matrix::Sparse']]],
-  ['printrows_3',['PrintRows',['../class_matrix_1_1_sparse.html#a54b04e418426e01ae9d051a7247e8630',1,'Matrix::Sparse']]]
+  ['read_0',['Read',['../class_my_s_q_l_1_1_connector.html#a1a4fd1ed6b871100ff6b818f1f76e234',1,'MySQL::Connector']]],
+  ['remove_5ffield_1',['remove_field',['../class_menu_1_1_menu.html#aaa974039c0687edcbc44e4cec6fd63f0',1,'Menu::Menu']]],
+  ['request_2',['Request',['../class_s_m_t_p_1_1_request.html',1,'SMTP::Request'],['../class_s_m_t_p_1_1_request.html#a2f86e56df1f438b9752ad773cc1b3281',1,'SMTP::Request::Request(const Entity::User &amp;sender, const std::string &amp;smtpAddr)'],['../class_s_m_t_p_1_1_request.html#afb7cc5b95bd234ec15443aa4d95ec7b0',1,'SMTP::Request::Request()=default']]],
+  ['run_5fmenu_3',['run_menu',['../class_menu_1_1_menu.html#a11043ef292cad18bd4589808fcd51042',1,'Menu::Menu']]]
 ];

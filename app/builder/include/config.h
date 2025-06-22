@@ -28,3 +28,6 @@
 
 // app smtp server
 #define SMTP_SERVER_ENV "serverSMTP"
+
+//environment variables file
+#define ENV_FILE "var.env"

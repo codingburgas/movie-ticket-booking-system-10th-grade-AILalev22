@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['manager_0',['Manager',['../class_manager_1_1_manager.html#ac99a56e902d7e708db7b6e44f072110c',1,'Manager::Manager']]],
-  ['managersmtp_1',['ManagerSMTP',['../class_manager_1_1_manager_s_m_t_p.html#ac746aea64e6fc0c8c17f59f291e09e17',1,'Manager::ManagerSMTP']]],
-  ['managersql_2',['ManagerSQL',['../class_manager_1_1_manager_s_q_l.html#a2c6b46f37b4f31ebafcaa5399aa3dadf',1,'Manager::ManagerSQL']]],
-  ['menu_3',['Menu',['../class_menu_1_1_menu.html#a57f530905a26a77d93413aaead7d7a0e',1,'Menu::Menu::Menu(int max_len, std::string header, std::string head_color, std::string body_color, char up_key, char down_key, char sel_key)'],['../class_menu_1_1_menu.html#a77fe0829de5bd0752711d3aa5c698a95',1,'Menu::Menu::Menu()']]],
-  ['movie_4',['Movie',['../struct_entity_1_1_movie.html#a82933c16e063b3c6853aa2d983e27147',1,'Entity::Movie']]]
+  ['init_0',['Init',['../class_manager_1_1_manager.html#ac78d1112696bf22bd8b057224877fe0a',1,'Manager::Manager::Init()'],['../class_manager_1_1_manager_s_q_l.html#adf1922a831bf52619e130a2b6cdf6c98',1,'Manager::ManagerSQL::Init()'],['../class_manager_1_1_manager_s_m_t_p.html#af25cbbfa5ea7e9ae136550fda812996f',1,'Manager::ManagerSMTP::Init()']]],
+  ['insert_1',['Insert',['../class_entity_1_1_booking.html#abf95caf48219c1cb5849c01b10de69af',1,'Entity::Booking::Insert()'],['../class_entity_1_1_movie.html#a91b58929ceab322e61a04cc16c08918d',1,'Entity::Movie::Insert()'],['../class_entity_1_1_show.html#a31f8f561731057c35e654e9472482ed7',1,'Entity::Show::Insert()'],['../class_entity_1_1_user.html#a3f194fd739ccc168afce44b63e25e7a7',1,'Entity::User::Insert()']]],
+  ['isvalid_2',['IsValid',['../class_entity_1_1_movie.html#a9f61cc33fa29b874be8a178403b57895',1,'Entity::Movie::IsValid()'],['../class_entity_1_1_show.html#acce8de593e8bf37234e2d3e7ae169f33',1,'Entity::Show::IsValid()'],['../class_entity_1_1_user.html#a82c6989c634a6cab66e2a22b1f58c895',1,'Entity::User::IsValid()']]]
 ];

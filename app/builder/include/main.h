@@ -26,4 +26,4 @@ struct Config
 };
 extern Config conf; // global app config
 
-bool LoadConfig(Config& conf);
+
