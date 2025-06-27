@@ -1,3 +1,7 @@
+<h1>Movie Ticket Booking System</h1>
+<p align = "center">
+</p>
+
 ## Description
 
 This is a console-based Movie Ticket Booking System developed in C++. It enables users to register, log in, and manage their movie bookings, including both reservations and cancellations. The system features an administrative panel that allows an admin account to manage available movies and showtimes. Users receive email notifications for key events such as new movie releases, booking confirmations, and cancellations.
