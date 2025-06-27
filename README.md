@@ -1,90 +1,71 @@
-# 2223-10: On the job training (OTJ) project
+## Description
 
-# Movie Ticket booking system
-This document describes the OTJ project for 10th graders. **It will be updated frequently**.
+This is a console-based Movie Ticket Booking System developed in C++. It enables users to register, log in, and manage their movie bookings, including both reservations and cancellations. The system features an administrative panel that allows an admin account to manage available movies and showtimes. Users receive email notifications for key events such as new movie releases, booking confirmations, and cancellations.
 
-# 1. Assignment Goals
-The movie ticket booking system is a system that allows customers to book shows for their favorite movies. The booking system has information on all cinemas present in different cities and the hall information for each cinema. There are numerous movies stored in the system database. Each movie can have multiple shows playing in a particular cinema. The customer can search and select a movie for which they wish to book a show. The system displays a seating layout that identifies booked and available seats so that the customer can choose to reserve available seats. Once the customer completes the payment for the booking, the seat booking is confirmed and the customer receives an email notification.
+### Dependencies
 
-# 2. Expectations from the interviewee
-Numerous components are present in a typical movie ticket booking system, each with specific constraints and requirements placed on them. The following provides an overview of some of the main expectations that the interviewer will want to hear you discuss in more detail during the interview.
+- **Operating System:** Windows 10 or later
+- **Visual Studio 2022** (with C++ Desktop Development workload)
+- **cURL (latest)** – for sending HTTP requests  
+  [https://curl.se/](https://curl.se/)
+- **MySQL C/C++ Connector (latest)** – for database operations  
+  [https://dev.mysql.com/downloads/connector/cpp/](https://dev.mysql.com/downloads/connector/cpp/)
+- **OpenSSL (latest)** – for secure connections (used by cURL)  
+  [https://www.openssl.org/](https://www.openssl.org/)
 
-## 2.1. Seat selection
-Selecting a seat is an essential part of the movie ticket booking system. The system has to make sure that no two people can book the same seat. The interviewer expects you to ask questions to identify how the system will work in these situations:
+## Getting Started
 
-* How will the system make sure that multiple users do not book the same seat?
-* Will there be a timeout session that reserves seats temporarily? Will the system use a first come, first serve algorithm?
-* Will there be transaction locks involved in the system?
+1. **Clone the repository**
 
-## 2.2. Payment handling
-One of the most significant attributes of the movie ticket booking system is the payment structure that it provides to its customers. This can vary, so the interviewer would expect you to ask the questions listed below:
+```
+git clone https://github.com/codingburgas/movie-ticket-booking-system-10th-grade-AILalev22.git
+```
 
-* What payment methods can the customer use (for example, credit card or cash)?
-* How is the payment performed? Does the customer pay themselves online or through a ticket agent on the location?
+2. **Open the solution**  
+   - Navigate to the cloned project folder.  
+   - Open the `MovieBookingSystem.sln` file in Visual Studio 2022.
 
-## 2.3. Price variance
-We touched upon the payment methods of the movie ticket booking system, now, the pricing model needs to be clarified by the interviewer, and therefore you may ask questions like these:
-* How will the price of the booking be calculated? Will it vary based on the popularity of the show?
-* Does the seat type affect the pricing?
-* Will there be discount coupon codes?
+3. **Set the startup project**  
+   - To run the main application:  
+     - In **Solution Explorer**, right-click on the project named `builder`.  
+     - Select **Set as Startup Project**.  
+   - To run the tests:  
+     - Right-click on the project named `test`.  
+     - Select **Set as Startup Project**.
 
-## 2.4. Duplication
-There will be many duplicate instances in our system. The interviewer expects you to ask questions like these:
-* How are we handling these instances, such as the same cinema having multiple cinema halls showing different movies simultaneously?
-* Is the same movie being shown at different times in the same cinema/hall?
+4. **Select the build configuration**  
+   - Use the build configuration dropdown in the toolbar to select:  
+     - `Release` – for optimized builds.  
+     - `Release with Debug Strings` – for builds that include debug output.
 
-# 3. Requirements for the Movie Ticket Booking System
-The following are the requirements that we have defined for the movie ticket booking problem:
+5. **Build and run the project**  
+   - Press `Ctrl + Shift + B` to build the solution.  
+   - Press `F5` or click the **Start** button to run the selected project.
 
-### Stage One
-* R1: There exist multiple cinemas in the city, and the cinema has multiple halls.
+## Technologies
 
-* R2: Each movie in the cinema can have multiple shows, however, one hall will only show one show at a time.
+* C++ – Programming language  
+* Visual Studio 2022 – Code editor and IDE  
+* MySQL – Database management system  
+* cURL – HTTP requests and networking library
+  
+## Authors
 
-* R3: The cinema displays all available showtimes of a movie.
+Contributors names and contact info
 
-* R4: Users can search movies based on the following four criteria: title, language, genre, and release date.
+ex. [@ailalev22](mailto:ailalev22@codingburgas.bg)
 
-### Stage Two
-* R5: Users can make a booking at any cinema hall at the available showtime.
+## Version History
 
-* R6: The booking can either be made by the customer online or via a walk-in by the ticket agent.
+* 1.0
+    * Initial stable release
 
-* R7: Online customers can only pay using a credit card, while walk-in customers can pay using cash or credit card through the ticket agent.
+## License
 
-### Stage Three
-* R8: Users can select multiple available seats for a show from a given seating arrangement.
+This project is licensed under the MIT License - see the LICENSE.md file for details
 
-* R9: Each seat type has a fixed cost. There are three types of seats: silver, gold, and platinum.
+## Acknowledgments
 
-* R10: There can only be one ticket allocated per seat.
-
-* R11: No two customers should be able to reserve the same seat.
-
-### Stage Four
-* R12: The admin can perform the following five actions on the show times and the movie:
-
-    * Add a show
-    * Delete a show
-    * Update a show
-    * Add a movie
-    * Delete a movie
-
-* R13: The system should be able to differentiate between available and booked seats.
-
-### Stage Five
-* R14: The system should generate a notification for the following three cases:
-
-    * A new movie has been released.
-    * A booking has been made.
-    * A booking has been canceled.
-
-# Base requirements
-
-* Programming language: C++
-* Visual Studio 2022 (latest release)
-* Git for Windows (latest release)
-* Skill for working with Git from command line (CLI) & Git extension in Visual Studio
-* Following the best practices for C++ / Git / GitHub is a mandatory requirement
-
-Additional requirements will be added later.
+Inspiration, code snippets, etc.
+* [leetuah](https://github.com/LeeTuah/Effortless-Menus.git)
+* [awesome-readme](https://github.com/matiassingers/awesome-readme)
