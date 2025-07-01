@@ -121,7 +121,7 @@ namespace MySQL
 		return true;
 	}
 	bool Connector::Write(std::string fmt, const std::string& query, va_list va) const
-	{	
+	{
 		if (fmt.empty() || query.empty()) return false;
 		if (!conn)
 		{
@@ -140,7 +140,7 @@ namespace MySQL
 		}
 		/*va_list va;
 		va_start(va, &query);*/
-		
+
 		int i = 1; //initial pos used in setType db functions
 
 		int arg_d; // temp vars for row data
@@ -156,7 +156,7 @@ namespace MySQL
 			case 'd':arg_d = va_arg(va, int); pstmt->setInt(i++, arg_d); break; // follow c-style format
 			case 'f': arg_f = va_arg(va, double); pstmt->setDouble(i++, arg_f); break;
 			case 'b': arg_b = va_arg(va, bool); pstmt->setBoolean(i++, arg_b); break;
-			case 's': arg_s = va_arg(va, std::string*); pstmt->setString(i++,*arg_s); break;
+			case 's': arg_s = va_arg(va, std::string*); pstmt->setString(i++, *arg_s); break;
 			case 'u': arg_u = va_arg(va, uint); pstmt->setUInt(i++, arg_u); break;
 			}
 		}
@@ -174,14 +174,14 @@ namespace MySQL
 		return true;
 	}
 
-	bool Connector::Read(std::string fmt, const std::string& query,std::string& dst) const
+	bool Connector::Read(std::string fmt, const std::string& query, std::string& dst) const
 	{
 		if (!conn)
 		{
 			DbgMsg("error Read() not connected");
 			return false;
 		}
-		Utils::Trim(fmt,"difubs"); // trim format only to passed charset
+		Utils::Trim(fmt, "difubs"); // trim format only to passed charset
 		if (fmt.empty()) return false;
 
 		try
@@ -196,13 +196,13 @@ namespace MySQL
 		}
 
 		size_t cols = fmt.size();
-		
+
 		while (rset->next()) // iterate through each row of res set
-		{	
+		{
 			for (size_t i = 1; i <= cols; i++)
 			{
 				std::string data;
-				switch (fmt[i-1])
+				switch (fmt[i - 1])
 				{
 				case 'd': case 'i': data = std::to_string(rset->getInt(i)); break;
 				case 'f': data = std::to_string(rset->getDouble(i)); break;
@@ -217,8 +217,8 @@ namespace MySQL
 
 				dst.append(data);
 			}
-			if(!rset->isLast() || rset->isFirst() && rset->isLast())
-			dst.push_back('|'); // insert after each row of data from the db
+			if (!rset->isLast() || rset->isFirst() && rset->isLast())
+				dst.push_back('|'); // insert after each row of data from the db
 		}
 
 		return !dst.empty();

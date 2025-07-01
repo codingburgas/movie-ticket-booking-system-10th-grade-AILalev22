@@ -191,11 +191,11 @@ namespace Misc
 				SMTP::NotifyUsers("New booking", msg, { conf.currUser.GetEmail()});
 			}
 			else
-				Utils::ErrMsg("Unexpected error. Please try again later.");
+				Utils::ErrMsg("Unexpected error while making booking. Please try again later.");
 		}
 		else
 		{
-			Utils::ErrMsg("Unexpected error. Please try again later.");
+			Utils::ErrMsg("Unexpected error getting booking data. Please try again later.");
 		}
 	}
 

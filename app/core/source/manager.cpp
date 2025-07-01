@@ -9,7 +9,9 @@ namespace Manager
 
 	void ManagerSQL::Init()
 	{
+		printf("Connecting to database server...\n");
 		if (!inst->Connect() || !inst->SetDB(dataInst.schema)) isInit = false;
+		Utils::Clear();
 	}
 	void ManagerSMTP::Init()
 	{

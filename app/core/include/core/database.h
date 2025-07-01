@@ -14,7 +14,6 @@ namespace MySQL
 	{
 		/// @brief Array holding host, username, and password credentials.
 		std::string credentials[3];
-
 	public:
 		/**
 		 * @brief Constructs a new Connector instance with connection credentials.
@@ -46,7 +45,6 @@ namespace MySQL
 		 * @return false If connection failed.
 		 */
 		bool Connect() const;
-
 		/**
 		 * @brief Executes a SELECT query and reads data using a C-style format string.
 		 *
